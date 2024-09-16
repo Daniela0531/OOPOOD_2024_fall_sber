@@ -26,8 +26,7 @@ public class GameDesktopLauncher implements ApplicationListener {
     private Batch batch;
     private Level tiles;
     private Tank tank;
-    private Movement tankMovement;
-    private TreeObstacle treeObstacle;
+    private Obstacle treeObstacle;
 
     @Override
     public void create() {
@@ -45,26 +44,24 @@ public class GameDesktopLauncher implements ApplicationListener {
         TextureRegion playerGraphics =  new TextureRegion(tankTexture);
         // set player initial position
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
-        tank = new Tank(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates);
-
-        tankMovement = new Movement(new GridPoint2(tankCoordinates), 0f);
+        tank = new Tank(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
 
         Texture texture = new Texture("images/greenTree.png");
         TextureRegion textureRegion = new TextureRegion(texture);
-        treeObstacle = new TreeObstacle(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
+        treeObstacle = new Obstacle(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
         moveRectangleAtTileCenter(groundLayer, treeObstacle.getRectangle(), treeObstacle.getCoordinates());
     }
 
     private void doStep(GridPoint2 step) {
-        if (isEqual(tankMovement.getProgress(), 1f)) {
+        if (isEqual(tank.getProgress(), 1f)) {
             // check potential player destination for collision with obstacles
             if (checkNoCollisionWithObstacles(step)) {
-                tankMovement.getDestinationCoordinates().y += step.y;
-                tankMovement.getDestinationCoordinates().x += step.x;
-                tankMovement.setProgress(0f);
+                tank.getDestinationCoordinates().y += step.y;
+                tank.getDestinationCoordinates().x += step.x;
+                tank.setProgress(0f);
             }
             float newPlayerRotation = step.x != 0 ? -90f + step.x * 90f: step.y * 90f;
-            tankMovement.setRotation(newPlayerRotation);
+            tank.setRotation(newPlayerRotation);
         }
     }
 
@@ -98,12 +95,12 @@ public class GameDesktopLauncher implements ApplicationListener {
         }
 
         // calculate interpolated player screen coordinates
-        tiles.getTileMovement().moveRectangleBetweenTileCenters(tank.getRectangle(), tank.getCoordinates(), tankMovement.getDestinationCoordinates(), tankMovement.getProgress());
+        tiles.getTileMovement().moveRectangleBetweenTileCenters(tank.getRectangle(), tank.getCoordinates(), tank.getDestinationCoordinates(), tank.getProgress());
 
-        tankMovement.setProgress(continueProgress(tankMovement.getProgress(), deltaTime, MOVEMENT_SPEED));
-        if (isEqual(tankMovement.getProgress(), 1f)) {
+        tank.setProgress(continueProgress(tank.getProgress(), deltaTime, MOVEMENT_SPEED));
+        if (isEqual(tank.getProgress(), 1f)) {
             // record that the player has reached his/her destination
-            tank.getCoordinates().set(tankMovement.getDestinationCoordinates());
+            tank.getCoordinates().set(tank.getDestinationCoordinates());
         }
 
         // render each tile of the level
@@ -113,7 +110,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         batch.begin();
 
         // render player
-        drawTextureRegionUnscaled(batch, tank.getGraphics(), tank.getRectangle(), tankMovement.getRotation());
+        drawTextureRegionUnscaled(batch, tank.getGraphics(), tank.getRectangle(), tank.getRotation());
 
         // render tree obstacle
         drawTextureRegionUnscaled(batch, treeObstacle.getGraphics(), treeObstacle.getRectangle(), 0f);

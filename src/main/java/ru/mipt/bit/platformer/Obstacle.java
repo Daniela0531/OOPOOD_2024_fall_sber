@@ -5,13 +5,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 
-public class TreeObstacle {
+public class Obstacle {
     private Texture texture;
     private TextureRegion graphics;
     private GridPoint2 coordinates = new GridPoint2();
     private Rectangle rectangle = new Rectangle();
 
-    public TreeObstacle(Texture texture, TextureRegion textureRegion, GridPoint2 coordinates, Rectangle rectangle) {
+    public Obstacle(Texture texture, TextureRegion textureRegion, GridPoint2 coordinates, Rectangle rectangle) {
         this.texture = texture;
         graphics = textureRegion;
         this.coordinates = coordinates;
