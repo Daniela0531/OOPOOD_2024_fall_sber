@@ -6,31 +6,31 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 
 public class TreeObstacle {
-    private Texture greenTreeTexture;
-    private TextureRegion treeObstacleGraphics;
-    private GridPoint2 treeObstacleCoordinates = new GridPoint2();
-    private Rectangle treeObstacleRectangle = new Rectangle();
+    private Texture texture;
+    private TextureRegion graphics;
+    private GridPoint2 coordinates = new GridPoint2();
+    private Rectangle rectangle = new Rectangle();
 
     public TreeObstacle(Texture texture, TextureRegion textureRegion, GridPoint2 coordinates, Rectangle rectangle) {
-        greenTreeTexture = texture;
-        treeObstacleGraphics = textureRegion;
-        treeObstacleCoordinates = coordinates;
-        treeObstacleRectangle = rectangle;
+        this.texture = texture;
+        graphics = textureRegion;
+        this.coordinates = coordinates;
+        this.rectangle = rectangle;
     }
 
-    public Rectangle getTreeObstacleRectangle() {
-        return treeObstacleRectangle;
+    public Rectangle getRectangle() {
+        return rectangle;
     }
 
-    public TextureRegion getTreeObstacleGraphics() {
-        return treeObstacleGraphics;
+    public TextureRegion getGraphics() {
+        return graphics;
     }
 
-    public GridPoint2 getTreeObstacleCoordinates() {
-        return treeObstacleCoordinates;
+    public GridPoint2 getCoordinates() {
+        return coordinates;
     }
 
-    public Texture getGreenTreeTexture() {
-        return greenTreeTexture;
+    public Texture getTexture() {
+        return texture;
     }
 }

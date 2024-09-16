@@ -52,7 +52,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         Texture texture = new Texture("images/greenTree.png");
         TextureRegion textureRegion = new TextureRegion(texture);
         treeObstacle = new TreeObstacle(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
-        moveRectangleAtTileCenter(groundLayer, treeObstacle.getTreeObstacleRectangle(), treeObstacle.getTreeObstacleCoordinates());
+        moveRectangleAtTileCenter(groundLayer, treeObstacle.getRectangle(), treeObstacle.getCoordinates());
     }
 
     private void doStep(GridPoint2 step) {
@@ -72,7 +72,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         GridPoint2 newCoordinates = tank.getCoordinates();
         newCoordinates.x += step.x;
         newCoordinates.y += step.y;
-        return !treeObstacle.getTreeObstacleCoordinates().equals(newCoordinates);
+        return !treeObstacle.getCoordinates().equals(newCoordinates);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         drawTextureRegionUnscaled(batch, tank.getGraphics(), tank.getRectangle(), tankMovement.getRotation());
 
         // render tree obstacle
-        drawTextureRegionUnscaled(batch, treeObstacle.getTreeObstacleGraphics(), treeObstacle.getTreeObstacleRectangle(), 0f);
+        drawTextureRegionUnscaled(batch, treeObstacle.getGraphics(), treeObstacle.getRectangle(), 0f);
 
         // submit all drawing requests
         batch.end();
@@ -140,7 +140,7 @@ public class GameDesktopLauncher implements ApplicationListener {
     @Override
     public void dispose() {
         // dispose of all the native resources (classes which implement com.badlogic.gdx.utils.Disposable)
-        treeObstacle.getGreenTreeTexture().dispose();
+        treeObstacle.getTexture().dispose();
         tank.getTexture().dispose();
         tiles.getLevel().dispose();
         batch.dispose();
