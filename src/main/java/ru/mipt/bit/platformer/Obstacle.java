@@ -6,23 +6,15 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Obstacle {
-    private Texture texture;
-    private TextureRegion graphics;
+    private Graphics graphics;
     private GridPoint2 coordinates = new GridPoint2();
-    private Rectangle rectangle = new Rectangle();
 
     public Obstacle(Texture texture, TextureRegion textureRegion, GridPoint2 coordinates, Rectangle rectangle) {
-        this.texture = texture;
-        graphics = textureRegion;
         this.coordinates = coordinates;
-        this.rectangle = rectangle;
+        this.graphics = new Graphics(texture, rectangle, textureRegion);
     }
 
-    public Rectangle getRectangle() {
-        return rectangle;
-    }
-
-    public TextureRegion getGraphics() {
+    public Graphics getGraphics() {
         return graphics;
     }
 
@@ -30,7 +22,11 @@ public class Obstacle {
         return coordinates;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public void setGraphics(Graphics graphics) {
+        this.graphics = graphics;
+    }
+
+    public void setCoordinates(GridPoint2 coordinates) {
+        this.coordinates = coordinates;
     }
 }
