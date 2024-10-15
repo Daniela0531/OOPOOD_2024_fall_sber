@@ -7,13 +7,13 @@ import static com.badlogic.gdx.Input.Keys.*;
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 
 public class ButtonPressHandler {
-    private boolean checkNoCollisionWithObstacles(GridPoint2 step, Tank tank, Obstacle obstacle) {
+    private boolean checkNoCollisionWithObstacles(GridPoint2 step, Model tank, Obstacle obstacle) {
         GridPoint2 newCoordinates = tank.getCoordinates();
         newCoordinates.x += step.x;
         newCoordinates.y += step.y;
         return !obstacle.getCoordinates().equals(newCoordinates);
     }
-    private void doStep(GridPoint2 step, Tank tank, Obstacle obstacle) {
+    private void doStep(GridPoint2 step, Model tank, Obstacle obstacle) {
         if (isEqual(tank.getProgress(), 1f)) {
             // check potential player destination for collision with obstacles
             if (checkNoCollisionWithObstacles(step, tank, obstacle)) {
@@ -25,22 +25,22 @@ public class ButtonPressHandler {
             tank.getDirection().setRotation(newPlayerRotation);
         }
     }
-    public void UP(Tank tank, Obstacle obstacle) {
+    public void UP(Model tank, Obstacle obstacle) {
         if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
             doStep(new GridPoint2(0, 1), tank, obstacle);
         }
     }
-    public void LEFT(Tank tank, Obstacle obstacle) {
+    public void LEFT(Model tank, Obstacle obstacle) {
         if (Gdx.input.isKeyPressed(LEFT) || Gdx.input.isKeyPressed(A)) {
             doStep(new GridPoint2(-1, 0), tank, obstacle);
         }
     }
-    public void DOWN(Tank tank, Obstacle obstacle) {
+    public void DOWN(Model tank, Obstacle obstacle) {
         if (Gdx.input.isKeyPressed(DOWN) || Gdx.input.isKeyPressed(S)) {
             doStep(new GridPoint2(0, -1), tank, obstacle);
         }
     }
-    public void RIGHT(Tank tank, Obstacle obstacle) {
+    public void RIGHT(Model tank, Obstacle obstacle) {
         if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
             doStep(new GridPoint2(1, 0), tank, obstacle);
         }

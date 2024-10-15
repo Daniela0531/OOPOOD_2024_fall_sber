@@ -15,7 +15,6 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Interpolation;
 import ru.mipt.bit.platformer.util.TileMovement;
 
-import static com.badlogic.gdx.Input.Keys.*;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
@@ -25,7 +24,7 @@ public class GameDesktopLauncher implements ApplicationListener {
     private static final float MOVEMENT_SPEED = 0.4f;
     private Batch batch;
     private Level tiles;
-    private Tank tank;
+    private Model tank;
     private Obstacle treeObstacle;
     private ButtonPressHandler buttonPressHandler;
 
@@ -45,7 +44,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         TextureRegion playerGraphics =  new TextureRegion(tankTexture);
         // set player initial position
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
-        tank = new Tank(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
+        tank = new Model(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
 
         Texture texture = new Texture("images/greenTree.png");
         TextureRegion textureRegion = new TextureRegion(texture);

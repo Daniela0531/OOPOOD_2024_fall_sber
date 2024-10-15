@@ -1,11 +1,7 @@
 package ru.mipt.bit.platformer;
 
 import com.badlogic.gdx.math.GridPoint2;
-//import lombok.Getter;
-//import lombok.Setter;
 
-//@Getter
-//@Setter
 public class Direction {
 //   public enum Trend {
 //      UP,

@@ -4,31 +4,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
-//import lombok.Getter;
-//import lombok.Setter;
 
-//@Setter
-//@Getter
-public class Tank {
+public class Model {
     private Graphics graphics;
     private Direction direction;
-//    private Texture texture;
-//    private TextureRegion graphics;
-//    private Rectangle rectangle;
     private GridPoint2 coordinates;
     private GridPoint2 destinationCoordinates;
-//    private float rotation;
     private float progress = 1f;
-    public Tank(Texture tankTexture, TextureRegion textureRegion, Rectangle rectangle, GridPoint2 coordinates, GridPoint2 destinationCoordinates, float rotation) {
+    public Model(Texture tankTexture, TextureRegion textureRegion, Rectangle rectangle, GridPoint2 coordinates, GridPoint2 destinationCoordinates, float rotation) {
         this.graphics = new Graphics(tankTexture, rectangle, textureRegion);
 
         this.direction = new Direction(new GridPoint2(destinationCoordinates.x - coordinates.x, destinationCoordinates.y - coordinates.y), rotation);
-//        this.texture = tankTexture;
-//        this.graphics = graphics;
-//        this.rectangle = rectangle;
         this.coordinates = coordinates;
         this.destinationCoordinates = destinationCoordinates;
-//        this.rotation = rotation;
     }
 
     public GridPoint2 getCoordinates() {

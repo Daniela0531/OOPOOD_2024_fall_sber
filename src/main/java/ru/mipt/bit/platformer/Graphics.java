@@ -3,11 +3,7 @@ package ru.mipt.bit.platformer;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-//import lombok.Getter;
-//import lombok.Setter;
 
-//@Getter
-//@Setter
 public class Graphics {
     private Texture texture;
     private TextureRegion textureRegion;

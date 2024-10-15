@@ -15,7 +15,7 @@ class TankTest {
         System.out.println("+");
         TextureRegion playerGraphics = new TextureRegion(tankTexture);
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
-        Tank tankFirst = new Tank(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
+        Model tankFirst = new Model(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
         assertEquals(tankTexture, tankFirst.getGraphics().getTexture());
 //        assert (tankFirst.getGraphics().getTextureRegion() == playerGraphics);
 //        assert (tankFirst.getGraphics().getRectangle() == createBoundingRectangle(playerGraphics));
