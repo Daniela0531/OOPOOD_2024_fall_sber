@@ -13,9 +13,10 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Interpolation;
+import ru.mipt.bit.platformer.graphics.GraphicModel;
+import ru.mipt.bit.platformer.model.MovementModel;
 import ru.mipt.bit.platformer.util.TileMovement;
 
-import static com.badlogic.gdx.Input.Keys.*;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
@@ -25,8 +26,11 @@ public class GameDesktopLauncher implements ApplicationListener {
     private static final float MOVEMENT_SPEED = 0.4f;
     private Batch batch;
     private Level tiles;
-    private Tank tank;
-    private Obstacle treeObstacle;
+    private MovementModel tankMovementModel;
+    private GraphicModel tankGraphicModel;
+    private GraphicModel treeObstacleGraphicModel;
+//    private Obstacle treeObstacle;
+
     private ButtonPressHandler buttonPressHandler;
 
     @Override
@@ -45,13 +49,37 @@ public class GameDesktopLauncher implements ApplicationListener {
         TextureRegion playerGraphics =  new TextureRegion(tankTexture);
         // set player initial position
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
-        tank = new Tank(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
+        tankGraphicModel = new GraphicModel(tankTexture, createBoundingRectangle(playerGraphics), playerGraphics, tankCoordinates);
+        tankMovementModel = new MovementModel(tankCoordinates, new GridPoint2(tankCoordinates), 0f, 1f);
 
         Texture texture = new Texture("images/greenTree.png");
         TextureRegion textureRegion = new TextureRegion(texture);
-        treeObstacle = new Obstacle(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
-        moveRectangleAtTileCenter(groundLayer, treeObstacle.getGraphics().getRectangle(), treeObstacle.getCoordinates());
+//        treeObstacle = new ObstacleGraphics(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
+        treeObstacleGraphicModel = new GraphicModel(texture, createBoundingRectangle(textureRegion), textureRegion, new GridPoint2(2, 3));
+        moveRectangleAtTileCenter(groundLayer, treeObstacleGraphicModel.getRectangle(), treeObstacleGraphicModel.getCoordinates());
+
+        buttonPressHandler = new ButtonPressHandler();
     }
+
+//    private void doStep(GridPoint2 step) {
+//        if (isEqual(tank.getProgress(), 1f)) {
+//            // check potential player destination for collision with obstacles
+//            if (checkNoCollisionWithObstacles(step)) {
+//                tank.getDestinationCoordinates().y += step.y;
+//                tank.getDestinationCoordinates().x += step.x;
+//                tank.setProgress(0f);
+//            }
+//            float newPlayerRotation = step.x != 0 ? -90f + step.x * 90f: step.y * 90f;
+//            tank.setRotation(newPlayerRotation);
+//        }
+//    }
+
+//    private boolean checkNoCollisionWithObstacles(GridPoint2 step) {
+//        GridPoint2 newCoordinates = tank.getCoordinates();
+//        newCoordinates.x += step.x;
+//        newCoordinates.y += step.y;
+//        return !treeObstacle.getCoordinates().equals(newCoordinates);
+//    }
 
     @Override
     public void render() {
@@ -61,7 +89,6 @@ public class GameDesktopLauncher implements ApplicationListener {
 
         // get time passed since the last render
         float deltaTime = Gdx.graphics.getDeltaTime();
-
 
 //        if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
 //            doStep(new GridPoint2(0, 1));
@@ -75,18 +102,18 @@ public class GameDesktopLauncher implements ApplicationListener {
 //        if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
 //            doStep(new GridPoint2(1, 0));
 //        }
-        buttonPressHandler.UP(tank, treeObstacle);
-        buttonPressHandler.DOWN(tank, treeObstacle);
-        buttonPressHandler.LEFT(tank, treeObstacle);
-        buttonPressHandler.RIGHT(tank, treeObstacle);
+        buttonPressHandler.UP(tankMovementModel, treeObstacleGraphicModel);
+        buttonPressHandler.DOWN(tankMovementModel, treeObstacleGraphicModel);
+        buttonPressHandler.LEFT(tankMovementModel, treeObstacleGraphicModel);
+        buttonPressHandler.RIGHT(tankMovementModel, treeObstacleGraphicModel);
 
         // calculate interpolated player screen coordinates
-        tiles.getTileMovement().moveRectangleBetweenTileCenters(tank.getGraphics().getRectangle(), tank.getCoordinates(), tank.getDestinationCoordinates(), tank.getProgress());
+        tiles.getTileMovement().moveRectangleBetweenTileCenters(tankGraphicModel.getRectangle(), tankMovementModel.getCoordinates(), tankMovementModel.getDestinationCoordinates(), tankMovementModel.getProgress());
 
-        tank.setProgress(continueProgress(tank.getProgress(), deltaTime, MOVEMENT_SPEED));
-        if (isEqual(tank.getProgress(), 1f)) {
+        tankMovementModel.setProgress(continueProgress(tankMovementModel.getProgress(), deltaTime, MOVEMENT_SPEED));
+        if (isEqual(tankMovementModel.getProgress(), 1f)) {
             // record that the player has reached his/her destination
-            tank.getCoordinates().set(tank.getDestinationCoordinates());
+            tankMovementModel.getCoordinates().set(tankMovementModel.getDestinationCoordinates());
         }
 
         // render each tile of the level
@@ -96,10 +123,10 @@ public class GameDesktopLauncher implements ApplicationListener {
         batch.begin();
 
         // render player
-        drawTextureRegionUnscaled(batch, tank.getGraphics().getTextureRegion(), tank.getGraphics().getRectangle(), tank.getDirection().getRotation());
+        drawTextureRegionUnscaled(batch, tankGraphicModel.getTextureRegion(), tankGraphicModel.getRectangle(), tankMovementModel.getRotation());
 
         // render tree obstacle
-        drawTextureRegionUnscaled(batch, treeObstacle.getGraphics().getTextureRegion(), treeObstacle.getGraphics().getRectangle(), 0f);
+        drawTextureRegionUnscaled(batch, treeObstacleGraphicModel.getTextureRegion(), treeObstacleGraphicModel.getRectangle(), 0f);
 
         // submit all drawing requests
         batch.end();
@@ -123,8 +150,8 @@ public class GameDesktopLauncher implements ApplicationListener {
     @Override
     public void dispose() {
         // dispose of all the native resources (classes which implement com.badlogic.gdx.utils.Disposable)
-        treeObstacle.getGraphics().getTexture().dispose();
-        tank.getGraphics().getTexture().dispose();
+        treeObstacleGraphicModel.getTexture().dispose();
+        tankGraphicModel.getTexture().dispose();
         tiles.getLevel().dispose();
         batch.dispose();
     }
