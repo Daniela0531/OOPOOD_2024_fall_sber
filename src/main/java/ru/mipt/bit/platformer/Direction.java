@@ -1,7 +1,11 @@
 package ru.mipt.bit.platformer;
 
 import com.badlogic.gdx.math.GridPoint2;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 public class Direction {
 //   public enum Trend {
 //      UP,
@@ -19,19 +23,19 @@ public class Direction {
       this.rotation = rotation;
    }
 
-   public float getRotation() {
-      return rotation;
-   }
+//   public float getRotation() {
+//      return rotation;
+//   }
 
-   public GridPoint2 getVector() {
-      return vector;
-   }
+//   public GridPoint2 getVector() {
+//      return vector;
+//   }
 
-   public void setRotation(float rotation) {
-      this.rotation = rotation;
-   }
+//   public void setRotation(float rotation) {
+//      this.rotation = rotation;
+//   }
 
-   public void setVector(GridPoint2 vector) {
-      this.vector = vector;
-   }
+//   public void setVector(GridPoint2 vector) {
+//      this.vector = vector;
+//   }
 }
