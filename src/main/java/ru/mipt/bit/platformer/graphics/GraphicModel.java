@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
+import lombok.Getter;
+import lombok.Setter;
 
-//@Getter
-
+@Setter
+@Getter
 public class GraphicModel {
     private Texture texture;
     private TextureRegion textureRegion;
@@ -20,19 +22,19 @@ public class GraphicModel {
         this.coordinates = coordinates;
     }
 
-    public Rectangle getRectangle() {
-        return rectangle;
-    }
+//    public Rectangle getRectangle() {
+//        return rectangle;
+//    }
 
-    public Texture getTexture() {
-        return texture;
-    }
+//    public Texture getTexture() {
+//        return texture;
+//    }
 
-    public TextureRegion getTextureRegion() {
-        return textureRegion;
-    }
+//    public TextureRegion getTextureRegion() {
+//        return textureRegion;
+//    }
 
-    public GridPoint2 getCoordinates() {
-        return coordinates;
-    }
+//    public GridPoint2 getCoordinates() {
+//        return coordinates;
+//    }
 }
