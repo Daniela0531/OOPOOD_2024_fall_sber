@@ -53,102 +53,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         treeObstacle = new Obstacle(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
         moveRectangleAtTileCenter(groundLayer, treeObstacle.getRectangle(), treeObstacle.getCoordinates());
 
-    }
-//    movement = new Movement(new GridPoint2(tankCoordinates), 0f, tankCoordinates, treeObstacle);
-//}
-//
-//
-//
-//
-//    private void doStep(GridPoint2 step) {
-//        if (isEqual(movement.getProgress(), 1f)) {
-//            // check potential player destination for collision with obstacles
-//            if (checkNoCollisionWithObstacles(step)) {
-//                movement.getDestinationCoordinates().y += step.y;
-//                movement.getDestinationCoordinates().x += step.x;
-//                movement.setProgress(0f);
-//            }
-//            float newPlayerRotation = step.x != 0 ? -90f + step.x * 90f: step.y * 90f;
-//            movement.setRotation(newPlayerRotation);
-//        }
-//    }
-//
-//    private boolean checkNoCollisionWithObstacles(GridPoint2 step) {
-//        GridPoint2 newCoordinates = movement.getCoordinates();
-//        newCoordinates.x += step.x;
-//        newCoordinates.y += step.y;
-//        return !movement.getTreeObstacle().getCoordinates().equals(newCoordinates);
-//    }
-//    @Override
-//    public void render() {
-//        // clear the screen
-//        Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
-//        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-//
-//        // get time passed since the last render
-//        float deltaTime = Gdx.graphics.getDeltaTime();
-//
-//        if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
-//            doStep(new GridPoint2(0, 1));
-//        }
-//        if (Gdx.input.isKeyPressed(LEFT) || Gdx.input.isKeyPressed(A)) {
-//            doStep(new GridPoint2(-1, 0));
-//        }
-//        if (Gdx.input.isKeyPressed(DOWN) || Gdx.input.isKeyPressed(S)) {
-//            doStep(new GridPoint2(0, -1));
-//        }
-//        if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
-//            doStep(new GridPoint2(1, 0));
-//        }
-//
-//        // calculate interpolated player screen coordinates
-//        tiles.getTileMovement().moveRectangleBetweenTileCenters(tank.getRectangle(), movement.getCoordinates(), movement.getDestinationCoordinates(), movement.getProgress());
-//
-//        movement.setProgress(continueProgress(movement.getProgress(), deltaTime, MOVEMENT_SPEED));
-////        tank.setProgress(continueProgress(tank.getProgress(), deltaTime, MOVEMENT_SPEED));
-//        if (isEqual(movement.getProgress(), 1f)) {
-//            // record that the player has reached his/her destination
-//            movement.getCoordinates().set(movement.getDestinationCoordinates());
-//        }
-////        if (isEqual(tank.getProgress(), 1f)) {
-////            // record that the player has reached his/her destination
-////            tank.getCoordinates().set(tank.getDestinationCoordinates());
-////        }
-//
-//        // render each tile of the level
-//        tiles.getLevelRenderer().render();
-//
-//        // start recording all drawing commands
-//        batch.begin();
-//
-//        // render player
-//        drawTextureRegionUnscaled(batch, tank.getGraphics(), tank.getRectangle(), movement.getRotation());
-//
-//        // render tree obstacle
-//        drawTextureRegionUnscaled(batch, treeObstacle.getGraphics(), treeObstacle.getRectangle(), 0f);
-//
-//        // submit all drawing requests
-//        batch.end();
-//    }
-
-    private void doStep(GridPoint2 step) {
-        if (isEqual(tank.getProgress(), 1f)) {
-            // check potential player destination for collision with obstacles
-            if (checkNoCollisionWithObstacles(step)) {
-                tank.getDestinationCoordinates().y += step.y;
-                tank.getDestinationCoordinates().x += step.x;
-                tank.setProgress(0f);
-            }
-            float newPlayerRotation = step.x != 0 ? -90f + step.x * 90f: step.y * 90f;
-            tank.setRotation(newPlayerRotation);
-        }
-    }
-
-    private boolean checkNoCollisionWithObstacles(GridPoint2 step) {
-        GridPoint2 newCoordinates = tank.getCoordinates();
-        newCoordinates.x += step.x;
-        newCoordinates.y += step.y;
-        return !treeObstacle.getCoordinates().equals(newCoordinates);
+        movement = new Movement(new GridPoint2(tankCoordinates), 0f, tankCoordinates, treeObstacle);
     }
 
     @Override
@@ -161,26 +66,31 @@ public class GameDesktopLauncher implements ApplicationListener {
         float deltaTime = Gdx.graphics.getDeltaTime();
 
         if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
-            doStep(new GridPoint2(0, 1));
+            movement.doStep(new GridPoint2(0, 1));
         }
         if (Gdx.input.isKeyPressed(LEFT) || Gdx.input.isKeyPressed(A)) {
-            doStep(new GridPoint2(-1, 0));
+            movement.doStep(new GridPoint2(-1, 0));
         }
         if (Gdx.input.isKeyPressed(DOWN) || Gdx.input.isKeyPressed(S)) {
-            doStep(new GridPoint2(0, -1));
+            movement.doStep(new GridPoint2(0, -1));
         }
         if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
-            doStep(new GridPoint2(1, 0));
+            movement.doStep(new GridPoint2(1, 0));
         }
 
         // calculate interpolated player screen coordinates
-        tiles.getTileMovement().moveRectangleBetweenTileCenters(tank.getRectangle(), tank.getCoordinates(), tank.getDestinationCoordinates(), tank.getProgress());
+        tiles.getTileMovement().moveRectangleBetweenTileCenters(tank.getRectangle(), movement.getCoordinates(), movement.getDestinationCoordinates(), movement.getProgress());
 
-        tank.setProgress(continueProgress(tank.getProgress(), deltaTime, MOVEMENT_SPEED));
-        if (isEqual(tank.getProgress(), 1f)) {
+        movement.setProgress(continueProgress(movement.getProgress(), deltaTime, MOVEMENT_SPEED));
+//        tank.setProgress(continueProgress(tank.getProgress(), deltaTime, MOVEMENT_SPEED));
+        if (isEqual(movement.getProgress(), 1f)) {
             // record that the player has reached his/her destination
-            tank.getCoordinates().set(tank.getDestinationCoordinates());
+            movement.getCoordinates().set(movement.getDestinationCoordinates());
         }
+//        if (isEqual(tank.getProgress(), 1f)) {
+//            // record that the player has reached his/her destination
+//            tank.getCoordinates().set(tank.getDestinationCoordinates());
+//        }
 
         // render each tile of the level
         tiles.getLevelRenderer().render();
@@ -189,7 +99,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         batch.begin();
 
         // render player
-        drawTextureRegionUnscaled(batch, tank.getGraphics(), tank.getRectangle(), tank.getRotation());
+        drawTextureRegionUnscaled(batch, tank.getGraphics(), tank.getRectangle(), movement.getRotation());
 
         // render tree obstacle
         drawTextureRegionUnscaled(batch, treeObstacle.getGraphics(), treeObstacle.getRectangle(), 0f);
@@ -197,6 +107,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         // submit all drawing requests
         batch.end();
     }
+
 
     @Override
     public void resize(int width, int height) {

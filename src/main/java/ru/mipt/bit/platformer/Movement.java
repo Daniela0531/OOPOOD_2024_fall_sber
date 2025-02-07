@@ -56,7 +56,7 @@ public class Movement {
         return treeObstacle;
     }
 
-    private void doStep(GridPoint2 step) {
+    public void doStep(GridPoint2 step) {
         if (isEqual(progress, 1f)) {
             // check potential player destination for collision with obstacles
             if (checkNoCollisionWithObstacles(step)) {
@@ -69,7 +69,7 @@ public class Movement {
         }
     }
 
-    private boolean checkNoCollisionWithObstacles(GridPoint2 step) {
+    public boolean checkNoCollisionWithObstacles(GridPoint2 step) {
         GridPoint2 newCoordinates = coordinates;
         newCoordinates.x += step.x;
         newCoordinates.y += step.y;
