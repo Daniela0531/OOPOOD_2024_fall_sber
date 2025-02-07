@@ -29,6 +29,8 @@ public class GameDesktopLauncher implements ApplicationListener {
     private Obstacle treeObstacle;
 
     private Movement movement;
+    private Graphics treeGraphics;
+    private Graphics tankGraphics;
 
     @Override
     public void create() {
@@ -46,12 +48,16 @@ public class GameDesktopLauncher implements ApplicationListener {
         TextureRegion playerGraphics = new TextureRegion(tankTexture);
         // set player initial position
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
+
+        tankGraphics = new Graphics(tankTexture, playerGraphics);
         tank = new Tank(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
 
         Texture texture = new Texture("images/greenTree.png");
         TextureRegion textureRegion = new TextureRegion(texture);
+
+        treeGraphics = new Graphics(texture, textureRegion);
         treeObstacle = new Obstacle(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
-        moveRectangleAtTileCenter(groundLayer, treeObstacle.getRectangle(), treeObstacle.getCoordinates());
+        moveRectangleAtTileCenter(groundLayer, treeGraphics.getRectangle(), treeObstacle.getCoordinates());
 
         movement = new Movement(new GridPoint2(tankCoordinates), 0f, tankCoordinates, treeObstacle);
     }
@@ -79,7 +85,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         }
 
         // calculate interpolated player screen coordinates
-        tiles.getTileMovement().moveRectangleBetweenTileCenters(tank.getRectangle(), movement.getCoordinates(), movement.getDestinationCoordinates(), movement.getProgress());
+        tiles.getTileMovement().moveRectangleBetweenTileCenters(tankGraphics.getRectangle(), movement.getCoordinates(), movement.getDestinationCoordinates(), movement.getProgress());
 
         movement.setProgress(continueProgress(movement.getProgress(), deltaTime, MOVEMENT_SPEED));
 //        tank.setProgress(continueProgress(tank.getProgress(), deltaTime, MOVEMENT_SPEED));
@@ -99,10 +105,10 @@ public class GameDesktopLauncher implements ApplicationListener {
         batch.begin();
 
         // render player
-        drawTextureRegionUnscaled(batch, tank.getGraphics(), tank.getRectangle(), movement.getRotation());
+        drawTextureRegionUnscaled(batch, tankGraphics.getTextureRegion(), tankGraphics.getRectangle(), movement.getRotation());
 
         // render tree obstacle
-        drawTextureRegionUnscaled(batch, treeObstacle.getGraphics(), treeObstacle.getRectangle(), 0f);
+        drawTextureRegionUnscaled(batch, treeGraphics.getTextureRegion(), treeGraphics.getRectangle(), 0f);
 
         // submit all drawing requests
         batch.end();
@@ -127,8 +133,8 @@ public class GameDesktopLauncher implements ApplicationListener {
     @Override
     public void dispose() {
         // dispose of all the native resources (classes which implement com.badlogic.gdx.utils.Disposable)
-        treeObstacle.getTexture().dispose();
-        tank.getTexture().dispose();
+        treeGraphics.getTexture().dispose();
+        tankGraphics.getTexture().dispose();
         tiles.getLevel().dispose();
         batch.dispose();
     }
