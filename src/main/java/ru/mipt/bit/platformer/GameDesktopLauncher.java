@@ -4,19 +4,16 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Interpolation;
+import ru.mipt.bit.platformer.objects.*;
 import ru.mipt.bit.platformer.util.TileMovement;
 
-import static com.badlogic.gdx.Input.Keys.*;
-import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
@@ -29,8 +26,12 @@ public class GameDesktopLauncher implements ApplicationListener {
     private Obstacle treeObstacle;
 
     private Movement movement;
-    private Graphics treeGraphics;
-    private Graphics tankGraphics;
+//    private Graphics treeGraphics;
+//    private Graphics tankGraphics;
+
+    private ButtonHandler buttonHandler;
+
+    private GraphicRender graphicRender;
 
     @Override
     public void create() {
@@ -42,76 +43,37 @@ public class GameDesktopLauncher implements ApplicationListener {
 
         tiles = new Level(level, createSingleLayerMapRenderer(level, batch), new TileMovement(groundLayer, Interpolation.smooth));
 
-        // Texture decodes an image file and loads it into GPU memory, it represents a native resource
-        Texture tankTexture = new Texture("images/tank_blue.png");
-        // TextureRegion represents Texture portion, there may be many TextureRegion instances of the same Texture
-        TextureRegion playerGraphics = new TextureRegion(tankTexture);
+        graphicRender = new GraphicRender();
         // set player initial position
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
+        tank = new Tank(tankCoordinates, new GridPoint2(tankCoordinates), 0f);
 
-        tankGraphics = new Graphics(tankTexture, playerGraphics);
-        tank = new Tank(tankTexture, playerGraphics, createBoundingRectangle(playerGraphics), tankCoordinates, new GridPoint2(tankCoordinates), 0f);
+        treeObstacle = new Obstacle(new GridPoint2(1, 3));
 
-        Texture texture = new Texture("images/greenTree.png");
-        TextureRegion textureRegion = new TextureRegion(texture);
-
-        treeGraphics = new Graphics(texture, textureRegion);
-        treeObstacle = new Obstacle(texture, textureRegion, new GridPoint2(1, 3), createBoundingRectangle(textureRegion));
-        moveRectangleAtTileCenter(groundLayer, treeGraphics.getRectangle(), treeObstacle.getCoordinates());
+        moveRectangleAtTileCenter(groundLayer, graphicRender.getTreeGraphics().getRectangle(), treeObstacle.getCoordinates());
 
         movement = new Movement(new GridPoint2(tankCoordinates), 0f, tankCoordinates, treeObstacle);
+
+        buttonHandler = new ButtonHandler();
     }
 
     @Override
     public void render() {
-        // clear the screen
-        Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
-        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 
-        // get time passed since the last render
         float deltaTime = Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
-            movement.doStep(new GridPoint2(0, 1));
-        }
-        if (Gdx.input.isKeyPressed(LEFT) || Gdx.input.isKeyPressed(A)) {
-            movement.doStep(new GridPoint2(-1, 0));
-        }
-        if (Gdx.input.isKeyPressed(DOWN) || Gdx.input.isKeyPressed(S)) {
-            movement.doStep(new GridPoint2(0, -1));
-        }
-        if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
-            movement.doStep(new GridPoint2(1, 0));
+        Command command = buttonHandler.getCommand();
+        if (command != null) {
+            movement.doStep(buttonHandler.action(command));
         }
 
-        // calculate interpolated player screen coordinates
-        tiles.getTileMovement().moveRectangleBetweenTileCenters(tankGraphics.getRectangle(), movement.getCoordinates(), movement.getDestinationCoordinates(), movement.getProgress());
+        graphicRender.renderMovement(tiles, batch, movement);
 
         movement.setProgress(continueProgress(movement.getProgress(), deltaTime, MOVEMENT_SPEED));
-//        tank.setProgress(continueProgress(tank.getProgress(), deltaTime, MOVEMENT_SPEED));
         if (isEqual(movement.getProgress(), 1f)) {
             // record that the player has reached his/her destination
             movement.getCoordinates().set(movement.getDestinationCoordinates());
         }
-//        if (isEqual(tank.getProgress(), 1f)) {
-//            // record that the player has reached his/her destination
-//            tank.getCoordinates().set(tank.getDestinationCoordinates());
-//        }
-
-        // render each tile of the level
-        tiles.getLevelRenderer().render();
-
-        // start recording all drawing commands
-        batch.begin();
-
-        // render player
-        drawTextureRegionUnscaled(batch, tankGraphics.getTextureRegion(), tankGraphics.getRectangle(), movement.getRotation());
-
-        // render tree obstacle
-        drawTextureRegionUnscaled(batch, treeGraphics.getTextureRegion(), treeGraphics.getRectangle(), 0f);
-
-        // submit all drawing requests
-        batch.end();
     }
 
 
@@ -133,8 +95,8 @@ public class GameDesktopLauncher implements ApplicationListener {
     @Override
     public void dispose() {
         // dispose of all the native resources (classes which implement com.badlogic.gdx.utils.Disposable)
-        treeGraphics.getTexture().dispose();
-        tankGraphics.getTexture().dispose();
+        graphicRender.getTreeGraphics().getTexture().dispose();
+        graphicRender.getTankGraphics().getTexture().dispose();
         tiles.getLevel().dispose();
         batch.dispose();
     }
