@@ -5,23 +5,32 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Interpolation;
 import ru.mipt.bit.platformer.model.Movement;
+import ru.mipt.bit.platformer.util.TileMovement;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
+import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
 public class GraphicRender {
     private static final float MOVEMENT_SPEED = 0.4f;
     private Batch batch;
-//    private Level tiles;
-//    private Tank tank;
-//    private Obstacle treeObstacle;
-
+    private Level tiles;
     private Graphics treeGraphics;
     private Graphics tankGraphics;
+    private TiledMapTileLayer groundLayer;
 
     public GraphicRender() {
         batch = new SpriteBatch();
+
+        TiledMap level = new TmxMapLoader().load("level.tmx");
+        groundLayer = getSingleLayer(level);
+
+        tiles = new Level(level, createSingleLayerMapRenderer(level, batch), new TileMovement(groundLayer, Interpolation.smooth));
+
 
         Texture tankTexture = new Texture("images/tank_blue.png");
         TextureRegion playerGraphics = new TextureRegion(tankTexture);
@@ -45,6 +54,14 @@ public class GraphicRender {
 
     public Batch getBatch() {
         return batch;
+    }
+
+    public Level getTiles() {
+        return tiles;
+    }
+
+    public TiledMapTileLayer getGroundLayer() {
+        return groundLayer;
     }
 
     public void renderMovement(Level tiles, Movement movement) {
