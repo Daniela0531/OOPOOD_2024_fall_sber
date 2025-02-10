@@ -1,8 +1,7 @@
-package ru.mipt.bit.platformer.objects;
+package ru.mipt.bit.platformer.graphics;
 
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import ru.mipt.bit.platformer.util.TileMovement;
 
 public class Level {

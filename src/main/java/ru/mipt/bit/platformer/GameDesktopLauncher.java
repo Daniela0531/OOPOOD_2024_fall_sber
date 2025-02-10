@@ -4,14 +4,16 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Interpolation;
-import ru.mipt.bit.platformer.objects.*;
+import ru.mipt.bit.platformer.graphics.GraphicRender;
+import ru.mipt.bit.platformer.graphics.Level;
+import ru.mipt.bit.platformer.model.Movement;
+import ru.mipt.bit.platformer.model.objects.Obstacle;
+import ru.mipt.bit.platformer.model.objects.Tank;
 import ru.mipt.bit.platformer.util.TileMovement;
 
 import static com.badlogic.gdx.math.MathUtils.isEqual;
@@ -20,7 +22,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 public class GameDesktopLauncher implements ApplicationListener {
 
     private static final float MOVEMENT_SPEED = 0.4f;
-    private Batch batch;
+//    private Batch batch;
     private Level tiles;
     private Tank tank;
     private Obstacle treeObstacle;
@@ -35,15 +37,16 @@ public class GameDesktopLauncher implements ApplicationListener {
 
     @Override
     public void create() {
-        batch = new SpriteBatch();
+//        batch = new SpriteBatch();
+
+        graphicRender = new GraphicRender();
 
         // load level tiles
         TiledMap level = new TmxMapLoader().load("level.tmx");
         TiledMapTileLayer groundLayer = getSingleLayer(level);
 
-        tiles = new Level(level, createSingleLayerMapRenderer(level, batch), new TileMovement(groundLayer, Interpolation.smooth));
+        tiles = new Level(level, createSingleLayerMapRenderer(level, graphicRender.getBatch()), new TileMovement(groundLayer, Interpolation.smooth));
 
-        graphicRender = new GraphicRender();
         // set player initial position
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
         tank = new Tank(tankCoordinates, new GridPoint2(tankCoordinates), 0f);
@@ -67,7 +70,7 @@ public class GameDesktopLauncher implements ApplicationListener {
             movement.doStep(buttonHandler.action(command));
         }
 
-        graphicRender.renderMovement(tiles, batch, movement);
+        graphicRender.renderMovement(tiles, movement);
 
         movement.setProgress(continueProgress(movement.getProgress(), deltaTime, MOVEMENT_SPEED));
         if (isEqual(movement.getProgress(), 1f)) {
@@ -98,7 +101,7 @@ public class GameDesktopLauncher implements ApplicationListener {
         graphicRender.getTreeGraphics().getTexture().dispose();
         graphicRender.getTankGraphics().getTexture().dispose();
         tiles.getLevel().dispose();
-        batch.dispose();
+        graphicRender.getBatch().dispose();
     }
 
     public static void main(String[] args) {

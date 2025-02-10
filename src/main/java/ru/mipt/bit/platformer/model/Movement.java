@@ -1,6 +1,7 @@
-package ru.mipt.bit.platformer.objects;
+package ru.mipt.bit.platformer.model;
 
 import com.badlogic.gdx.math.GridPoint2;
+import ru.mipt.bit.platformer.model.objects.Obstacle;
 
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 
