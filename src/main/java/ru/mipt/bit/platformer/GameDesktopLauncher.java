@@ -32,25 +32,17 @@ public class GameDesktopLauncher implements ApplicationListener {
 
     @Override
     public void create() {
-//        batch = new SpriteBatch();
-
         graphicRender = new GraphicRender();
-
-        // load level tiles
-//        TiledMap level = new TmxMapLoader().load("level.tmx");
-//        TiledMapTileLayer groundLayer = getSingleLayer(level);
-//
-//        tiles = new Level(level, createSingleLayerMapRenderer(level, graphicRender.getBatch()), new TileMovement(groundLayer, Interpolation.smooth));
 
         // set player initial position
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
-        tank = new Tank(tankCoordinates, new GridPoint2(tankCoordinates), 0f);
+        tank = new Tank(tankCoordinates);
 
         treeObstacle = new Obstacle(new GridPoint2(1, 3));
 
         moveRectangleAtTileCenter(graphicRender.getGroundLayer(), graphicRender.getTreeGraphics().getRectangle(), treeObstacle.getCoordinates());
 
-        movement = new Movement(new GridPoint2(tankCoordinates), 0f, tankCoordinates, treeObstacle);
+        movement = new Movement(new GridPoint2(tankCoordinates), 0f, tank.getCoordinates(), treeObstacle);
 
         buttonHandler = new ButtonHandler();
     }

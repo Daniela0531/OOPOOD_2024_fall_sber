@@ -7,15 +7,15 @@ public class Tank {
 //    private Texture texture;
 //    private TextureRegion graphics;
     private Rectangle rectangle;
-//    private GridPoint2 coordinates;
+    private GridPoint2 coordinates;
 //    private GridPoint2 destinationCoordinates;
 //    private float progress = 1f;
 //    private float rotation;
-    public Tank(GridPoint2 coordinates, GridPoint2 destinationCoordinates, float rotation) {
+    public Tank(GridPoint2 coordinates) {
 //        this.texture = tankTexture;
 //        this.graphics = graphics;
 //        this.rectangle = rectangle;
-//        this.coordinates = coordinates;
+        this.coordinates = coordinates;
 //        this.destinationCoordinates = destinationCoordinates;
 //        this.rotation = rotation;
     }
@@ -28,9 +28,9 @@ public class Tank {
 //    public TextureRegion getGraphics() {
 //        return graphics;
 //    }
-//    public GridPoint2 getCoordinates() {
-//        return coordinates;
-//    }
+    public GridPoint2 getCoordinates() {
+        return coordinates;
+    }
 //    public float getProgress() {
 //        return progress;
 //    }
