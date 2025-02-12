@@ -1,7 +1,9 @@
 package ru.mipt.bit.platformer.model;
 
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.model.objects.Obstacle;
+import ru.mipt.bit.platformer.Map;
+
+import java.util.ArrayList;
 
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 
@@ -13,13 +15,16 @@ public class Movement {
     private float progress = 1f;
     private float rotation;
 
-    private Obstacle treeObstacle;
+//    private Obstacle treeObstacle;
+    private Map map;
 
-    public Movement(GridPoint2 playerDestinationCoordinates, float playerRotation, GridPoint2 tankCoordinates, Obstacle treeObstacle) {
+    public Movement(GridPoint2 playerDestinationCoordinates, float playerRotation, GridPoint2 tankCoordinates, ArrayList<GridPoint2> obstacleCoordinates) {
         this.coordinates = tankCoordinates;
         this.rotation = playerRotation;
         this.destinationCoordinates = playerDestinationCoordinates;
-        this.treeObstacle = treeObstacle;
+//        this.treeObstacle = treeObstacle;
+        this.map = new Map(obstacleCoordinates);
+        System.out.println(map.getMap());
     }
 
     public float getProgress() {
@@ -53,9 +58,9 @@ public class Movement {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
-    public Obstacle getTreeObstacle() {
-        return treeObstacle;
-    }
+//    public Obstacle getTreeObstacle() {
+//        return treeObstacle;
+//    }
 
     public void doStep(GridPoint2 step) {
         if (isEqual(progress, 1f)) {
@@ -74,6 +79,10 @@ public class Movement {
         GridPoint2 newCoordinates = coordinates;
         newCoordinates.x += step.x;
         newCoordinates.y += step.y;
-        return !treeObstacle.getCoordinates().equals(newCoordinates);
+        for(GridPoint2 coordinates : map.getMap()) {
+//            System.out.println("Movement " + coordinates);
+            return !coordinates.equals(newCoordinates);
+        }
+        return true;
     }
 }

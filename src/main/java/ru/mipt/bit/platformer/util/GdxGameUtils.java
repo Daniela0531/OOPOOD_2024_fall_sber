@@ -74,6 +74,7 @@ public final class GdxGameUtils {
         float regionOriginX = regionWidth / 2f;
         float regionOriginY = regionHeight / 2f;
         batch.draw(region, rectangle.x, rectangle.y, regionOriginX, regionOriginY, regionWidth, regionHeight, 1f, 1f, rotation);
+//        batch.draw(region, 1, 1, regionOriginX, regionOriginY, regionWidth, regionHeight, 1f, 1f, rotation);
     }
 
     public static Rectangle createBoundingRectangle(TextureRegion region) {

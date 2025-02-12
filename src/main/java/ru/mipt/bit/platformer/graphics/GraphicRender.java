@@ -8,9 +8,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Interpolation;
+import ru.mipt.bit.platformer.Map;
 import ru.mipt.bit.platformer.model.Movement;
 import ru.mipt.bit.platformer.util.TileMovement;
+
+import java.util.ArrayList;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
@@ -22,8 +26,9 @@ public class GraphicRender {
     private Graphics treeGraphics;
     private Graphics tankGraphics;
     private TiledMapTileLayer groundLayer;
+    private Map map;
 
-    public GraphicRender() {
+    public GraphicRender(ArrayList<GridPoint2> obstacleCoordinates) {
         batch = new SpriteBatch();
 
         TiledMap level = new TmxMapLoader().load("level.tmx");
@@ -31,17 +36,21 @@ public class GraphicRender {
 
         tiles = new Level(level, createSingleLayerMapRenderer(level, batch), new TileMovement(groundLayer, Interpolation.smooth));
 
-
         Texture tankTexture = new Texture("images/tank_blue.png");
         TextureRegion playerGraphics = new TextureRegion(tankTexture);
         this.tankGraphics = new Graphics(tankTexture, playerGraphics);
 
-//        System.out.println("Hello world!");
         Texture texture = new Texture("images/greenTree.png");
         TextureRegion textureRegion = new TextureRegion(texture);
         this.treeGraphics = new Graphics(texture, textureRegion);
+        map = new Map(obstacleCoordinates);
 
-//        moveRectangleAtTileCenter(groundLayer, treeGraphics.getRectangle(), treeObstacle.getCoordinates());
+//        System.out.println(map.getMap());
+        for(int i = 0; i < map.getMap().size(); ++i) {
+//            System.out.println(map.getMap());
+//            GridPoint2 coord = map.getMap().get(i);
+            moveRectangleAtTileCenter(groundLayer, treeGraphics.getRectangle(), map.getMap().get(i));
+        }
     }
 
     public Graphics getTreeGraphics() {
@@ -68,23 +77,25 @@ public class GraphicRender {
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 
+        tiles.getLevelRenderer().render();
+
+        batchRender(movement);
+
         tiles.getTileMovement().moveRectangleBetweenTileCenters(
                 this.tankGraphics.getRectangle(),
                 movement.getCoordinates(),
                 movement.getDestinationCoordinates(),
                 movement.getProgress()
         );
+    }
 
-        tiles.getLevelRenderer().render();
-
+    public void batchRender(Movement movement) {
         batch.begin();
 
-        drawTextureRegionUnscaled(batch, this.tankGraphics.getTextureRegion(), this.tankGraphics.getRectangle(), movement.getRotation());
-
-//        System.out.println("treeee Hello world!");
+//        drawTextureRegionUnscaled(batch, this.tankGraphics.getTextureRegion(), this.tankGraphics.getRectangle(), movement.getRotation());
         drawTextureRegionUnscaled(batch, this.treeGraphics.getTextureRegion(), this.treeGraphics.getRectangle(), 0f);
+//        drawTextureRegionUnscaled(batch, this.treeGraphics.getTextureRegion(), this.treeGraphics.getRectangle(), 0f);
 
         batch.end();
     }
-
 }

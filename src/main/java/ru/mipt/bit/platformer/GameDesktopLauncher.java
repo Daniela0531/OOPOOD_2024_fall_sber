@@ -10,47 +10,49 @@ import ru.mipt.bit.platformer.model.Movement;
 import ru.mipt.bit.platformer.model.objects.Obstacle;
 import ru.mipt.bit.platformer.model.objects.Tank;
 
+import java.util.ArrayList;
+
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
-import static ru.mipt.bit.platformer.util.GdxGameUtils.moveRectangleAtTileCenter;
 
 public class GameDesktopLauncher implements ApplicationListener {
 
     private static final float MOVEMENT_SPEED = 0.4f;
-//    private Batch batch;
-//    private Level tiles;
     private Tank tank;
     private Obstacle treeObstacle;
-
     private Movement movement;
-//    private Graphics treeGraphics;
-//    private Graphics tankGraphics;
-
     private ButtonHandler buttonHandler;
-
     private GraphicRender graphicRender;
 
+    private Map map;
     @Override
     public void create() {
-        graphicRender = new GraphicRender();
+        buttonHandler = new ButtonHandler();
 
-        // set player initial position
+        // create models
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
         tank = new Tank(tankCoordinates);
+        GridPoint2 treeCoordinates = new GridPoint2(1, 3);
+        treeObstacle = new Obstacle(treeCoordinates);
 
-        treeObstacle = new Obstacle(new GridPoint2(1, 3));
+        // create map
+        ArrayList<GridPoint2> treeCoordinates_ = new ArrayList<>();
+        treeCoordinates_.add(treeCoordinates);
+        treeCoordinates_.add(new GridPoint2(1, 5));
+        map = new Map(treeCoordinates_);
 
-        moveRectangleAtTileCenter(graphicRender.getGroundLayer(), graphicRender.getTreeGraphics().getRectangle(), treeObstacle.getCoordinates());
-
-        movement = new Movement(new GridPoint2(tankCoordinates), 0f, tank.getCoordinates(), treeObstacle);
-
-        buttonHandler = new ButtonHandler();
+        // create graphic
+        graphicRender = new GraphicRender(map.getMap());
+        // create movement
+        GridPoint2 tankDestinationCoordinates = new GridPoint2(1, 1);
+        movement = new Movement(tank.getCoordinates(), 0f, tankDestinationCoordinates, map.getMap());
     }
 
     @Override
     public void render() {
-
         float deltaTime = Gdx.graphics.getDeltaTime();
+        float progress = continueProgress(movement.getProgress(), deltaTime, MOVEMENT_SPEED);
+        movement.setProgress(progress);
 
         Command command = buttonHandler.getCommand();
         if (command != null) {
@@ -59,7 +61,6 @@ public class GameDesktopLauncher implements ApplicationListener {
 
         graphicRender.renderMovement(graphicRender.getTiles(), movement);
 
-        movement.setProgress(continueProgress(movement.getProgress(), deltaTime, MOVEMENT_SPEED));
         if (isEqual(movement.getProgress(), 1f)) {
             // record that the player has reached his/her destination
             movement.getCoordinates().set(movement.getDestinationCoordinates());
