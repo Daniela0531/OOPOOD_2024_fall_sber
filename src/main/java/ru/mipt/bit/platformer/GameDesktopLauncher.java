@@ -7,8 +7,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.graphics.GraphicRender;
 import ru.mipt.bit.platformer.model.Movement;
-import ru.mipt.bit.platformer.model.objects.Obstacle;
-import ru.mipt.bit.platformer.model.objects.Tank;
 
 import java.util.ArrayList;
 
@@ -18,8 +16,8 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 public class GameDesktopLauncher implements ApplicationListener {
 
     private static final float MOVEMENT_SPEED = 0.4f;
-    private Tank tank;
-    private Obstacle treeObstacle;
+//    private Tank tank;
+//    private Obstacle treeObstacle;
     private Movement movement;
     private ButtonHandler buttonHandler;
     private GraphicRender graphicRender;
@@ -31,21 +29,25 @@ public class GameDesktopLauncher implements ApplicationListener {
 
         // create models
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
-        tank = new Tank(tankCoordinates);
+//        tank = new Tank(tankCoordinates);
         GridPoint2 treeCoordinates = new GridPoint2(1, 3);
-        treeObstacle = new Obstacle(treeCoordinates);
+//        treeObstacle = new Obstacle(treeCoordinates);
 
         // create map
         ArrayList<GridPoint2> treeCoordinates_ = new ArrayList<>();
         treeCoordinates_.add(treeCoordinates);
         treeCoordinates_.add(new GridPoint2(1, 5));
-        map = new Map(treeCoordinates_);
 
-        // create graphic
-        graphicRender = new GraphicRender(map.getMap());
-        // create movement
+        map = new Map(treeCoordinates_);
+        ArrayList<GridPoint2> tanksCoordinates = new ArrayList<>();
+        tanksCoordinates.add(tankCoordinates);
+
         GridPoint2 tankDestinationCoordinates = new GridPoint2(1, 1);
-        movement = new Movement(tank.getCoordinates(), 0f, tankDestinationCoordinates, map.getMap());
+        GridPoint2 tankDestinationCoordinates1 = new GridPoint2(1, 3);
+        tanksCoordinates.add(tankDestinationCoordinates1);
+
+        graphicRender = new GraphicRender(map.getMap(), tanksCoordinates);
+        movement = new Movement(tankCoordinates, 0f, tankDestinationCoordinates, map.getMap());
     }
 
     @Override
@@ -59,10 +61,9 @@ public class GameDesktopLauncher implements ApplicationListener {
             movement.doStep(buttonHandler.action(command));
         }
 
-        graphicRender.renderMovement(graphicRender.getTiles(), movement);
+        graphicRender.render(movement);
 
         if (isEqual(movement.getProgress(), 1f)) {
-            // record that the player has reached his/her destination
             movement.getCoordinates().set(movement.getDestinationCoordinates());
         }
     }
@@ -85,16 +86,11 @@ public class GameDesktopLauncher implements ApplicationListener {
 
     @Override
     public void dispose() {
-        // dispose of all the native resources (classes which implement com.badlogic.gdx.utils.Disposable)
-        graphicRender.getTreeGraphics().getTexture().dispose();
-        graphicRender.getTankGraphics().getTexture().dispose();
-        graphicRender.getTiles().getLevel().dispose();
-        graphicRender.getBatch().dispose();
+        graphicRender.dispose();
     }
 
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-        // level width: 10 tiles x 128px, height: 8 tiles x 128px
         config.setWindowedMode(1280, 1024);
         new Lwjgl3Application(new GameDesktopLauncher(), config);
     }

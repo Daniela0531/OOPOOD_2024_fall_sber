@@ -8,23 +8,18 @@ import java.util.ArrayList;
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 
 public class Movement {
-    // player current position coordinates on level 10x8 grid (e.g. x=0, y=1)
     private GridPoint2 coordinates;
-    // which tile the player want to go next
     private GridPoint2 destinationCoordinates;
     private float progress = 1f;
     private float rotation;
 
-//    private Obstacle treeObstacle;
     private Map map;
 
     public Movement(GridPoint2 playerDestinationCoordinates, float playerRotation, GridPoint2 tankCoordinates, ArrayList<GridPoint2> obstacleCoordinates) {
         this.coordinates = tankCoordinates;
         this.rotation = playerRotation;
         this.destinationCoordinates = playerDestinationCoordinates;
-//        this.treeObstacle = treeObstacle;
         this.map = new Map(obstacleCoordinates);
-        System.out.println(map.getMap());
     }
 
     public float getProgress() {
@@ -43,10 +38,6 @@ public class Movement {
         return destinationCoordinates;
     }
 
-//    public void setCoordinates(GridPoint2 coordinates) {
-//        this.coordinates = coordinates;
-//    }
-
     public void setDestinationCoordinates(GridPoint2 destinationCoordinates) {
         this.destinationCoordinates = destinationCoordinates;
     }
@@ -58,13 +49,9 @@ public class Movement {
     public void setRotation(float rotation) {
         this.rotation = rotation;
     }
-//    public Obstacle getTreeObstacle() {
-//        return treeObstacle;
-//    }
 
     public void doStep(GridPoint2 step) {
         if (isEqual(progress, 1f)) {
-            // check potential player destination for collision with obstacles
             if (checkNoCollisionWithObstacles(step)) {
                 destinationCoordinates.y += step.y;
                 destinationCoordinates.x += step.x;
@@ -79,9 +66,10 @@ public class Movement {
         GridPoint2 newCoordinates = coordinates;
         newCoordinates.x += step.x;
         newCoordinates.y += step.y;
-        for(GridPoint2 coordinates : map.getMap()) {
-//            System.out.println("Movement " + coordinates);
-            return !coordinates.equals(newCoordinates);
+        for(GridPoint2 obstacleCoordinates : map.getMap()) {
+            if (obstacleCoordinates.equals(newCoordinates)) {
+                return false;
+            }
         }
         return true;
     }
