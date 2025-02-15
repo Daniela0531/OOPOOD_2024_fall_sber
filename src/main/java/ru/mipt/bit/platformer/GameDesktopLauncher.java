@@ -5,13 +5,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.graphics.GraphicRender;
-import ru.mipt.bit.platformer.model.Movement;
+import ru.mipt.bit.platformer.game.ButtonHandler;
+import ru.mipt.bit.platformer.game.Command;
+import ru.mipt.bit.platformer.game.Map;
+import ru.mipt.bit.platformer.game.graphics.GraphicRender;
+import ru.mipt.bit.platformer.game.model.Movement;
 
 import java.util.ArrayList;
 
 import static com.badlogic.gdx.math.MathUtils.isEqual;
-import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
+import static ru.mipt.bit.platformer.game.util.GdxGameUtils.continueProgress;
 
 public class GameDesktopLauncher implements ApplicationListener {
 
@@ -37,14 +40,16 @@ public class GameDesktopLauncher implements ApplicationListener {
         ArrayList<GridPoint2> treeCoordinates_ = new ArrayList<>();
         treeCoordinates_.add(treeCoordinates);
         treeCoordinates_.add(new GridPoint2(1, 5));
+        treeCoordinates_.add(new GridPoint2(5, 1));
+        treeCoordinates_.add(new GridPoint2(2, 3));
 
         map = new Map(treeCoordinates_);
         ArrayList<GridPoint2> tanksCoordinates = new ArrayList<>();
         tanksCoordinates.add(tankCoordinates);
 
         GridPoint2 tankDestinationCoordinates = new GridPoint2(1, 1);
-        GridPoint2 tankDestinationCoordinates1 = new GridPoint2(1, 3);
-        tanksCoordinates.add(tankDestinationCoordinates1);
+//        GridPoint2 tankDestinationCoordinates1 = new GridPoint2(1, 3);
+//        tanksCoordinates.add(tankDestinationCoordinates1);
 
         graphicRender = new GraphicRender(map.getMap(), tanksCoordinates);
         movement = new Movement(tankCoordinates, 0f, tankDestinationCoordinates, map.getMap());
