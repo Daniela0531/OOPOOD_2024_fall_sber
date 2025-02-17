@@ -3,39 +3,48 @@ package ru.mipt.bit.platformer.game.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.game.model.Movement;
-
-import java.util.ArrayList;
+import ru.mipt.bit.platformer.game.level.Level;
+import ru.mipt.bit.platformer.game.level.Map;
+import ru.mipt.bit.platformer.game.model.tank.TankMoveModel;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
 public class GraphicRender {
     private Batch batch;
+//    private Map map;
+    private Level level;
     private LevelAndTreesGraphicRender levelAndTreesGraphicRender;
     private TanksGraphicRender tanksGraphicRender;
 
-    public GraphicRender(ArrayList<GridPoint2> obstacleCoordinates, ArrayList<GridPoint2> tanksCoordinates) {
+    public GraphicRender(Map map) {
         batch = new SpriteBatch();
-        levelAndTreesGraphicRender = new LevelAndTreesGraphicRender(obstacleCoordinates, batch);
-        tanksGraphicRender = new TanksGraphicRender(tanksCoordinates);
+        levelAndTreesGraphicRender = new LevelAndTreesGraphicRender(batch, map);
+        tanksGraphicRender = new TanksGraphicRender(map.getTanksCoordinates());
     }
 
-    public Batch getBatch() {
-        return batch;
+//    public Batch getBatch() {
+//        return batch;
+//    }
+
+    public void batchRender(TankMoveModel playerTank) {
+        levelAndTreesGraphicRender.render(batch);
+
+        tanksGraphicRender.render(batch, levelAndTreesGraphicRender.getTiles(), playerTank);
     }
 
-    public void render(Movement movement) {
-        Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
-        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
+    public void render(float deltaTime, TankMoveModel playerTank) {
+        clear();
 
         levelAndTreesGraphicRender.getTiles().getLevelRenderer().render();
 
         batch.begin();
-        levelAndTreesGraphicRender.render(batch);
-
-        tanksGraphicRender.render(batch, levelAndTreesGraphicRender.getTiles(), movement);
+        batchRender(playerTank);
         batch.end();
+    }
+
+    public void clear() {
+        Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
+        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
     }
 
     public void dispose() {

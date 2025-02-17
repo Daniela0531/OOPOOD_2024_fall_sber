@@ -4,7 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.game.model.Movement;
+import ru.mipt.bit.platformer.game.level.Level;
+import ru.mipt.bit.platformer.game.model.tank.TankMoveModel;
 
 import java.util.ArrayList;
 
@@ -27,17 +28,29 @@ public class TanksGraphicRender {
         return tanksGraphics;
     }
 
-    public void render(Batch batch, Level tiles, Movement movement) {
+    public void render(Batch batch, Level tiles, TankMoveModel playerTank) {
         for(Graphics tankGraphics : tanksGraphics) {
-            drawTextureRegionUnscaled(batch, tankGraphics.getTextureRegion(), tankGraphics.getRectangle(), movement.getRotation());
+            drawTextureRegionUnscaled(batch, tankGraphics.getTextureRegion(), tankGraphics.getRectangle(), playerTank.getDirection().getRotation());
             tiles.getTileMovement().moveRectangleBetweenTileCenters(
                     tankGraphics.getRectangle(),
-                    movement.getCoordinates(),
-                    movement.getDestinationCoordinates(),
-                    movement.getProgress()
+                    playerTank.getCoordinates(),
+                    playerTank.getDestination(),
+                    playerTank.getProgress()
             );
         }
     }
+
+//    public void render(Batch batch, Level tiles, Direction direction, GridPoint2 playerCoordinates) {
+//        for(Graphics tankGraphics : tanksGraphics) {
+//            drawTextureRegionUnscaled(batch, tankGraphics.getTextureRegion(), tankGraphics.getRectangle(), direction.getRotation());
+//            tiles.getTileMovement().moveRectangleBetweenTileCenters(
+//                    tankGraphics.getRectangle(),
+//                    playerCoordinates,
+//                    movement.getDestinationCoordinates(),
+//                    movement.getProgress()
+//            );
+//        }
+//    }
 
     public void dispose() {
         for(Graphics tankGraphics : tanksGraphics) {

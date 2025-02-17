@@ -8,7 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Interpolation;
-import ru.mipt.bit.platformer.game.Map;
+import ru.mipt.bit.platformer.game.level.Level;
+import ru.mipt.bit.platformer.game.level.Map;
 import ru.mipt.bit.platformer.game.util.TileMovement;
 
 import java.util.ArrayList;
@@ -19,9 +20,9 @@ public class LevelAndTreesGraphicRender {
     private Level tiles;
     private ArrayList<Graphics> treeGraphics;
     private TiledMapTileLayer groundLayer;
-    private Map map;
+//    private Map map;
 
-    public LevelAndTreesGraphicRender(ArrayList<GridPoint2> obstacleCoordinates, Batch batch) {
+    public LevelAndTreesGraphicRender(Batch batch, Map map) {
 
         TiledMap level = new TmxMapLoader().load("level.tmx");
         groundLayer = getSingleLayer(level);
@@ -31,11 +32,11 @@ public class LevelAndTreesGraphicRender {
         Texture texture = new Texture("images/greenTree.png");
         TextureRegion textureRegion = new TextureRegion(texture);
         this.treeGraphics = new ArrayList<>();
-        map = new Map(obstacleCoordinates);
+//        map = new Map(obstacleCoordinates);
 
-        for(int i = 0; i < map.getMap().size(); ++i) {
+        for(int i = 0; i < map.getObstaclesCoordinates().size(); ++i) {
             Graphics treeGraphic = new Graphics(texture, textureRegion);
-            moveRectangleAtTileCenter(groundLayer, treeGraphic.getRectangle(), map.getMap().get(i));
+            moveRectangleAtTileCenter(groundLayer, treeGraphic.getRectangle(), map.getObstaclesCoordinates().get(i));
             this.treeGraphics.add(treeGraphic);
         }
     }
