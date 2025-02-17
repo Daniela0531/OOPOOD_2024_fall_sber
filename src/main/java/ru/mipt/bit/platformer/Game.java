@@ -23,12 +23,17 @@ public class Game {
     }
 
     public void renderCurrentResultByTick() {
+//        System.out.println("Game renderCurrentResultByTick");
         float deltaTime = Gdx.graphics.getDeltaTime();
-        buttonHandler.readCommand(commandQueue);
+        buttonHandler.readCommand(commandQueue, playerTank);
+//        if (!commandQueue.isEmpty()) {
+//            System.out.println("hey");
+//        }
         commandExecutor.executeAllCommands(deltaTime, commandQueue, playerTank);
     }
 
     public void stop() {
+//        System.out.println("Game stop");
         commandExecutor.dispose();
     }
 }

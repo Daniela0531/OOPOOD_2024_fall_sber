@@ -17,9 +17,14 @@ public class CommandExecutor {
     }
 
     public void executeAllCommands(float deltaTime, CommandQueueHandler commandQueueHandler, TankMoveModel playerTank) {
+//        System.out.println("CommandExecutor executeAllCommands");
         graphicRender.clear();
-        movementCommandExecuter.executeAllCommands(deltaTime, commandQueueHandler, playerTank);
+        if (!commandQueueHandler.isEmpty()) {
+            movementCommandExecuter.executeAllCommands(deltaTime, commandQueueHandler, playerTank);
+            System.out.println(playerTank.getCoordinates());
+        }
         graphicRender.render(deltaTime, playerTank);
+        commandQueueHandler.pop();
     }
 
     public void dispose() {

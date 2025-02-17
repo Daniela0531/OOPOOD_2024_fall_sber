@@ -10,18 +10,21 @@ import java.util.ArrayList;
 public class CommandQueueHandler {
     private ArrayList<Command> receivedCommands;
     private ArrayList<MoveAction> actions;
-    private TankMoveModel playerTank;
+//    private TankMoveModel playerTank;
 
     public CommandQueueHandler() {
+//        System.out.println("CommandQueueHandler CommandQueueHandler");
         this.receivedCommands = new ArrayList<>();
         this.actions = new ArrayList<>();
     }
 
-    public void add(Command command) {
+    public void add(Command command, TankMoveModel playerTank) {
+        System.out.println("CommandQueueHandler add");
         receivedCommands.add(command);
         if (command == Command.UP) {
             Direction direction = new Direction(command);
             MoveAction moveAction = new MoveAction(playerTank, direction);
+//            System.out.println("ButtonHandler readCommand");
             actions.add(moveAction);
         }
         if (command == Command.LEFT) {
@@ -71,8 +74,11 @@ public class CommandQueueHandler {
         actions.remove(0);
     }
 
-    public Command pop() {
-        return receivedCommands.remove(0);
+    public void pop() {
+        if (receivedCommands.isEmpty()) {
+            return;
+        }
+        receivedCommands.remove(0);
     }
 
     public boolean isEmpty() {

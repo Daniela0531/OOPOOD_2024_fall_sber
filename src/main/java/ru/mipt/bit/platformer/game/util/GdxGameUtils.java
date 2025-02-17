@@ -73,8 +73,10 @@ public final class GdxGameUtils {
         int regionHeight = region.getRegionHeight();
         float regionOriginX = regionWidth / 2f;
         float regionOriginY = regionHeight / 2f;
+//        System.out.println("draw");
         batch.draw(region, rectangle.x, rectangle.y, regionOriginX, regionOriginY, regionWidth, regionHeight, 1f, 1f, rotation);
 //        batch.draw(region, 1, 1, regionOriginX, regionOriginY, regionWidth, regionHeight, 1f, 1f, rotation);
+//        System.out.println("draw finish");
     }
 
     public static Rectangle createBoundingRectangle(TextureRegion region) {

@@ -29,8 +29,17 @@ public class TanksGraphicRender {
     }
 
     public void render(Batch batch, Level tiles, TankMoveModel playerTank) {
-        for(Graphics tankGraphics : tanksGraphics) {
-            drawTextureRegionUnscaled(batch, tankGraphics.getTextureRegion(), tankGraphics.getRectangle(), playerTank.getDirection().getRotation());
+//        System.out.println("befor for");
+        Graphics tankGraphics = tanksGraphics.get(0);
+//        for(Graphics tankGraphics : tanksGraphics) {
+//            System.out.println("drawTextureRegionUnscaled");
+//            if (System.out.println("draw");
+
+//        System.out.println("playerTank: " + playerTank.getCoordinates());
+        drawTextureRegionUnscaled(batch, tankGraphics.getTextureRegion(), tankGraphics.getRectangle(), playerTank.getDirection().getRotation());
+//            System.out.println("getTileMovement");
+        if (playerTank.getProgress() < 1f) {
+            System.out.println("TanksGraphicRender render: getCoordinates()" + playerTank.getCoordinates() + " getDestination() " + playerTank.getDestination());
             tiles.getTileMovement().moveRectangleBetweenTileCenters(
                     tankGraphics.getRectangle(),
                     playerTank.getCoordinates(),

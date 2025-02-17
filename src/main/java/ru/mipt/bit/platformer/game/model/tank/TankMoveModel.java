@@ -6,7 +6,12 @@ import ru.mipt.bit.platformer.game.model.Node;
 import ru.mipt.bit.platformer.game.model.NodeType;
 import ru.mipt.bit.platformer.game.model.objects.Direction;
 
+import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static ru.mipt.bit.platformer.game.util.GdxGameUtils.continueProgress;
+
+
+// progress = 0f; - нет действий
+// progress = 1f; - действие завершилось
 
 //@Getter
 //@Setter
@@ -23,6 +28,7 @@ public class TankMoveModel implements Node {
         this.coordinates = coordinates;
         this.progress = progress;
         this.nodeType = NodeType.TANK;
+        this.direction = new Direction(new GridPoint2(0,0), 0f);
     }
 
     @Override
@@ -46,9 +52,10 @@ public class TankMoveModel implements Node {
         progress = continueProgress(progress, deltaTime, MOVEMENT_SPEED);
         if (progress >= 1f) {
 //            entity.setCoordinates(getDestination());
-            coordinates = getDestination();
-            progress -= 1f;
-//            isMoving = false;
+//            coordinates = getDestination();
+//            progress -= 1f;
+            progress = 0f;
+            isMoving = false;
         }
     }
 
@@ -57,8 +64,10 @@ public class TankMoveModel implements Node {
     }
 
     public void move(Direction direction) {
-        coordinates.x += direction.getVector().x;
-        coordinates.y += direction.getVector().y;
+        if (isEqual(getProgress(), 1f)) {
+            coordinates.x += direction.getVector().x;
+            coordinates.y += direction.getVector().y;
+        }
 //        destinationCoordinates.y += step.y;
 //        destinationCoordinates.x += step.x;
     }
@@ -97,5 +106,11 @@ public class TankMoveModel implements Node {
 
     public float getProgress() {
         return progress;
+    }
+    public float getMovementSpeed() {
+        return MOVEMENT_SPEED;
+    }
+    public float getRotation() {
+        return direction.getRotation();
     }
 }

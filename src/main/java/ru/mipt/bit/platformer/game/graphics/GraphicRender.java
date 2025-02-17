@@ -27,19 +27,25 @@ public class GraphicRender {
 //    }
 
     public void batchRender(TankMoveModel playerTank) {
+//        System.out.println("levelAndTreesGraphicRender");
         levelAndTreesGraphicRender.render(batch);
-
+//        System.out.println("tanksGraphicRender");
         tanksGraphicRender.render(batch, levelAndTreesGraphicRender.getTiles(), playerTank);
     }
 
     public void render(float deltaTime, TankMoveModel playerTank) {
-        clear();
+
+//        clear();
+//        System.out.println("GraphicRender render");
 
         levelAndTreesGraphicRender.getTiles().getLevelRenderer().render();
+//        System.out.println("batch.begin()");
 
         batch.begin();
+//        System.out.println("batchRender");
         batchRender(playerTank);
         batch.end();
+//        System.out.println("batch.end()");
     }
 
     public void clear() {

@@ -16,6 +16,7 @@ public class Configuration {
     private Map map;
 
     public Game getGameConfiguration() {
+//        System.out.println("Configuration getGameConfiguration");
         ButtonHandler buttonHandler = new ButtonHandler();
 
         // create models
