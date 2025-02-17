@@ -13,7 +13,7 @@ public class GameDesktopLauncher implements ApplicationListener {
 
     @Override
     public void create() {
-//        System.out.println("GameDesktopLauncher create");
+//        // System.out.println("GameDesktopLauncher create");
         this.configuration = new Configuration();
         this.game = configuration.getGameConfiguration();
 //        AnnotationConfigApplicationContext - ?

@@ -4,26 +4,25 @@ package ru.mipt.bit.platformer;
 //@ComponentScan
 //@PropertySource("classpath:application.properties")
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.game.level.Map;
-import ru.mipt.bit.platformer.game.commands_management.ButtonHandler;
-import ru.mipt.bit.platformer.game.model.tank.TankMoveModel;
+import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.level.Map;
 
 import java.util.ArrayList;
 
-// здесь должны быть входные параметры игры?
+// здесь должны быть входные параметры игры
 public class Configuration {
     private Map map;
 
     public Game getGameConfiguration() {
-//        System.out.println("Configuration getGameConfiguration");
-        ButtonHandler buttonHandler = new ButtonHandler();
+//        ButtonHandler buttonHandler = new ButtonHandler();
 
         // create models
         GridPoint2 tankCoordinates = new GridPoint2(1, 1);
-//        tank = new Tank(tankCoordinates);
         GridPoint2 treeCoordinates = new GridPoint2(1, 3);
-//        treeObstacle = new Obstacle(treeCoordinates);
 
         // create map
         ArrayList<GridPoint2> treeCoordinates_ = new ArrayList<>();
@@ -39,11 +38,15 @@ public class Configuration {
 
         this.map = new Map(treeCoordinates_, tanksCoordinates, playerCoordinates);
 
-//        GraphicRender graphicRender = new GraphicRender(map.getObstaclesCoordinates(), tanksCoordinates);
-//        Movement movement = new Movement(playerCoordinates, 0f, playerCoordinates, map.getObstacles());
         TankMoveModel playerTank = new TankMoveModel(playerCoordinates, 0f);
 
-        return new Game(buttonHandler, map, playerTank);
+        Texture tankTexture = new Texture("images/tank_blue.png");
+        Texture treeTexture = new Texture("images/greenTree.png");
+        TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
+
+        GraphicProperties graphicProperties = new GraphicProperties(tankTexture, treeTexture, tiledMap);
+
+        return new Game(map, graphicProperties, playerTank);
     }
 
     public Map getMap() {
