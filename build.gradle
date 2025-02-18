@@ -28,4 +28,13 @@ dependencies {
     implementation 'org.projectlombok:lombok:1.18.28'
 
     implementation 'org.springframework.boot:spring-boot-starter:2.5.6'
+
+//    implementation "com.badlogicgames.gdx:gdx:1.12.1"
+//    implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:1.12.1"
+//    implementation "com.badlogicgames.gdx:gdx-platform:1.12.1:natives-desktop"
+//    implementation 'org.projectlombok:lombok:1.18.28'
+//
+//    implementation 'org.springframework.boot:spring-boot-starter:2.5.6'
+//
+//    testImplementation 'org.junit.jupiter:junit-jupiter:5.8.1'
 }

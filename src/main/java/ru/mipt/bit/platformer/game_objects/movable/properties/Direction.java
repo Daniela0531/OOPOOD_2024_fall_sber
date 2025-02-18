@@ -1,14 +1,13 @@
 package ru.mipt.bit.platformer.game_objects.movable.properties;
 
 import com.badlogic.gdx.math.GridPoint2;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.mipt.bit.platformer.game_management.commands.Command;
 
 //@Entity
 //@Table(name = "stories")
-@Data
+//@Component
 public class Direction {
     @Getter
     @Setter

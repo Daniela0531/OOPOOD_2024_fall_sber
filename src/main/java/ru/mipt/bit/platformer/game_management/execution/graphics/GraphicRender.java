@@ -3,12 +3,14 @@ package ru.mipt.bit.platformer.game_management.execution.graphics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.GraphicProperties;
+import ru.mipt.bit.platformer.Map;
 import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
-import ru.mipt.bit.platformer.level.Map;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 
+@Component
 public class GraphicRender {
     private Batch batch;
     private LevelGraphicRender levelGraphicRender;
@@ -20,7 +22,7 @@ public class GraphicRender {
         movementGraphicRender = new MovementGraphicRender();
     }
     public void render(float deltaTime, TankMoveModel playerTank) {
-        levelGraphicRender.getTiles().getMapRenderer().render();
+        levelGraphicRender.renderTiles();
         batchRender(playerTank);
         movementGraphicRender.render(levelGraphicRender.getTiles(), playerTank, levelGraphicRender.getTanksGraphics());
     }

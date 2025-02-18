@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
+//@Component
 public class GraphicProperties {
     Texture tankTexture = new Texture("images/tank_blue.png");
     Texture treeTexture = new Texture("images/greenTree.png");

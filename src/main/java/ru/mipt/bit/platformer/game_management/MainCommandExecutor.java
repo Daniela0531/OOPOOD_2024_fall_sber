@@ -3,7 +3,7 @@ package ru.mipt.bit.platformer.game_management;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.GraphicProperties;
 import ru.mipt.bit.platformer.game_management.execution.MovementsExecutor;
-import ru.mipt.bit.platformer.level.Map;
+import ru.mipt.bit.platformer.Map;
 import ru.mipt.bit.platformer.game_management.execution.graphics.GraphicRender;
 import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
 

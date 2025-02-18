@@ -1,6 +1,7 @@
 package ru.mipt.bit.platformer.game_management;
 
 import com.badlogic.gdx.math.GridPoint2;
+import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.game_management.commands.Command;
 import ru.mipt.bit.platformer.game_management.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
@@ -8,6 +9,7 @@ import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
 
 import java.util.ArrayList;
 
+@Component
 public class CommandQueueHandler {
     private ArrayList<Command> receivedCommands;
     private ArrayList<MoveAction> actions;

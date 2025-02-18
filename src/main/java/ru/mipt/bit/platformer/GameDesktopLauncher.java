@@ -3,20 +3,19 @@ package ru.mipt.bit.platformer;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import org.springframework.stereotype.Component;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-@Component
 public class GameDesktopLauncher implements ApplicationListener {
-
     private Game game;
-    private Configuration configuration;
-
     @Override
     public void create() {
-//        // System.out.println("GameDesktopLauncher create");
-        this.configuration = new Configuration();
-        this.game = configuration.getGameConfiguration();
-//        AnnotationConfigApplicationContext - ?
+        ApplicationContext context = new AnnotationConfigApplicationContext(GameConfiguration.class);
+        this.game = (Game) context.getBean("game");
+//        this.configuration = new GameConfiguration();
+//        this.game = configuration.getGameConfiguration();
+//        System.out.println(configuration.getPlayerCoordinates());
+//        game = new Game(configuration);
     }
 
     @Override

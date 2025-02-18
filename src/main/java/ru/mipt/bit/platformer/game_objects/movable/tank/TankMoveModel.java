@@ -14,6 +14,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 
 //@Getter
 //@Setter
+//@Component
 public class TankMoveModel implements Node {
     private static final float MOVEMENT_SPEED = 0.4f;
     @Getter

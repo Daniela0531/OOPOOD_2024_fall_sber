@@ -2,26 +2,28 @@ package ru.mipt.bit.platformer.level;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import org.springframework.stereotype.Component;
+import ru.mipt.bit.platformer.Map;
 import ru.mipt.bit.platformer.game_objects.Node;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.util.TileMovement;
 
 import java.util.ArrayList;
 
+@Component
 public class Level {
     private TiledMap level; // уровень
-    private MapRenderer mapRenderer; // отрисовщик
+//    private MapRenderer mapRenderer; // отрисовщик
     private TileMovement tileMovement; // движение плитки
     private Map map;
 
     private Graphics tanksGraphics;
     private ArrayList<Node> nodes;
 
-    public Level(TiledMap level, MapRenderer levelRenderer, TileMovement tileMovement) {
+    public Level(TiledMap level, TileMovement tileMovement) {
         this.level = level;
-        this.mapRenderer = levelRenderer;
+//        this.mapRenderer = levelRenderer;
         this.tileMovement = tileMovement;
 
         Texture tankTexture = new Texture("images/tank_blue.png");
@@ -29,9 +31,9 @@ public class Level {
         this.tanksGraphics = new Graphics(tankTexture, tankGraphics);
     }
 
-    public MapRenderer getMapRenderer() {
-        return mapRenderer;
-    }
+//    public MapRenderer getMapRenderer() {
+//        return mapRenderer;
+//    }
 
     public TiledMap getLevel() {
         return level;

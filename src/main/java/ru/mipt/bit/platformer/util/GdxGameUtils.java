@@ -12,11 +12,13 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
 
 import static com.badlogic.gdx.math.MathUtils.clamp;
 
+@Component
 public final class GdxGameUtils {
 
     private GdxGameUtils() {

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.game_management.CommandQueueHandler;
 import ru.mipt.bit.platformer.level.Level;
-import ru.mipt.bit.platformer.level.Map;
+import ru.mipt.bit.platformer.Map;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
 import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
 

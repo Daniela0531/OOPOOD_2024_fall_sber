@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 
+//@Component
 public class Graphics {
     private Texture texture;
     private TextureRegion textureRegion;

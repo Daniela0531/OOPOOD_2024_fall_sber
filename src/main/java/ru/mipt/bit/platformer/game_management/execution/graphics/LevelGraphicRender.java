@@ -3,32 +3,37 @@ package ru.mipt.bit.platformer.game_management.execution.graphics;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Interpolation;
+import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.GraphicProperties;
+import ru.mipt.bit.platformer.Map;
 import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.level.Level;
-import ru.mipt.bit.platformer.level.Map;
 import ru.mipt.bit.platformer.util.TileMovement;
 
 import java.util.ArrayList;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
+@Component
 public class LevelGraphicRender {
     private final Level tiles;
     private ArrayList<Graphics> treeGraphics;
     private TiledMapTileLayer groundLayer;
     private Graphics tanksGraphics;
+    private MapRenderer mapRenderer;
 
     public LevelGraphicRender(Batch batch, Map map, GraphicProperties graphicProperties) {
 
         TiledMap tiledMap = graphicProperties.getTiledMap();
         groundLayer = getSingleLayer(tiledMap);
 
-        tiles = new Level(tiledMap, createSingleLayerMapRenderer(tiledMap, batch), new TileMovement(groundLayer, Interpolation.smooth));
+        mapRenderer = createSingleLayerMapRenderer(tiledMap, batch);
+        tiles = new Level(tiledMap, new TileMovement(groundLayer, Interpolation.smooth));
 
         Texture treeTexture = graphicProperties.getTreeTexture();
         TextureRegion textureRegion = new TextureRegion(treeTexture);
@@ -51,6 +56,10 @@ public class LevelGraphicRender {
 
     public Level getTiles() {
         return tiles;
+    }
+
+    public void renderTiles() {
+        mapRenderer.render();
     }
 
     public void render(Batch batch, TankMoveModel playerTank) {
