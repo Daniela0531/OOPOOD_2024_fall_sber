@@ -11,7 +11,8 @@ import com.badlogic.gdx.math.Interpolation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.game_objects.NodeType;
+import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.util.TileMovement;
 
 import java.util.ArrayList;
@@ -23,31 +24,19 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.getSingleLayer;
 @Configuration
 @ComponentScan
 public class GameConfiguration {
-//    private GraphicProperties graphicProperties;
-    private GridPoint2 playerCoordinates = new GridPoint2(0, 0);
-
-    public GameConfiguration() {
-        setPlayerCoordinates();
-//        setGraphicProperties();
-    }
-
     @Bean
     public Map map() {
-        ArrayList<GridPoint2> treeCoordinates_ = new ArrayList<>();
-        treeCoordinates_.add(new GridPoint2(1, 3));
-        treeCoordinates_.add(new GridPoint2(1, 5));
-        treeCoordinates_.add(new GridPoint2(5, 1));
-        treeCoordinates_.add(new GridPoint2(2, 3));
+        ArrayList<MapNode> obstacles = new ArrayList<>();
+        obstacles.add(new MapNode(new GridPoint2(1, 3), NodeType.TREE));
+        obstacles.add(new MapNode(new GridPoint2(1, 5), NodeType.TREE));
+        obstacles.add(new MapNode(new GridPoint2(5, 1), NodeType.TREE));
+        obstacles.add(new MapNode(new GridPoint2(2, 3), NodeType.TREE));
+        obstacles.add(new MapNode(new GridPoint2(2, 2), NodeType.TANK));
+        obstacles.add(new MapNode(new GridPoint2(0, 0), NodeType.TANK));
+        MapNode player = new MapNode(new GridPoint2(1, 1), NodeType.TANK);
+        obstacles.add(player);
 
-        ArrayList<GridPoint2> tanksCoordinates = new ArrayList<>();
-        tanksCoordinates.add(new GridPoint2(1, 1));
-
-        return new Map(treeCoordinates_, tanksCoordinates, playerCoordinates);
-    }
-
-//    @Bean
-    private void setPlayerCoordinates() {
-        playerCoordinates = new GridPoint2(1, 1);
+        return new Map(obstacles, player);
     }
 
     @Bean
@@ -57,23 +46,6 @@ public class GameConfiguration {
         TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
 
         return new GraphicProperties(tankTexture, treeTexture, tiledMap);
-    }
-
-    public GridPoint2 getPlayerCoordinates() {
-        return playerCoordinates;
-    }
-
-//    public GraphicProperties getGraphicProperties() {
-//        return graphicProperties;
-//    }
-
-//    public Map getMap() {
-//        return map;
-//    }
-
-    @Bean
-    public TankMoveModel tankMoveModel() {
-        return new TankMoveModel(playerCoordinates, 0f);
     }
 
     @Bean

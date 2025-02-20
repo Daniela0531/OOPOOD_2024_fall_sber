@@ -33,6 +33,10 @@ public class Direction {
             this.vector = new GridPoint2(1, 0);
             this.rotation = 0f;
         }
+        if (command == Command.NONE) {
+            this.vector = new GridPoint2(0, 0);
+            this.rotation = 0f;
+        }
     }
     public Direction(GridPoint2 vector, float rotation) {
         this.vector = vector;

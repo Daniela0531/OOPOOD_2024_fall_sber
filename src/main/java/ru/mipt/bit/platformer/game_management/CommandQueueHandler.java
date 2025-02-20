@@ -2,59 +2,51 @@ package ru.mipt.bit.platformer.game_management;
 
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.game_management.commands.Command;
 import ru.mipt.bit.platformer.game_management.actions.impl_action.MoveAction;
+import ru.mipt.bit.platformer.game_management.commands.Command;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.level.Level;
 
 import java.util.ArrayList;
 
 @Component
 public class CommandQueueHandler {
-    private ArrayList<Command> receivedCommands;
+//    private ArrayList<Command> receivedCommands;
     private ArrayList<MoveAction> actions;
-//    private TankMoveModel playerTank;
 
     public CommandQueueHandler() {
-//        // System.out.println("CommandQueueHandler CommandQueueHandler");
-        this.receivedCommands = new ArrayList<>();
+//        this.receivedCommands = new ArrayList<>();
         this.actions = new ArrayList<>();
     }
 
     public int moveActionAmount() {
         return actions.size();
     }
+    public void addMoveAction(MoveAction moveAction) {
+//        receivedCommands.add(command);
+        actions.add(moveAction);
+    }
 
-    public void add(Command command, TankMoveModel playerTank) {
-//        // System.out.println("CommandQueueHandler add");
-        receivedCommands.add(command);
+    public void add(Command command, Level level) {
+//        receivedCommands.add(command);
         if (command == Command.UP) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(playerTank, direction);
-//            moveAction.setI(receivedCommands.size());
-            // System.out.println("    add: Command.UP");
-//            // System.out.println("    size: " + moveActionAmount());
+            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
             actions.add(moveAction);
         }
         if (command == Command.LEFT) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(playerTank, direction);
-//            moveAction.setI(receivedCommands.size());
-            // System.out.println("    add: Command.LEFT");
+            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
             actions.add(moveAction);
         }
         if (command == Command.DOWN) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(playerTank, direction);
-//            moveAction.setI(receivedCommands.size());
-            // System.out.println("    add: Command.DOWN");
+            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
             actions.add(moveAction);
         }
         if (command == Command.RIGHT) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(playerTank, direction);
-//            moveAction.setI(receivedCommands.size());
-            // System.out.println("    add: Command.RIGHT");
+            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
             actions.add(moveAction);
         }
     }
@@ -75,29 +67,52 @@ public class CommandQueueHandler {
         return new GridPoint2(0, 0);
     }
 
-    public Command get() {
-        Command command = receivedCommands.get(0);
-//        receivedCommands.remove(0);
-        return command;
-    }
+//    public Command get() {
+//        Command command = receivedCommands.get(0);
+//        return command;
+//    }
 
-    public MoveAction getMoveAction() {
+    public MoveAction get() {
         return actions.get(0);
     }
 
-    public void popMoveAction() {
-        actions.remove(0);
-    }
+//    public void popMoveAction() {
+//        actions.remove(0);
+//    }
 
     public void pop() {
-        if (receivedCommands.isEmpty()) {
+        if (actions.isEmpty()) {
             return;
         }
-        receivedCommands.remove(0);
         actions.remove(0);
     }
 
     public boolean isEmpty() {
-        return receivedCommands.isEmpty();
+        return actions.isEmpty();
+    }
+
+    public int size() {
+        return actions.size();
+    }
+
+    public ArrayList<MoveAction> getActions() {
+        return actions;
+    }
+
+    public void remove(MoveAction moveAction) {
+        actions.remove(moveAction);
+    }
+
+    public void clear() {
+        actions.clear();
+    }
+
+    public void printQueue() {
+        System.out.println("my queue:");
+        for(MoveAction moveAction : actions) {
+            System.out.println("    " + moveAction.getActionType() +
+                    ": coord " + moveAction.getModel().getCoordinates() +
+                    "  direction" + moveAction.getDirection().getVector());
+        }
     }
 }

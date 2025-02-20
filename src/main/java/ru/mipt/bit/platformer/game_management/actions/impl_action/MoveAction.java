@@ -9,9 +9,11 @@ public class MoveAction {
     private final ActionType actionType = ActionType.MOVEMENT;
     private final Direction direction;
     private final GridPoint2 destinationCoordinates;
+    private final TankMoveModel tankMoveModel;
 
     public MoveAction(TankMoveModel tankMoveModel, Direction direction) {
         this.direction = direction;
+        this.tankMoveModel = tankMoveModel;
         this.destinationCoordinates = new GridPoint2(
                 tankMoveModel.getCoordinates().x + direction.getVector().x,
                 tankMoveModel.getCoordinates().y + direction.getVector().y
@@ -29,4 +31,12 @@ public class MoveAction {
         return direction;
     }
 
+    public TankMoveModel getModel() {
+        return tankMoveModel;
+    }
+    public void execute() {
+//        if (collisionDetector.canMove(object, direction)) {
+//            object.move(direction);
+//        }
+    }
 }

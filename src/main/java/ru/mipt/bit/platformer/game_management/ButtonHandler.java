@@ -3,30 +3,27 @@ package ru.mipt.bit.platformer.game_management;
 import com.badlogic.gdx.Gdx;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.game_management.commands.Command;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.game_management.commands.ExecuteCommand;
+import ru.mipt.bit.platformer.game_management.commands.GenerationType;
+import ru.mipt.bit.platformer.level.Level;
 
 import static com.badlogic.gdx.Input.Keys.*;
 
 @Component
 public class ButtonHandler {
-    public void readCommand(CommandQueueHandler receivedCommands, TankMoveModel playerTank) {
-//        // System.out.println("ButtonHandler readCommand");
+    public void readCommand(CommandQueueHandler receivedCommands, Level level) {
         if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
-            // System.out.println("    catch command");
-            receivedCommands.add(Command.UP, playerTank);
+            ExecuteCommand executeCommand = new ExecuteCommand(Command.UP, GenerationType.BUTTON);
+            receivedCommands.add(Command.UP, level);
         }
         if (Gdx.input.isKeyPressed(LEFT) || Gdx.input.isKeyPressed(A)) {
-            // System.out.println("    catch command");
-            receivedCommands.add(Command.LEFT, playerTank);
+            receivedCommands.add(Command.LEFT, level);
         }
         if (Gdx.input.isKeyPressed(DOWN) || Gdx.input.isKeyPressed(S)) {
-            // System.out.println("    catch command");
-            receivedCommands.add(Command.DOWN, playerTank);
+            receivedCommands.add(Command.DOWN, level);
         }
         if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
-            // System.out.println("    catch command");
-            receivedCommands.add(Command.RIGHT, playerTank);
+            receivedCommands.add(Command.RIGHT, level);
         }
-//        // System.out.println("dont catch commmand");
     }
 }

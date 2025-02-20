@@ -4,41 +4,37 @@ import com.badlogic.gdx.Gdx;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.game_management.ButtonHandler;
 import ru.mipt.bit.platformer.game_management.CommandQueueHandler;
+import ru.mipt.bit.platformer.game_management.GeneratorActions;
 import ru.mipt.bit.platformer.game_management.MainCommandExecutor;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.level.Level;
 
 @Component
 public class Game {
-//    private final GameConfiguration gameConfiguration;
     private final ButtonHandler buttonHandler;
     private final MainCommandExecutor commandExecutor;
     private final CommandQueueHandler commandQueueHandler;
-    private final TankMoveModel playerTank;
+    private final GeneratorActions generatorActions;
+    private final Level level;
 
-//    private final GraphicProperties graphicProperties;
 
     public Game(ButtonHandler buttonHandler,
                 MainCommandExecutor commandExecutor,
-                CommandQueueHandler commandQueueHandler,
-                TankMoveModel playerTank) {
-//        this.gameConfiguration = gameConfiguration;
+                CommandQueueHandler commandQueueHandler, GeneratorActions generatorActions, Level level) {
         this.buttonHandler = buttonHandler;
         this.commandQueueHandler = commandQueueHandler;
         this.commandExecutor = commandExecutor;
-        this.playerTank = playerTank;
+        this.generatorActions = generatorActions;
+        this.level = level;
     }
 
     public void renderCurrentResultByTick() {
         float deltaTime = Gdx.graphics.getDeltaTime();
-//        // System.out.println("buttonHandler:");
-        buttonHandler.readCommand(commandQueueHandler, playerTank);
-//        // System.out.println("executeAllCommands:");
-        commandExecutor.executeAllCommands(deltaTime, commandQueueHandler, playerTank);
-//        // System.out.println("commandQueueHandler.pop():");
-        commandQueueHandler.pop();
+        buttonHandler.readCommand(commandQueueHandler, level);
+        generatorActions.getCommand(commandQueueHandler, level);
+        commandExecutor.executeAllCommands(deltaTime, commandQueueHandler, level);
     }
 
     public void stop() {
-        commandExecutor.dispose();
+        commandExecutor.dispose(level);
     }
 }

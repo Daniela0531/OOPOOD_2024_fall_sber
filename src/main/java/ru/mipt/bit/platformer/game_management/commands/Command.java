@@ -8,6 +8,11 @@ public enum Command {
     UP,
     DOWN,
     LEFT,
-    RIGHT;
-
+    RIGHT,
+    NONE;
+//    public GenerationType generationType;
+//
+//    public GenerationType getGenerationType() {
+//        return generationType;
+//    }
 }
