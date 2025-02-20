@@ -1,8 +1,8 @@
 package ru.mipt.bit.platformer.game_management.actions;
 
 import com.badlogic.gdx.math.GridPoint2;
+import ru.mipt.bit.platformer.game_objects.MoveModel;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
 
 public interface Action {
     GridPoint2 getDestinationCoordinates();
@@ -11,7 +11,7 @@ public interface Action {
 
     Direction getDirection();
 
-    TankMoveModel getModel();
+    MoveModel getModel();
     boolean isFinished();
 
     void finished();

@@ -3,9 +3,10 @@ package ru.mipt.bit.platformer.game_management;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.GraphicProperties;
 import ru.mipt.bit.platformer.game_management.actions.Action;
+import ru.mipt.bit.platformer.game_management.actions.ActionType;
 import ru.mipt.bit.platformer.game_management.execution.MainGraphicRender;
 import ru.mipt.bit.platformer.game_management.execution.MovementsExecutor;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.game_objects.MoveModel;
 import ru.mipt.bit.platformer.level.Level;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 public class MainCommandExecutor {
     private MovementsExecutor movementCommandExecuter;
     private MainGraphicRender graphicRender;
-    private HashMap<TankMoveModel, Action> executingActions;
+    private HashMap<MoveModel, Action> executingActions;
     public MainCommandExecutor(GraphicProperties graphicProperties, Level level) {
         this.graphicRender = new MainGraphicRender(graphicProperties, level);
         this.movementCommandExecuter = new MovementsExecutor();
@@ -30,9 +31,18 @@ public class MainCommandExecutor {
         for (Action action : commandQueueHandler.getActions()) {
 //            System.out.println("tank atatus is moving: " + action.getModel().isMoving());
             if (!executingActions.containsKey(action.getModel())) {
-                action.getModel().setDirection(action.getDirection());
-                action.getModel().setMovingStatus(true);
-                executingActions.put(action.getModel(), action);
+                if (action.getActionType() == ActionType.MOVEMENT) {
+                    action.getModel().setDirection(action.getDirection());
+                    action.getModel().setMovingStatus(true);
+                    executingActions.put(action.getModel(), action);
+                }
+                if (action.getActionType() == ActionType.SHOOTING) {
+//                    action.getModel().setDirection(action.getDirection());
+                    if (action.getModel().getProgress() > 1.5f) {
+                        action.getModel().setMovingStatus(true);
+                        executingActions.put(action.getModel(), action);
+                    }
+                }
 //                System.out.println("tryToCatchNewCommand, tank: ");
 //                printQueue();
             }
@@ -41,9 +51,9 @@ public class MainCommandExecutor {
     }
 
     private void removeFinishedActions() {
-        Collection<TankMoveModel> allActions = new ArrayList<>();
+        Collection<MoveModel> allActions = new ArrayList<>();
         allActions.addAll(executingActions.keySet());
-        for(TankMoveModel action : allActions) {
+        for(MoveModel action : allActions) {
             if (executingActions.get(action).isFinished()) {
                 executingActions.remove(action);
             }
@@ -57,6 +67,7 @@ public class MainCommandExecutor {
     ) {
         graphicRender.clear();
         tryToCatchNewCommand(commandQueueHandler, level);
+        printQueue();
         movementCommandExecuter.executeMoveActions(deltaTime, executingActions, level);
         graphicRender.render(deltaTime, level);
         level.removeKilledTanks();

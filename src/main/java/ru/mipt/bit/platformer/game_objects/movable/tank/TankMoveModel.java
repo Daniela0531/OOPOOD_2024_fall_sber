@@ -1,7 +1,8 @@
 package ru.mipt.bit.platformer.game_objects.movable.tank;
 
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.game_objects.MovableNode;
+import ru.mipt.bit.platformer.game_objects.LivableModel;
+import ru.mipt.bit.platformer.game_objects.MoveModel;
 import ru.mipt.bit.platformer.game_objects.NodeType;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
 
@@ -12,7 +13,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 // progress = 1f; - действие завершилось
 
 
-public class TankMoveModel implements MovableNode {
+public class TankMoveModel implements MoveModel, LivableModel {
     private static final float MOVEMENT_SPEED = 0.4f;
     private GridPoint2 coordinates;
     private float progress;
@@ -20,6 +21,7 @@ public class TankMoveModel implements MovableNode {
     private Direction direction;
     private NodeType nodeType;
     private float health;
+    private boolean justFired = false;
     public TankMoveModel(GridPoint2 coordinates, float rotation) {
         this.coordinates = coordinates;
         this.progress = 0f;
@@ -41,6 +43,7 @@ public class TankMoveModel implements MovableNode {
         return new GridPoint2(coordinates.x + direction.getVector().x, coordinates.y + direction.getVector().y);
     }
 
+    @Override
     public Direction getDirection() {
         return direction;
     }
@@ -83,15 +86,18 @@ public class TankMoveModel implements MovableNode {
         this.isMoving = status;
     }
 
+    @Override
     public float getHealth() {
         return health;
     }
-
-    public void setHealth(float health) {
-        this.health = health;
-    }
-
-    public void getDamage(float damage) {
+    @Override
+    public void damage(float damage) {
         this.health -= damage;
     }
+    @Override
+    public float getDamage() {
+        return 0;
+    }
+
+
 }

@@ -38,17 +38,17 @@ public class Graphics {
     public GridPoint2 getCoordinates() {
         return coordinates;
     }
-    public void setCoordinates(GridPoint2 coordinates) {
-        this.coordinates = coordinates;
-    }
+//    public void setCoordinates(GridPoint2 coordinates) {
+//        this.coordinates = coordinates;
+//    }
 
     public float getRotation() {
         return rotation;
     }
 
-    public void setRotation(float rotation) {
-        this.rotation = rotation;
-    }
+//    public void setRotation(float rotation) {
+//        this.rotation = rotation;
+//    }
 
     //    public float getRotation() {
 //        return rotation;

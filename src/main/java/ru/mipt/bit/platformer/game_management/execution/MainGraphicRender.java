@@ -10,9 +10,13 @@ import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.GraphicProperties;
 import ru.mipt.bit.platformer.game_objects.LevelNodeImpl;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.game_objects.MoveModel;
+import ru.mipt.bit.platformer.game_objects.movable.bullet.BulletMoveModel;
+import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.util.TileMovement;
+
+import java.util.Map;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
@@ -76,12 +80,14 @@ public class MainGraphicRender {
 //        for
 //    }
     public void render(float deltaTime, Level level) {
-
         mapRenderer.render();
         batchRender(level);
 
         for (LevelNodeImpl levelNode : level.getMoveNodes()) {
             movementRender(levelNode.getMoveModel(), levelNode.getGraphics().getRectangle());
+        }
+        for (Map.Entry<BulletMoveModel, Graphics> entry : level.getBullets().entrySet()) {
+            movementRender(entry.getKey(), entry.getValue().getRectangle());
         }
         movementRender(level.getPlayerTank().getMoveModel(), level.getPlayerTank().getGraphics().getRectangle());
     }
@@ -95,11 +101,14 @@ public class MainGraphicRender {
         for (LevelNodeImpl levelNode : level.getMoveNodes()) {
             drawTextureRegionUnscaled(batch, levelNode.getGraphics().getTextureRegion(), levelNode.getGraphics().getRectangle(), levelNode.getMoveModel().getRotation());
         }
+        for (Map.Entry<BulletMoveModel, Graphics> entry : level.getBullets().entrySet()) {
+            drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getValue().getRotation());
+        }
         drawTextureRegionUnscaled(batch, level.getPlayerTank().getGraphics().getTextureRegion(), level.getPlayerTank().getGraphics().getRectangle(), level.getPlayerTank().getMoveModel().getRotation());
         batch.end();
     }
 
-    public void movementRender(TankMoveModel node, Rectangle rectangle) {
+    public void movementRender(MoveModel node, Rectangle rectangle) {
         tileMovement.moveRectangleBetweenTileCenters(
                 rectangle,
                 node.getCoordinates(),

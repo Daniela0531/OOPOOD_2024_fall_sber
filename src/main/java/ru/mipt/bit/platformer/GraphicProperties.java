@@ -15,15 +15,19 @@ public class GraphicProperties {
     private String tankTextureImg = "images/tank_blue.png";
     private String treeTextureImg = "images/greenTree.png";
     private String tiledMapImg = "level.tmx";
+    private String bulletImg = "images/brick.png";
     private TiledMapTileLayer tiledMapTileLayer = getSingleLayer(new TmxMapLoader().load("level.tmx"));
 //    private TiledMap
 
-    public GraphicProperties(Texture tankTexture, Texture treeTexture, TiledMap tiledMap) {
+    public GraphicProperties(TiledMap tiledMap) {
 //        this.tankTexture = tankTexture;
 //        this.treeTexture = treeTexture;
 //        this.tiledMap = tiledMap;
         this.tiledMapTileLayer = getSingleLayer(tiledMap);
 //        this.tileMovement = new TileMovement(tiledMapTileLayer, Interpolation.smooth);
+    }
+    public Texture getBulletTexture() {
+        return new Texture(bulletImg);
     }
 
     public Texture getTankTexture() {

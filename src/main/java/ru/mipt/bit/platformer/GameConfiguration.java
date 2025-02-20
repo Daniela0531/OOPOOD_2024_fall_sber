@@ -1,6 +1,5 @@
 package ru.mipt.bit.platformer;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -42,11 +41,12 @@ public class GameConfiguration {
 
     @Bean
     public GraphicProperties graphicProperties() {
-        Texture tankTexture = new Texture("images/tank_blue.png");
-        Texture treeTexture = new Texture("images/greenTree.png");
+//        Texture tankTexture = new Texture("images/tank_blue.png");
+//        Texture treeTexture = new Texture("images/greenTree.png");
         TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
+//        Texture bulletTexture = new Texture("images/brick.png");
 
-        return new GraphicProperties(tankTexture, treeTexture, tiledMap);
+        return new GraphicProperties(tiledMap);
     }
 
     @Bean

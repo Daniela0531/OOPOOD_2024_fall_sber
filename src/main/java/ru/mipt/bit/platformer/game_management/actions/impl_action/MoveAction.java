@@ -3,17 +3,17 @@ package ru.mipt.bit.platformer.game_management.actions.impl_action;
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.game_management.actions.Action;
 import ru.mipt.bit.platformer.game_management.actions.ActionType;
+import ru.mipt.bit.platformer.game_objects.MoveModel;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
 
 public class MoveAction implements Action {
     private final ActionType actionType = ActionType.MOVEMENT;
     private final Direction direction;
     private final GridPoint2 destinationCoordinates;
-    private final TankMoveModel tankMoveModel;
+    private final MoveModel tankMoveModel;
     private boolean isFinished = false;
 
-    public MoveAction(TankMoveModel tankMoveModel, Direction direction) {
+    public MoveAction(MoveModel tankMoveModel, Direction direction) {
         this.direction = direction;
         this.tankMoveModel = tankMoveModel;
         this.destinationCoordinates = new GridPoint2(
@@ -33,7 +33,7 @@ public class MoveAction implements Action {
         return direction;
     }
 
-    public TankMoveModel getModel() {
+    public MoveModel getModel() {
         return tankMoveModel;
     }
     public void execute() {

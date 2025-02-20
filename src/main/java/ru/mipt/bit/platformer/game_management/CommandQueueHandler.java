@@ -23,7 +23,7 @@ public class CommandQueueHandler {
     public int moveActionAmount() {
         return actions.size();
     }
-    public void addMoveAction(MoveAction moveAction) {
+    public void addAction(Action moveAction) {
 //        receivedCommands.add(command);
         actions.add(moveAction);
     }
