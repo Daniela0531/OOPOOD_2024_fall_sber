@@ -2,6 +2,7 @@ package ru.mipt.bit.platformer.game_management;
 
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
+import ru.mipt.bit.platformer.game_management.actions.Action;
 import ru.mipt.bit.platformer.game_management.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.game_management.commands.Command;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 @Component
 public class CommandQueueHandler {
 //    private ArrayList<Command> receivedCommands;
-    private ArrayList<MoveAction> actions;
+    private ArrayList<Action> actions;
 
     public CommandQueueHandler() {
 //        this.receivedCommands = new ArrayList<>();
@@ -49,6 +50,11 @@ public class CommandQueueHandler {
             MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
             actions.add(moveAction);
         }
+        if (command == Command.SHOOT) {
+            Direction direction = new Direction(command);
+            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
+            actions.add(moveAction);
+        }
     }
 
     public GridPoint2 process(Command command) {
@@ -72,7 +78,7 @@ public class CommandQueueHandler {
 //        return command;
 //    }
 
-    public MoveAction get() {
+    public Action get() {
         return actions.get(0);
     }
 
@@ -95,12 +101,12 @@ public class CommandQueueHandler {
         return actions.size();
     }
 
-    public ArrayList<MoveAction> getActions() {
+    public ArrayList<Action> getActions() {
         return actions;
     }
 
-    public void remove(MoveAction moveAction) {
-        actions.remove(moveAction);
+    public void remove(Action action) {
+        actions.remove(action);
     }
 
     public void clear() {
@@ -109,10 +115,10 @@ public class CommandQueueHandler {
 
     public void printQueue() {
         System.out.println("my queue:");
-        for(MoveAction moveAction : actions) {
-            System.out.println("    " + moveAction.getActionType() +
-                    ": coord " + moveAction.getModel().getCoordinates() +
-                    "  direction" + moveAction.getDirection().getVector());
+        for(Action action : actions) {
+            System.out.println("    " + action.getActionType() +
+                    ": coord " + action.getModel().getCoordinates() +
+                    "  direction" + action.getDirection().getVector());
         }
     }
 }

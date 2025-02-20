@@ -25,5 +25,8 @@ public class ButtonHandler {
         if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
             receivedCommands.add(Command.RIGHT, level);
         }
+        if (Gdx.input.isKeyPressed(SPACE)) {
+            receivedCommands.add(Command.SHOOT, level);
+        }
     }
 }

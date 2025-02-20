@@ -12,36 +12,40 @@ import java.util.Random;
 public class GeneratorActions {
     public void getCommand(CommandQueueHandler receivedCommands, Level level) {
         Random random = new Random();
-        int randomNumber = random.nextInt(100);
+        int randomNumber = random.nextInt(50);
         int i = random.nextInt(level.moveNodesSize())%level.moveNodesSize();
-        if (randomNumber%100 == 0) {
+        if (randomNumber%20 < 5) {
             MoveAction moveAction = new MoveAction(
                     level.getMoveNodes().get(i).getMoveModel(),
                     new Direction(Command.UP)
             );
             receivedCommands.addMoveAction(moveAction);
-        }
-        if (randomNumber%100 == 1) {
+        } else if (randomNumber%20 < 10) {
             MoveAction moveAction = new MoveAction(
                     level.getMoveNodes().get(i).getMoveModel(),
                     new Direction(Command.LEFT)
             );
             receivedCommands.addMoveAction(moveAction);
-        }
-        if (randomNumber%100 == 2) {
+        } else if (randomNumber%20 < 15) {
             MoveAction moveAction = new MoveAction(
                     level.getMoveNodes().get(i).getMoveModel(),
                     new Direction(Command.DOWN)
             );
             receivedCommands.addMoveAction(moveAction);
-        }
-        if (randomNumber%100 == 3) {
+        } else if (randomNumber%20 >= 15) {
             MoveAction moveAction = new MoveAction(
                     level.getMoveNodes().get(i).getMoveModel(),
                     new Direction(Command.RIGHT)
             );
             receivedCommands.addMoveAction(moveAction);
         }
+//        if (randomNumber%20 == 4) {
+//            MoveAction moveAction = new MoveAction(
+//                    level.getMoveNodes().get(i).getMoveModel(),
+//                    new Direction(Command.SHOOT)
+//            );
+//            receivedCommands.addMoveAction(moveAction);
+//        }
 //        else {
 //            MoveAction moveAction = new MoveAction(
 //                    level.getMoveNodes().get(i).getMoveModel(),

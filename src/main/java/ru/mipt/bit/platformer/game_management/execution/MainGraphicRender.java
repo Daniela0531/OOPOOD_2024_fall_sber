@@ -100,8 +100,6 @@ public class MainGraphicRender {
     }
 
     public void movementRender(TankMoveModel node, Rectangle rectangle) {
-        System.out.println("progress: " + node.getProgress());
-        System.out.println("progress: " + node.isMoving());
         tileMovement.moveRectangleBetweenTileCenters(
                 rectangle,
                 node.getCoordinates(),

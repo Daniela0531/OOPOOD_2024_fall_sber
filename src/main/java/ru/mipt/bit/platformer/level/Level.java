@@ -1,5 +1,6 @@
 package ru.mipt.bit.platformer.level;
 
+import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.GraphicProperties;
 import ru.mipt.bit.platformer.Map;
@@ -25,7 +26,7 @@ public class Level {
         TankMoveModel tankMoveModel = new TankMoveModel(map.getPlayer().getCoordinates(), 0f);
         Graphics graphics = new Graphics(graphicProperties.getTankTexture(), map.getPlayer().getCoordinates(), 0f);
 
-        this.player = new LevelNodeImpl(tankMoveModel, graphics, map.getPlayer());
+        this.player = new LevelNodeImpl(tankMoveModel, graphics);
         this.obstacles = new ArrayList<>();
         this.nodes = new ArrayList<>();
 
@@ -36,16 +37,24 @@ public class Level {
             if (mapNode.getNodeType().equals(NodeType.TANK)) {
                 tankMoveModel = new TankMoveModel(mapNode.getCoordinates(), 0f);
                 graphics = new Graphics(graphicProperties.getTankTexture(), mapNode.getCoordinates(), 0f);
-                nodes.add(new LevelNodeImpl(tankMoveModel, graphics, mapNode));
+                nodes.add(new LevelNodeImpl(tankMoveModel, graphics));
             }
             if (mapNode.getNodeType().equals(NodeType.TREE)) {
                 graphics = new Graphics(graphicProperties.getTreeTexture(), mapNode.getCoordinates(), 0f);
-                obstacles.add(new LevelNodeImpl(null, graphics, mapNode));
+                obstacles.add(new LevelNodeImpl(null, graphics));
             }
         }
     }
 
     public void removeKilledTanks() {
+        for(int i = 0; i < nodes.size(); ++i) {
+            if (nodes.get(i).getMoveModel().getHealth() <= 0) {
+                GridPoint2 coord = nodes.get(i).getMoveModel().getCoordinates();
+                nodes.remove(i);
+                MapNode mapNode = new MapNode(coord, NodeType.TANK);
+                map.getNodes().remove(mapNode);
+            }
+        }
     }
 
     public Map getMap() {

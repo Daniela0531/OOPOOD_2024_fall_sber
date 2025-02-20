@@ -1,4 +1,4 @@
-package ru.mipt.bit.platformer.game_objects.movable.tank;
+package ru.mipt.bit.platformer.game_objects.movable.bullet;
 
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.game_objects.MovableNode;
@@ -7,25 +7,21 @@ import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 
+public class BulletMoveModel implements MovableNode {
 
-// progress = 0f; - нет действий
-// progress = 1f; - действие завершилось
-
-
-public class TankMoveModel implements MovableNode {
     private static final float MOVEMENT_SPEED = 0.4f;
     private GridPoint2 coordinates;
     private float progress;
-    private boolean isMoving = false;
+//    private boolean isMoving = false;
     private Direction direction;
     private NodeType nodeType;
-    private float health;
-    public TankMoveModel(GridPoint2 coordinates, float rotation) {
+    private float damage;
+    public BulletMoveModel(GridPoint2 coordinates, float rotation) {
         this.coordinates = coordinates;
         this.progress = 0f;
-        this.nodeType = NodeType.TANK;
+        this.nodeType = NodeType.BULLET;
         this.direction = new Direction(new GridPoint2(0,0), rotation);
-        this.health = 0.5f;
+        this.damage = 0.5f;
     }
 
     @Override
@@ -33,9 +29,9 @@ public class TankMoveModel implements MovableNode {
         return nodeType;
     }
 
-    public boolean isMoving() {
-        return isMoving;
-    }
+//    public boolean isMoving() {
+//        return isMoving;
+//    }
 
     public GridPoint2 getDestination() {
         return new GridPoint2(coordinates.x + direction.getVector().x, coordinates.y + direction.getVector().y);
@@ -79,19 +75,5 @@ public class TankMoveModel implements MovableNode {
         this.direction = direction;
     }
 
-    public void setMovingStatus(boolean status) {
-        this.isMoving = status;
-    }
-
-    public float getHealth() {
-        return health;
-    }
-
-    public void setHealth(float health) {
-        this.health = health;
-    }
-
-    public void getDamage(float damage) {
-        this.health -= damage;
-    }
 }
+

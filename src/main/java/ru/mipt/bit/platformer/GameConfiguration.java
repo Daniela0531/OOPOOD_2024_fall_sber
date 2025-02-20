@@ -30,9 +30,10 @@ public class GameConfiguration {
         obstacles.add(new MapNode(new GridPoint2(1, 3), NodeType.TREE));
         obstacles.add(new MapNode(new GridPoint2(1, 5), NodeType.TREE));
         obstacles.add(new MapNode(new GridPoint2(5, 1), NodeType.TREE));
-        obstacles.add(new MapNode(new GridPoint2(2, 3), NodeType.TREE));
-        obstacles.add(new MapNode(new GridPoint2(2, 2), NodeType.TANK));
+        obstacles.add(new MapNode(new GridPoint2(8, 3), NodeType.TREE));
+        obstacles.add(new MapNode(new GridPoint2(5, 5), NodeType.TANK));
         obstacles.add(new MapNode(new GridPoint2(0, 0), NodeType.TANK));
+        obstacles.add(new MapNode(new GridPoint2(6, 1), NodeType.TANK));
         MapNode player = new MapNode(new GridPoint2(1, 1), NodeType.TANK);
         obstacles.add(player);
 

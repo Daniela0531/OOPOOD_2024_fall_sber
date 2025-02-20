@@ -31,6 +31,8 @@ public class Game {
         float deltaTime = Gdx.graphics.getDeltaTime();
         buttonHandler.readCommand(commandQueueHandler, level);
         generatorActions.getCommand(commandQueueHandler, level);
+//        commandQueueHandler.printQueue();
+//        commandQueueHandler.printQueue();
         commandExecutor.executeAllCommands(deltaTime, commandQueueHandler, level);
     }
 

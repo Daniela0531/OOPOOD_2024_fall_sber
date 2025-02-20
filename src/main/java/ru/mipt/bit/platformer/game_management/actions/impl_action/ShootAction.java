@@ -6,14 +6,14 @@ import ru.mipt.bit.platformer.game_management.actions.ActionType;
 import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
 import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
 
-public class MoveAction implements Action {
-    private final ActionType actionType = ActionType.MOVEMENT;
+public class ShootAction implements Action {
+    private final ActionType actionType = ActionType.SHOOTING;
     private final Direction direction;
     private final GridPoint2 destinationCoordinates;
     private final TankMoveModel tankMoveModel;
     private boolean isFinished = false;
 
-    public MoveAction(TankMoveModel tankMoveModel, Direction direction) {
+    public ShootAction(TankMoveModel tankMoveModel, Direction direction) {
         this.direction = direction;
         this.tankMoveModel = tankMoveModel;
         this.destinationCoordinates = new GridPoint2(
@@ -37,17 +37,13 @@ public class MoveAction implements Action {
         return tankMoveModel;
     }
     public void execute() {
-//        if (collisionDetector.canMove(object, direction)) {
-//            object.move(direction);
-//        }
     }
     @Override
     public boolean isFinished() {
         return isFinished;
     }
-
     @Override
     public void finished() {
-        isFinished = true;
+        this.isFinished = true;
     }
 }

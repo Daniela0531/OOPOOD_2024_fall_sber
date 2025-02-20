@@ -9,7 +9,8 @@ public enum Command {
     DOWN,
     LEFT,
     RIGHT,
-    NONE;
+    NONE,
+    SHOOT;
 //    public GenerationType generationType;
 //
 //    public GenerationType getGenerationType() {
