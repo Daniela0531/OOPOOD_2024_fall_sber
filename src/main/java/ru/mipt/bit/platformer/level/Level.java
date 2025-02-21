@@ -3,6 +3,7 @@ package ru.mipt.bit.platformer.level;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.LevelMap;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
+import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
 import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.logic_objects.NodeType;
@@ -17,13 +18,13 @@ import java.util.HashMap;
 @Component
 public class Level {
 //    private Map map;
-    private HashMap<TreeMoveModel, Graphics> obstacles;
-    private HashMap<TankMoveModel, Graphics> tanks;
-    private HashMap<BulletMoveModel, Graphics> bullets;
+    private HashMap<TreeMoveModel, GraphicsInterface> obstacles;
+    private HashMap<TankMoveModel, GraphicsInterface> tanks;
+    private HashMap<BulletMoveModel, GraphicsInterface> bullets;
 //    private GridPoint2 playerCoordinates;
 //    private Map.Entry<TreeMoveModel, Graphics> player;
     private TankMoveModel playerTank;
-    private Graphics playerGraphics;
+    private GraphicsInterface playerGraphics;
     private boolean playerKilled;
 //    private GridPoint2 playerCoord;
     private GraphicProperties graphicProperties;
@@ -34,7 +35,7 @@ public class Level {
         this.graphicProperties = graphicProperties;
 //        this.map = map;
         this.playerTank = new TankMoveModel(map.getPlayer().getCoordinates(), 0f);
-        this.playerGraphics = new Graphics(graphicProperties.getTankTexture(), map.getPlayer().getCoordinates(), 0f);
+        this.playerGraphics = new Graphics(graphicProperties.getTankTexture());
 
 //        this.player = new Map.Entry();
         this.obstacles = new HashMap<>();
@@ -46,19 +47,19 @@ public class Level {
         for (MapNode mapNode : map.getNodes()) {
             if (mapNode.getCoordinates() == map.getPlayer().getCoordinates()) {
                 TankMoveModel tankMoveModel = new TankMoveModel(mapNode.getCoordinates(), 0f);
-                Graphics graphics = new Graphics(graphicProperties.getTankTexture(), mapNode.getCoordinates(), 0f);
+                GraphicsInterface graphics = new Graphics(graphicProperties.getTankTexture());
                 tanks.put(tankMoveModel, graphics);
                 continue;
             }
             if (mapNode.getNodeType().equals(NodeType.TANK)) {
                 TankMoveModel tankMoveModel = new TankMoveModel(mapNode.getCoordinates(), 0f);
-                Graphics graphics = new Graphics(graphicProperties.getTankTexture(), mapNode.getCoordinates(), 0f);
+                GraphicsInterface graphics = new Graphics(graphicProperties.getTankTexture());
                 tanks.put(tankMoveModel, graphics);
                 continue;
             }
             if (mapNode.getNodeType().equals(NodeType.TREE)) {
                 TreeMoveModel treeMoveModel = new TreeMoveModel(mapNode.getCoordinates(), 0f);
-                Graphics graphics = new Graphics(graphicProperties.getTreeTexture(), mapNode.getCoordinates(), 0f);
+                GraphicsInterface graphics = new Graphics(graphicProperties.getTreeTexture());
                 obstacles.put(treeMoveModel, graphics);
                 continue;
             }
@@ -79,18 +80,18 @@ public class Level {
         }
     }
 
-    public HashMap<TreeMoveModel, Graphics> getTrees() {
+    public HashMap<TreeMoveModel, GraphicsInterface> getTrees() {
         return obstacles;
     }
 
-    public HashMap<TankMoveModel, Graphics> getTanks() {
+    public HashMap<TankMoveModel, GraphicsInterface> getTanks() {
         return tanks;
     }
 
     public TankMoveModel getPlayerTank() {
         return playerTank;
     }
-    public Graphics getPlayerGraphics() {
+    public GraphicsInterface getPlayerGraphics() {
         return playerGraphics;
     }
 
@@ -98,11 +99,11 @@ public class Level {
         return tanks.size();
     }
     public void putBulletInLevel(BulletMoveModel bulletMoveModel) {
-        Graphics graphics = new Graphics(graphicProperties.getBulletTexture(), bulletMoveModel.getCoordinates(), bulletMoveModel.getRotation());
+        GraphicsInterface graphics = new Graphics(graphicProperties.getBulletTexture());
         bullets.put(bulletMoveModel, graphics);
     }
 
-    public HashMap<BulletMoveModel, Graphics> getBullets() {
+    public HashMap<BulletMoveModel, GraphicsInterface> getBullets() {
         return bullets;
     }
 

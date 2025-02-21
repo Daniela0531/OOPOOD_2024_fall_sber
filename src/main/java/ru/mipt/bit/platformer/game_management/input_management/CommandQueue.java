@@ -1,4 +1,4 @@
-package ru.mipt.bit.platformer.game_management;
+package ru.mipt.bit.platformer.game_management.input_management;
 
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
@@ -8,11 +8,11 @@ import ru.mipt.bit.platformer.commands.Command;
 import java.util.ArrayList;
 
 @Component
-public class CommandQueueHandler {
+public class CommandQueue {
 //    private ArrayList<Command> receivedCommands;
     private ArrayList<Action> actions;
 
-    public CommandQueueHandler() {
+    public CommandQueue() {
 //        this.receivedCommands = new ArrayList<>();
         this.actions = new ArrayList<>();
     }
@@ -113,9 +113,9 @@ public class CommandQueueHandler {
     public void printQueue() {
         System.out.println("my queue:");
         for(Action action : actions) {
-            System.out.println("    " + action.getActionType() +
-                    ": coord " + action.getModel().getCoordinates() +
-                    "  direction" + action.getModel().getDirection().getVector());
+//            System.out.println("    " + action.getActionType() +
+//                    ": coord " + action.getModel().getCoordinates() +
+//                    "  direction" + action.getModel().getDirection().getVector());
         }
     }
 }

@@ -3,15 +3,17 @@ package ru.mipt.bit.platformer.graphics_objects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import ru.mipt.bit.platformer.graphics.HealthBarDecorator;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 
-public class Graphics implements GraphicsInterface {
+public class GraphicsForLivable implements GraphicsInterface{
     private Texture texture;
     private TextureRegion textureRegion;
     private Rectangle rectangle;
+    private HealthBarDecorator healthBarDecorator;
 
-    public Graphics(Texture texture) {
+    public GraphicsForLivable(Texture texture) {
         this.texture = texture;
         this.textureRegion = new TextureRegion(texture);
         this.rectangle = createBoundingRectangle(textureRegion);

@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.graphics_objects.Graphics;
+import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
 
 import java.util.ArrayList;
 
@@ -13,7 +13,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled
 @Component
 public class EnvironmentGraphicRender {
 //    private final Level tiles;
-    private ArrayList<Graphics> treeGraphics;
+    private ArrayList<GraphicsInterface> treeGraphics;
     private TiledMapTileLayer groundLayer;
     private MapRenderer mapRenderer;
 
@@ -45,12 +45,12 @@ public class EnvironmentGraphicRender {
     }
 
     public void render(Batch batch) {
-        for (Graphics treeGraphic : treeGraphics) {
+        for (GraphicsInterface treeGraphic : treeGraphics) {
             drawTextureRegionUnscaled(batch, treeGraphic.getTextureRegion(), treeGraphic.getRectangle(), 0f);
         }
     }
     public void dispose() {
-        for(Graphics treeGraphic : treeGraphics) {
+        for(GraphicsInterface treeGraphic : treeGraphics) {
             treeGraphic.getTexture().dispose();
         }
 //        tiles.getLevel().dispose();

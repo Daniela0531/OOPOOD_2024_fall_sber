@@ -1,16 +1,11 @@
 package ru.mipt.bit.platformer.actions;
 
-import ru.mipt.bit.platformer.logic_objects.MoveModel;
+import ru.mipt.bit.platformer.logic_objects.Model;
 
 public interface Action {
-//    GridPoint2 getDestinationCoordinates();
-
     ActionType getActionType();
-
-//    Direction getDirection();
-
-    MoveModel getModel();
+    Model getModel();
     boolean isFinished();
-
     void finished();
+    boolean equals(Action action);
 }

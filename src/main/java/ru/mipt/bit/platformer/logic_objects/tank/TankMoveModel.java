@@ -2,6 +2,7 @@ package ru.mipt.bit.platformer.logic_objects.tank;
 
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.logic_objects.LivableModel;
+import ru.mipt.bit.platformer.logic_objects.Model;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.NodeType;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
@@ -21,13 +22,15 @@ public class TankMoveModel implements MoveModel, LivableModel {
     private Direction direction;
     private NodeType nodeType;
     private int health;
+    private int maxHealth = 5;
+    private boolean healthBarRaise = false;
 //    private boolean justFired = false;
     public TankMoveModel(GridPoint2 coordinates, float rotation) {
         this.coordinates = coordinates;
         this.progress = 0f;
         this.nodeType = NodeType.TANK;
         this.direction = new Direction(new GridPoint2(0,0), rotation);
-        this.health = 1;
+        this.health = maxHealth;
     }
 
     @Override
@@ -69,6 +72,15 @@ public class TankMoveModel implements MoveModel, LivableModel {
     public GridPoint2 getCoordinates() {
         return coordinates;
     }
+
+    @Override
+    public boolean equalsTo(Model model) {
+        if (model instanceof TankMoveModel) {
+            this.coordinates == ((TankMoveModel) model).getCoordinates();
+        }
+        return false;
+    }
+
     public float getProgress() {
         return progress;
     }
@@ -94,5 +106,17 @@ public class TankMoveModel implements MoveModel, LivableModel {
     public void damage(int damage) {
         this.health -= damage;
     }
+    @Override
+    public void switchHealthBar() {
+        this.healthBarRaise = !healthBarRaise;
+    }
+    @Override
+    public boolean isHealthBarRaise() {
+        return healthBarRaise;
+    }
 
+    @Override
+    public float getMaxHealth() {
+        return 0;
+    }
 }

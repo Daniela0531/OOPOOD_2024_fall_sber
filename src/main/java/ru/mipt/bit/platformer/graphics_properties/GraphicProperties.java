@@ -66,6 +66,10 @@ public class GraphicProperties {
         return new TextureRegion(getTreeTexture());
     }
 
+//    public Texture getHealthBarTexture() {
+//        return
+//    }
+
 //    public Graphics getTankGraphics() {
 //        return new Graphics(getTankTexture(), getTankTextureRegion(), 0f);
 //    }

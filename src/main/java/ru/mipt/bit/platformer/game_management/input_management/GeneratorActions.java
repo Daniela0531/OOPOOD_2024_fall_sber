@@ -1,4 +1,4 @@
-package ru.mipt.bit.platformer.game_management;
+package ru.mipt.bit.platformer.game_management.input_management;
 
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
@@ -14,7 +14,10 @@ import java.util.Random;
 
 @Component
 public class GeneratorActions {
-    public void getCommand(CommandQueueHandler receivedCommands, Level level) {
+    public void getCommand(CommandQueue receivedCommands, Level level) {
+        if (level.getTanks().isEmpty()) {
+            return;
+        }
         Random random = new Random();
         int randomNumber = random.nextInt(5);
         int i = random.nextInt(level.moveNodesSize())%level.moveNodesSize();
@@ -22,7 +25,7 @@ public class GeneratorActions {
         TankMoveModel tank = null;
         for (TankMoveModel tankMoveModel : level.getTanks().keySet()) {
             if (k == i) {
-                if (tankMoveModel.getCoordinates() == level.getPlayerTank().getCoordinates()) {
+                if (!level.isPlayerKilled() && tankMoveModel.getCoordinates() == level.getPlayerTank().getCoordinates()) {
                     return;
                 }
                 tank = tankMoveModel;

@@ -8,9 +8,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.graphics_objects.Graphics;
+import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
 import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level.Level;
+import ru.mipt.bit.platformer.logic_objects.LivableModel;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
@@ -28,13 +29,14 @@ public class MainGraphicRender {
     private TileMovement tileMovement;
     private TiledMap tiledMap;
     private MapRenderer mapRenderer;
+    private HealthBarDecorator healthBarDecorator;
 
     public MainGraphicRender(GraphicProperties graphicProperties, Level level) {
         this.batch = new SpriteBatch();
         this.tiledMap = graphicProperties.getTiledMap();
         this.tileMovement = new TileMovement(graphicProperties.getTiledMapTileLayer(), Interpolation.smooth);
         this.mapRenderer = createSingleLayerMapRenderer(tiledMap, batch);
-        for(Map.Entry<TreeMoveModel, Graphics> entry : level.getTrees().entrySet()) {
+        for(Map.Entry<TreeMoveModel, GraphicsInterface> entry : level.getTrees().entrySet()) {
             moveRectangleAtTileCenter(tileMovement.getTileLayer(), entry.getValue().getRectangle(), entry.getKey().getCoordinates());
         }
     }
@@ -43,28 +45,49 @@ public class MainGraphicRender {
         mapRenderer.render();
         batchRender(level);
 
-        for (Map.Entry<TankMoveModel, Graphics> entry : level.getTanks().entrySet()) {
+        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : level.getTanks().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());
+            if (entry.getKey().isHealthBarRaise()) {
+                System.out.println("try to drow bar");
+                healthBarDecorator.drawHealthBar(batch, entry.getKey().getHealth());
+            }
         }
-        for (Map.Entry<BulletMoveModel, Graphics> entry : level.getBullets().entrySet()) {
+        for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : level.getBullets().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());
         }
         movementRender(level.getPlayerTank(), level.getPlayerGraphics().getRectangle());
     }
 
+    public void clear() {
+        Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
+        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
+    }
+    public void dispose(Level level) {
+        for(GraphicsInterface graphics : level.getTrees().values()) {
+            graphics.getTexture().dispose();
+        }
+        for(GraphicsInterface graphics : level.getTanks().values()) {
+            graphics.getTexture().dispose();
+        }
+        for(GraphicsInterface graphics : level.getBullets().values()) {
+            graphics.getTexture().dispose();
+        }
+        if (!level.isPlayerKilled()) {
+            level.getPlayerGraphics().getTexture().dispose();
+        }
+        tiledMap.dispose();
+        batch.dispose();
+    }
+
     public void batchRender(Level level) {
         batch.begin();
-        for (Map.Entry<TreeMoveModel, Graphics> entry : level.getTrees().entrySet()) {
+        for (Map.Entry<TreeMoveModel, GraphicsInterface> entry : level.getTrees().entrySet()) {
             drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
-        for (Map.Entry<TankMoveModel, Graphics> entry : level.getTanks().entrySet()) {
+        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : level.getTanks().entrySet()) {
             drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
-        for (Map.Entry<BulletMoveModel, Graphics> entry : level.getBullets().entrySet()) {
-//            if (node instanceof BulletMoveModel) {
-//                System.out.println("bullet graphics render\n" +
-//                        "    coord: " + entry.getValue().getCoordinates());
-//            }
+        for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : level.getBullets().entrySet()) {
             drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
         if (!level.isPlayerKilled()) {
@@ -74,12 +97,6 @@ public class MainGraphicRender {
     }
 
     public void movementRender(MoveModel node, Rectangle rectangle) {
-//        if (node instanceof BulletMoveModel) {
-//            System.out.println("bullet graphics render\n" +
-//                    "    coord: " + node.getCoordinates() + "\n" +
-//                    "    dest: " + node.getDestination() + "\n" +
-//                    "    progres: " + node.getProgress());
-//        }
         tileMovement.moveRectangleBetweenTileCenters(
                 rectangle,
                 node.getCoordinates(),
@@ -88,25 +105,12 @@ public class MainGraphicRender {
         );
     }
 
-    public void clear() {
-        Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
-        Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
-    }
+    private void drawHealthBar(Batch batch, LivableModel livableModel) {
+        float health = livableModel.getHealth();
+        float maxHealth = livableModel.getMaxHealth();
 
-    public void dispose(Level level) {
-        for(Graphics graphics : level.getTrees().values()) {
-            graphics.getTexture().dispose();
-        }
-        for(Graphics graphics : level.getTanks().values()) {
-            graphics.getTexture().dispose();
-        }
-        for(Graphics graphics : level.getBullets().values()) {
-            graphics.getTexture().dispose();
-        }
-        if (!level.isPlayerKilled()) {
-            level.getPlayerGraphics().getTexture().dispose();
-        }
-        tiledMap.dispose();
-        batch.dispose();
+//        TextureRegion healthBarTexture = getHealthBarTexture(health, maxHealth);
+//        Rectangle rectangle = createRectangle();
+//        GdxGameUtils.drawTextureRegionUnscaled(batch, healthBarTexture, rectangle, 0f);
     }
 }

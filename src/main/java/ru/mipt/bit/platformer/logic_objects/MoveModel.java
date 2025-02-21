@@ -3,7 +3,7 @@ package ru.mipt.bit.platformer.logic_objects;
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 
-public interface MoveModel {
+public interface MoveModel extends Model {
     public NodeType getType();
     public GridPoint2 getCoordinates();
 

@@ -3,6 +3,7 @@ package ru.mipt.bit.platformer.actions.impl_action;
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.actions.Action;
 import ru.mipt.bit.platformer.actions.ActionType;
+import ru.mipt.bit.platformer.logic_objects.Model;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
@@ -20,10 +21,6 @@ public class ShootAction implements Action {
         this.direction = tankMoveModel.getDirection();
         this.tankMoveModel = tankMoveModel;
         this.bulletMoveModel = bulletMoveModel;
-//        this.destinationCoordinates = new GridPoint2(
-//                tankMoveModel.getCoordinates().x + direction.getVector().x,
-//                tankMoveModel.getCoordinates().y + direction.getVector().y
-//        );
     }
     public GridPoint2 getDestinationCoordinates() {
         return new GridPoint2(
@@ -35,16 +32,9 @@ public class ShootAction implements Action {
         return actionType;
     }
 
-//    public Direction getDirection() {
-//        return direction;
-//    }
-
-    public TankMoveModel getModel() {
+    public Model getModel() {
         return tankMoveModel;
     }
-//    public BulletMoveModel getBullet() {
-//        return bulletMoveModel;
-//    }
     public void execute() {
     }
     @Override
@@ -58,5 +48,12 @@ public class ShootAction implements Action {
 
     public MoveModel getBullet() {
         return bulletMoveModel;
+    }
+    @Override
+    public boolean equals(Action action) {
+        if (action instanceof SwitchHealthBar) {
+            return action.getModel().equalsTo(bulletMoveModel);
+        }
+        return false;
     }
 }

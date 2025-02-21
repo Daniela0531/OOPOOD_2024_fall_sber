@@ -1,10 +1,11 @@
-package ru.mipt.bit.platformer.game_management;
+package ru.mipt.bit.platformer.game_management.input_management;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
+import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBar;
 import ru.mipt.bit.platformer.commands.Command;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
@@ -14,7 +15,7 @@ import static com.badlogic.gdx.Input.Keys.*;
 
 @Component
 public class ButtonHandler {
-    public void readCommand(CommandQueueHandler commandQueueHandler, Level level) {
+    public void readCommand(CommandQueue commandQueueHandler, Level level) {
         if (level.isPlayerKilled()) {
             return;
         }
@@ -49,6 +50,11 @@ public class ButtonHandler {
             level.putBulletInLevel(bulletMoveModel);
             ShootAction shootAction = new ShootAction(level.getPlayerTank(), bulletMoveModel);
             commandQueueHandler.addAction(shootAction);
+        }
+        if (Gdx.input.isKeyPressed(L)) {
+            System.out.println("L pressed");
+            SwitchHealthBar switchHealthBarAction = new SwitchHealthBar(level.getPlayerTank());
+            commandQueueHandler.addAction(switchHealthBarAction);
         }
     }
 }

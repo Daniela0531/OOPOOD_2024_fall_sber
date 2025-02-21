@@ -5,19 +5,20 @@ import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.actions.Action;
 import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
+import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBar;
+import ru.mipt.bit.platformer.game_management.ExecutingActionsQueue;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.DamageDealerModel;
+import ru.mipt.bit.platformer.logic_objects.LivableModel;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tree.TreeMoveModel;
-
-import java.util.HashMap;
 
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 
 
 @Component
-public class MovementsExecutor {
+public class LogicExecutor {
     private int upBound = 5;
     private int leftBound = 0;
     private int lowBound = 0;
@@ -39,10 +40,6 @@ public class MovementsExecutor {
                 continue;
             }
             if (otherTank.getCoordinates().equals(newCoordinates) || otherTank.getDestination().equals(newCoordinates)) {
-//                System.out.println(
-//                        "tank try to move to newCoordinates: " + newCoordinates + "\n" +
-//                        "    another tank coord: " + otherTank.getCoordinates() + "\n" +
-//                        "                 dest: " + otherTank.getDestination());
                 return false;
             }
         }
@@ -55,31 +52,42 @@ public class MovementsExecutor {
     }
 
     public void finishMoveActionIfPossible(Action action) {
-        if (isEqual(action.getModel().getProgress(), 1f)) {
-            action.getModel().finishMovement();
-            action.getModel().setProgress(0f);
-            action.getModel().setMovingStatus(false);
-            action.finished();
+        if (action instanceof MoveAction) {
+            if (isEqual(((MoveModel)action.getModel()).getProgress(), 1f)) {
+                ((MoveModel)action.getModel()).finishMovement();
+                ((MoveModel)action.getModel()).setProgress(0f);
+                ((MoveModel)action.getModel()).setMovingStatus(false);
+                action.finished();
+            }
         }
     }
 
-    public void executeMovement(float deltaTime, Action action, Level level) {
-            if (action instanceof MoveAction) {
-                executeTankMovement(deltaTime, (MoveAction) action, level);
-                action.getModel().setRotation(action.getModel().getDirection().getRotation());
-                finishMoveActionIfPossible(action);
-            }
-            if (action instanceof ShootAction) {
-                executeBulletMovement(deltaTime, (ShootAction) action, level);
-            }
+    public void execute(float deltaTime, Action action, Level level) {
+        if (action instanceof MoveAction) {
+            executeTankMovement(deltaTime, (MoveAction) action, level);
+            ((MoveModel)action.getModel()).setRotation(((MoveModel)action.getModel()).getDirection().getRotation());
+            finishMoveActionIfPossible(action);
+        }
+        if (action instanceof ShootAction) {
+            executeBulletMovement(deltaTime, (ShootAction) action, level);
+        }
+        if (action instanceof SwitchHealthBar) {
+            executeSwitchingHealthBar(deltaTime, (SwitchHealthBar) action, level);
+        }
+    }
+
+    private void executeSwitchingHealthBar(float deltaTime, SwitchHealthBar action, Level level) {
+        ((LivableModel)action.getModel()).switchHealthBar();
+        action.finished();
+        System.out.println("up health bar");
     }
 
     public void executeTankMovement(float deltaTime, MoveAction action, Level level) {
-        if (movementIsPossible(action.getModel(), level)) {
-            action.getModel().updateProgress(deltaTime);
+        if (movementIsPossible(((MoveModel)action.getModel()), level)) {
+            ((MoveModel)action.getModel()).updateProgress(deltaTime);
         } else {
-            action.getModel().setProgress(0f);
-            action.getModel().setMovingStatus(false);
+            ((MoveModel)action.getModel()).setProgress(0f);
+            ((MoveModel)action.getModel()).setMovingStatus(false);
             action.finished();
         }
     }
@@ -119,9 +127,14 @@ public class MovementsExecutor {
         }
     }
 
-    public void executeMoveActions(float deltaTime, HashMap<MoveModel, Action> executingActionsQueue, Level level) {
-        for (Action action : executingActionsQueue.values()) {
-            executeMovement(deltaTime, action, level);
+//    public void executeActions(float deltaTime, HashMap<Model, Action> executingActionsQueue, Level level) {
+//        for (Action action : executingActionsQueue.values()) {
+//            execute(deltaTime, action, level);
+//        }
+//    }
+    public void executeActions(float deltaTime, ExecutingActionsQueue executingActionsQueue, Level level) {
+        for (Action action : executingActionsQueue.getActions()) {
+            execute(deltaTime, action, level);
         }
     }
 
