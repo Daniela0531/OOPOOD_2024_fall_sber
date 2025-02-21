@@ -4,11 +4,11 @@ import ru.mipt.bit.platformer.level_map.MapNode;
 
 import java.util.ArrayList;
 
-public class Map {
+public class LevelMap {
     private MapNode player;
     private ArrayList<MapNode> nodesCoordinates;
 
-    public Map(ArrayList<MapNode> nodesCoordinates, MapNode player) {
+    public LevelMap(ArrayList<MapNode> nodesCoordinates, MapNode player) {
         this.nodesCoordinates = nodesCoordinates;
         this.player = player;
     }

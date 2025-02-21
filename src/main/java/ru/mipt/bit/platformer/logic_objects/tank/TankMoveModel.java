@@ -27,7 +27,7 @@ public class TankMoveModel implements MoveModel, LivableModel {
         this.progress = 0f;
         this.nodeType = NodeType.TANK;
         this.direction = new Direction(new GridPoint2(0,0), rotation);
-        this.health = 5;
+        this.health = 1;
     }
 
     @Override

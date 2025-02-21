@@ -25,7 +25,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.getSingleLayer;
 @ComponentScan
 public class GameConfiguration {
     @Bean
-    public Map map() {
+    public LevelMap map() {
         ArrayList<MapNode> obstacles = new ArrayList<>();
         obstacles.add(new MapNode(new GridPoint2(1, 3), NodeType.TREE));
         obstacles.add(new MapNode(new GridPoint2(1, 5), NodeType.TREE));
@@ -35,9 +35,9 @@ public class GameConfiguration {
         obstacles.add(new MapNode(new GridPoint2(0, 0), NodeType.TANK));
         obstacles.add(new MapNode(new GridPoint2(6, 1), NodeType.TANK));
         MapNode player = new MapNode(new GridPoint2(1, 1), NodeType.TANK);
-        obstacles.add(player);
+//        obstacles.add(player);
 
-        return new Map(obstacles, player);
+        return new LevelMap(obstacles, player);
     }
 
     @Bean

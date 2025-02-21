@@ -25,29 +25,37 @@ public class MainCommandExecutor {
         this.executingActions = new HashMap<>();
     }
 
+    public void executeAllCommands(
+            float deltaTime,
+            CommandQueueHandler commandQueueHandler,
+            Level level
+    ) {
+        graphicRender.clear();
+        tryToCatchNewCommand(commandQueueHandler, level);
+        movementCommandExecuter.executeMoveActions(deltaTime, executingActions, level);
+        graphicRender.render(deltaTime, level);
+        level.removeInvalidEntities();
+        removeFinishedActions();
+    }
+
+    public void dispose(Level level) {
+        graphicRender.dispose(level);
+    }
+
     private void tryToCatchNewCommand(CommandQueueHandler commandQueueHandler, Level level) {
         if (commandQueueHandler.isEmpty()) {
             return;
         }
         for (Action action : commandQueueHandler.getActions()) {
-//            if (executingActions.containsKey(action.getModel())) {
-//                if (action instanceof ShootAction) {
-//                    executingActions.put(action.getModel(), action);
-//                    System.out.println("CATCH NEW ONE ShootAction for moving tank");
-//                }
-//            } else {
             if (!executingActions.containsKey(action.getModel())) {
                 if (action instanceof MoveAction) {
                     action.getModel().setDirection((((MoveAction) action).getDirection()));
                     action.getModel().setMovingStatus(true);
                     executingActions.put(action.getModel(), action);
-//                    System.out.println("CATCH NEW ONE MoveAction");
                 }
                 if (action instanceof ShootAction) {
-//                    ((ShootAction) action).getBullet().setDirection(((ShootAction) action).getDirection());
                     ((ShootAction) action).getBullet().setMovingStatus(true);
                     executingActions.put(action.getModel(), action);
-//                    System.out.println("CATCH NEW ONE ShootAction (for not moving tank)");
                 }
 
             }
@@ -63,26 +71,6 @@ public class MainCommandExecutor {
                 executingActions.remove(action);
             }
         }
-    }
-
-    public void executeAllCommands(
-            float deltaTime,
-            CommandQueueHandler commandQueueHandler,
-            Level level
-    ) {
-        graphicRender.clear();
-        tryToCatchNewCommand(commandQueueHandler, level);
-//        printQueue();
-        movementCommandExecuter.executeMoveActions(deltaTime, executingActions, level);
-        graphicRender.render(deltaTime, level);
-        level.removeKilledTanks();
-        level.removeFinishedBullets();
-        removeFinishedActions();
-//        printQueue();
-    }
-
-    public void dispose(Level level) {
-        graphicRender.dispose(level);
     }
 
     private void printQueue() {

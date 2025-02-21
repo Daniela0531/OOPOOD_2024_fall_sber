@@ -8,13 +8,13 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
+import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
+import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tree.TreeMoveModel;
-import ru.mipt.bit.platformer.graphics_objects.Graphics;
-import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.util.TileMovement;
 
 import java.util.Map;
@@ -49,7 +49,7 @@ public class MainGraphicRender {
         for (Map.Entry<BulletMoveModel, Graphics> entry : level.getBullets().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());
         }
-//        movementRender(level.getPlayerTank(), level.getPlayerTank().getGraphics().getRectangle());
+        movementRender(level.getPlayerTank(), level.getPlayerGraphics().getRectangle());
     }
 
     public void batchRender(Level level) {
@@ -61,19 +61,25 @@ public class MainGraphicRender {
             drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
         for (Map.Entry<BulletMoveModel, Graphics> entry : level.getBullets().entrySet()) {
+//            if (node instanceof BulletMoveModel) {
+//                System.out.println("bullet graphics render\n" +
+//                        "    coord: " + entry.getValue().getCoordinates());
+//            }
             drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
-//        drawTextureRegionUnscaled(batch, level.getPlayerTank().getGraphics().getTextureRegion(), level.getPlayerTank().getGraphics().getRectangle(), level.getPlayerTank().getMoveModel().getRotation());
+        if (!level.isPlayerKilled()) {
+            drawTextureRegionUnscaled(batch, level.getPlayerGraphics().getTextureRegion(), level.getPlayerGraphics().getRectangle(), level.getPlayerTank().getRotation());
+        }
         batch.end();
     }
 
     public void movementRender(MoveModel node, Rectangle rectangle) {
-        if (node instanceof BulletMoveModel) {
-            System.out.println("bullet graphics render\n" +
-                    "    coord: " + node.getCoordinates() + "\n" +
-                    "    dest: " + node.getDestination() + "\n" +
-                    "    progres: " + node.getProgress());
-        }
+//        if (node instanceof BulletMoveModel) {
+//            System.out.println("bullet graphics render\n" +
+//                    "    coord: " + node.getCoordinates() + "\n" +
+//                    "    dest: " + node.getDestination() + "\n" +
+//                    "    progres: " + node.getProgress());
+//        }
         tileMovement.moveRectangleBetweenTileCenters(
                 rectangle,
                 node.getCoordinates(),
@@ -97,7 +103,9 @@ public class MainGraphicRender {
         for(Graphics graphics : level.getBullets().values()) {
             graphics.getTexture().dispose();
         }
-//        level.getPlayerTank().getGraphics().getTexture().dispose();
+        if (!level.isPlayerKilled()) {
+            level.getPlayerGraphics().getTexture().dispose();
+        }
         tiledMap.dispose();
         batch.dispose();
     }

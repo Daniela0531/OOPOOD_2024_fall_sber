@@ -46,6 +46,11 @@ public class MovementsExecutor {
                 return false;
             }
         }
+        if (level.getPlayerTank() != tank) {
+            if (level.getPlayerTank().getCoordinates().equals(newCoordinates) || level.getPlayerTank().getDestination().equals(newCoordinates)) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -65,7 +70,6 @@ public class MovementsExecutor {
                 finishMoveActionIfPossible(action);
             }
             if (action instanceof ShootAction) {
-//                System.out.println("executeMovement == ActionType.SHOOTING");
                 executeBulletMovement(deltaTime, (ShootAction) action, level);
             }
     }
@@ -80,16 +84,9 @@ public class MovementsExecutor {
         }
     }
     public void executeBulletMovement(float deltaTime, ShootAction action, Level level) {
-//        printBullet(action);
-        GridPoint2 newCoordinates = action.getBullet().getDestination().cpy();
-//        System.out.println("start executeBulletMovement to dest: " + newCoordinates);
-//        printBullet(action);
+        GridPoint2 newCoordinates = action.getBullet().getCoordinates().cpy();
         if (!(newCoordinates.x < leftBound || newCoordinates.x > rightBound || newCoordinates.y < lowBound || newCoordinates.y > upBound)) {
-//            System.out.println("after if");
-//            printBullet(action);
             for(TreeMoveModel obstacle : level.getTrees().keySet()) {
-//                System.out.println("in for");
-//                printBullet(action);
                 if (obstacle.getCoordinates().equals(newCoordinates)) {
                     action.getBullet().setProgress(0f);
                     action.getBullet().setMovingStatus(false);
@@ -106,28 +103,25 @@ public class MovementsExecutor {
                     return;
                 }
             }
-//            action.getBullet().updateProgress(deltaTime);
+            if (!level.isPlayerKilled() && level.getPlayerTank().getCoordinates().equals(newCoordinates)) {
+                level.getPlayerTank().damage(((DamageDealerModel)action.getBullet()).getDamage());
+                action.getBullet().setProgress(0f);
+                action.getBullet().setMovingStatus(false);
+                action.finished();
+                return;
+            }
             action.getBullet().finishMovement();
             action.getBullet().updateProgress(deltaTime);
-//            System.out.println("update progres");
-//            printBullet(action);
         } else {
             action.getBullet().setProgress(0f);
             action.getBullet().setMovingStatus(false);
             action.finished();
-//            System.out.println("dont upgrade progress");
-//            printBullet(action);
         }
     }
 
     public void executeMoveActions(float deltaTime, HashMap<MoveModel, Action> executingActionsQueue, Level level) {
-//        System.out.println("executeMoveActions size: " + executingActionsQueue.size());
         for (Action action : executingActionsQueue.values()) {
-            if (action.getModel().getCoordinates() == level.getPlayerTank().getCoordinates()) {
-                System.out.println("action for my tank");
-            }
             executeMovement(deltaTime, action, level);
-//            finishMoveActionIfPossible(action);
         }
     }
 
