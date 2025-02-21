@@ -2,10 +2,10 @@ package ru.mipt.bit.platformer.game_management;
 
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.game_management.actions.Action;
-import ru.mipt.bit.platformer.game_management.actions.impl_action.MoveAction;
-import ru.mipt.bit.platformer.game_management.commands.Command;
-import ru.mipt.bit.platformer.game_objects.movable.properties.Direction;
+import ru.mipt.bit.platformer.actions.Action;
+import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
+import ru.mipt.bit.platformer.commands.Command;
+import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 import ru.mipt.bit.platformer.level.Level;
 
 import java.util.ArrayList;
@@ -32,27 +32,27 @@ public class CommandQueueHandler {
 //        receivedCommands.add(command);
         if (command == Command.UP) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
+            MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             actions.add(moveAction);
         }
         if (command == Command.LEFT) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
+            MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             actions.add(moveAction);
         }
         if (command == Command.DOWN) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
+            MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             actions.add(moveAction);
         }
         if (command == Command.RIGHT) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
+            MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             actions.add(moveAction);
         }
         if (command == Command.SHOOT) {
             Direction direction = new Direction(command);
-            MoveAction moveAction = new MoveAction(level.getPlayerTank().getMoveModel(), direction);
+            MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             actions.add(moveAction);
         }
     }

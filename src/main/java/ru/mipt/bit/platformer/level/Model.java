@@ -1,7 +1,7 @@
 package ru.mipt.bit.platformer.level;
 
-import ru.mipt.bit.platformer.game_objects.NodeType;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.logic_objects.NodeType;
+import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
 
 public class Model {

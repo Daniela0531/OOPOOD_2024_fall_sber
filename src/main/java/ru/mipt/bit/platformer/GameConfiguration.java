@@ -10,7 +10,8 @@ import com.badlogic.gdx.math.Interpolation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import ru.mipt.bit.platformer.game_objects.NodeType;
+import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
+import ru.mipt.bit.platformer.logic_objects.NodeType;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.util.TileMovement;
 
@@ -41,11 +42,7 @@ public class GameConfiguration {
 
     @Bean
     public GraphicProperties graphicProperties() {
-//        Texture tankTexture = new Texture("images/tank_blue.png");
-//        Texture treeTexture = new Texture("images/greenTree.png");
         TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
-//        Texture bulletTexture = new Texture("images/brick.png");
-
         return new GraphicProperties(tiledMap);
     }
 

@@ -3,12 +3,13 @@ package ru.mipt.bit.platformer.level;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.GraphicProperties;
 import ru.mipt.bit.platformer.Map;
-import ru.mipt.bit.platformer.game_objects.LevelNodeImpl;
-import ru.mipt.bit.platformer.game_objects.NodeType;
-import ru.mipt.bit.platformer.game_objects.movable.bullet.BulletMoveModel;
-import ru.mipt.bit.platformer.game_objects.movable.tank.TankMoveModel;
+import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
+//import ru.mipt.bit.platformer.logic_objects.LevelNodeImpl;
+import ru.mipt.bit.platformer.logic_objects.NodeType;
+import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
+import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
+import ru.mipt.bit.platformer.logic_objects.tree.TreeMoveModel;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.level_map.MapNode;
 
@@ -19,11 +20,12 @@ import java.util.HashMap;
 @Component
 public class Level {
     private Map map;
-    private ArrayList<LevelNodeImpl> obstacles;
-    private ArrayList<LevelNodeImpl> nodes;
+    private HashMap<TreeMoveModel, Graphics> obstacles;
+    private HashMap<TankMoveModel, Graphics> tanks;
     private HashMap<BulletMoveModel, Graphics> bullets;
 //    private GridPoint2 playerCoordinates;
-    private LevelNodeImpl player;
+    private TankMoveModel player;
+//    private GridPoint2 playerCoord;
     private GraphicProperties graphicProperties;
 
 
@@ -33,35 +35,42 @@ public class Level {
         TankMoveModel tankMoveModel = new TankMoveModel(map.getPlayer().getCoordinates(), 0f);
         Graphics graphics = new Graphics(graphicProperties.getTankTexture(), map.getPlayer().getCoordinates(), 0f);
 
-        this.player = new LevelNodeImpl(tankMoveModel, graphics);
-        this.obstacles = new ArrayList<>();
-        this.nodes = new ArrayList<>();
+        this.player = tankMoveModel;
+        this.obstacles = new HashMap<>();
+        this.tanks = new HashMap<>();
         this.bullets = new HashMap<>();
 
         for (MapNode mapNode : map.getNodes()) {
             if (mapNode.getCoordinates() == map.getPlayer().getCoordinates()) {
+                tankMoveModel = new TankMoveModel(mapNode.getCoordinates(), 0f);
+                Graphics graphics = new Graphics(graphicProperties.getTankTexture(), mapNode.getCoordinates(), 0f);
+                tanks.put(tankMoveModel, graphics);
                 continue;
             }
             if (mapNode.getNodeType().equals(NodeType.TANK)) {
                 tankMoveModel = new TankMoveModel(mapNode.getCoordinates(), 0f);
-                graphics = new Graphics(graphicProperties.getTankTexture(), mapNode.getCoordinates(), 0f);
-                nodes.add(new LevelNodeImpl(tankMoveModel, graphics));
+                Graphics graphics = new Graphics(graphicProperties.getTankTexture(), mapNode.getCoordinates(), 0f);
+                tanks.put(tankMoveModel, graphics);
+                continue;
             }
             if (mapNode.getNodeType().equals(NodeType.TREE)) {
-                graphics = new Graphics(graphicProperties.getTreeTexture(), mapNode.getCoordinates(), 0f);
-                obstacles.add(new LevelNodeImpl(null, graphics));
+                TreeMoveModel treeMoveModel = new TreeMoveModel(mapNode.getCoordinates(), 0f);
+                Graphics graphics = new Graphics(graphicProperties.getTreeTexture(), mapNode.getCoordinates(), 0f);
+                obstacles.put(treeMoveModel, graphics);
+                continue;
             }
         }
 
     }
 
     public void removeKilledTanks() {
-        for(int i = 0; i < nodes.size(); ++i) {
-            if (nodes.get(i).getMoveModel().getHealth() <= 0) {
-                GridPoint2 coord = nodes.get(i).getMoveModel().getCoordinates();
-                nodes.remove(i);
-                MapNode mapNode = new MapNode(coord, NodeType.TANK);
-                map.getNodes().remove(mapNode);
+        for(TankMoveModel tank : tanks.keySet()) {
+            if (tank.getHealth() <= 0) {
+//                MapNode removedNode = new MapNode(tank.getCoordinates(), NodeType.TANK);
+//                if (map.getNodes().remove(removedNode)) {
+//                    System.out.println("remove tank");
+//                }
+                tanks.remove(tank);
             }
         }
     }
@@ -70,32 +79,38 @@ public class Level {
         return map;
     }
 
-    public ArrayList<LevelNodeImpl> getEnvirenmentNodes() {
+    public HashMap<TreeMoveModel, Graphics> getTrees() {
         return obstacles;
     }
 
-    public ArrayList<LevelNodeImpl> getMoveNodes() {
-        return nodes;
+    public HashMap<TankMoveModel, Graphics> getTanks() {
+        return tanks;
     }
 
-    public LevelNodeImpl getPlayerTank() {
-        return player;
+    public TankMoveModel getPlayerTank() {
+        for (TankMoveModel tankMoveModel : tanks.keySet()) {
+            if (tankMoveModel.getCoordinates() == playerCoord) {
+                return tankMoveModel;
+            }
+        }
+        return null;
     }
 
     public int moveNodesSize() {
-        return nodes.size();
+        return tanks.size();
     }
     public void createBullet(BulletMoveModel bulletMoveModel) {
 //        BulletMoveModel bullet = new BulletMoveModel();
         Texture texture = graphicProperties.getBulletTexture();
 
-        Graphics graphics = new Graphics(texture, new GridPoint2(1, 1), 0f);
-        LevelNodeImpl levelNode = new LevelNodeImpl(bulletMoveModel, graphics);
+//        System.out.println("create bullet: " + bulletMoveModel.getCoordinates());
+        Graphics graphics = new Graphics(texture, bulletMoveModel.getCoordinates(), bulletMoveModel.getRotation());
+//        LevelNodeImpl levelNode = new LevelNodeImpl(bulletMoveModel, graphics);
         bullets.put(bulletMoveModel, graphics);
     }
-    private void removeBullet(BulletMoveModel bullet) {
-        bullets.remove(bullet);
-    }
+//    private void removeBullet(BulletMoveModel bullet) {
+//        bullets.remove(bullet);
+//    }
 
     public HashMap<BulletMoveModel, Graphics> getBullets() {
         return bullets;

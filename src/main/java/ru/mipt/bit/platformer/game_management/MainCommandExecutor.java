@@ -1,13 +1,13 @@
 package ru.mipt.bit.platformer.game_management;
 
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.GraphicProperties;
-import ru.mipt.bit.platformer.game_management.actions.Action;
-import ru.mipt.bit.platformer.game_management.actions.impl_action.MoveAction;
-import ru.mipt.bit.platformer.game_management.actions.impl_action.ShootAction;
-import ru.mipt.bit.platformer.game_management.execution.MainGraphicRender;
-import ru.mipt.bit.platformer.game_management.execution.MovementsExecutor;
-import ru.mipt.bit.platformer.game_objects.MoveModel;
+import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
+import ru.mipt.bit.platformer.actions.Action;
+import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
+import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
+import ru.mipt.bit.platformer.graphics.MainGraphicRender;
+import ru.mipt.bit.platformer.logic_execution.MovementsExecutor;
+import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.level.Level;
 
 import java.util.ArrayList;
@@ -41,13 +41,13 @@ public class MainCommandExecutor {
                     action.getModel().setDirection((((MoveAction) action).getDirection()));
                     action.getModel().setMovingStatus(true);
                     executingActions.put(action.getModel(), action);
-                    System.out.println("CATCH NEW ONE MoveAction");
+//                    System.out.println("CATCH NEW ONE MoveAction");
                 }
                 if (action instanceof ShootAction) {
 //                    ((ShootAction) action).getBullet().setDirection(((ShootAction) action).getDirection());
                     ((ShootAction) action).getBullet().setMovingStatus(true);
                     executingActions.put(action.getModel(), action);
-                    System.out.println("CATCH NEW ONE ShootAction (for not moving tank)");
+//                    System.out.println("CATCH NEW ONE ShootAction (for not moving tank)");
                 }
 
             }
