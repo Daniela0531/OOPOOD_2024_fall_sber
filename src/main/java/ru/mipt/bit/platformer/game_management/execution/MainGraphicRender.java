@@ -67,6 +67,12 @@ public class MainGraphicRender {
     }
 
     public void movementRender(MoveModel node, Rectangle rectangle) {
+        if (node instanceof BulletMoveModel) {
+            System.out.println("bullet graphics render\n" +
+                    "    coord: " + node.getCoordinates() + "\n" +
+                    "    dest: " + node.getDestination() + "\n" +
+                    "    progres: " + node.getProgress());
+        }
         tileMovement.moveRectangleBetweenTileCenters(
                 rectangle,
                 node.getCoordinates(),

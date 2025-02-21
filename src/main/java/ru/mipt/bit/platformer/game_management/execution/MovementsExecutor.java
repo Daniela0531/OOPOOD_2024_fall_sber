@@ -104,8 +104,8 @@ public class MovementsExecutor {
                         action.getBullet().setProgress(0f);
                         action.getBullet().setMovingStatus(false);
                         action.finished();
-                        System.out.println("damage tank");
-                        printBullet(action);
+//                        System.out.println("damage tank");
+//                        printBullet(action);
                         return;
 //                        level.removeBullet((BulletMoveModel) action.getModel());
                     }
@@ -115,8 +115,8 @@ public class MovementsExecutor {
                         action.finished();
 //                        System.out.println("finished:");
 //                        printBullet(action);
-                        System.out.println("stop in tree");
-                        printBullet(action);
+//                        System.out.println("stop in tree");
+//                        printBullet(action);
                         return;
                     }
                 }
@@ -124,18 +124,19 @@ public class MovementsExecutor {
 //            action.getBullet().updateProgress(deltaTime);
             action.getBullet().finishMovement();
             action.getBullet().updateProgress(deltaTime);
-            System.out.println("update progres");
-            printBullet(action);
+//            System.out.println("update progres");
+//            printBullet(action);
         } else {
-            action.getModel().setMovingStatus(false);
+            action.getBullet().setProgress(0f);
+            action.getBullet().setMovingStatus(false);
             action.finished();
-            System.out.println("dont upgrade progress");
-            printBullet(action);
+//            System.out.println("dont upgrade progress");
+//            printBullet(action);
         }
     }
 
     public void executeMoveActions(float deltaTime, HashMap<MoveModel, Action> executingActionsQueue, Level level) {
-        System.out.println("executeMoveActions size: " + executingActionsQueue.size());
+//        System.out.println("executeMoveActions size: " + executingActionsQueue.size());
         for (Action action : executingActionsQueue.values()) {
             executeMovement(deltaTime, action, level);
 //            finishMoveActionIfPossible(action);
