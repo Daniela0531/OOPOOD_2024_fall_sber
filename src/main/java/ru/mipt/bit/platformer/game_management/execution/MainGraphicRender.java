@@ -24,61 +24,20 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 @Component
 public class MainGraphicRender {
     private Batch batch;
-//    private GraphicProperties graphicProperties;
     private TileMovement tileMovement;
     private TiledMap tiledMap;
     private MapRenderer mapRenderer;
-//    private LevelGraphics levelGraphics;
-//    private TiledMapTileLayer tileLayer;
-//    private Level level;
-//    private EnvironmentGraphicRender environmentGraphicRender;
-//    private Graphics playerGraphics;
-//    private ArrayList<Graphics> tanksGraphics;
-
 
     public MainGraphicRender(GraphicProperties graphicProperties, Level level) {
-//        this.graphicProperties = graphicProperties;
         this.batch = new SpriteBatch();
         this.tiledMap = graphicProperties.getTiledMap();
         this.tileMovement = new TileMovement(graphicProperties.getTiledMapTileLayer(), Interpolation.smooth);
         this.mapRenderer = createSingleLayerMapRenderer(tiledMap, batch);
-//        this.levelGraphics = new LevelGraphics(graphicProperties, map);
-//        this.level = level;
-//        this.levelGraphicRender = new EnvironmentGraphicRender(batch, level.getMap(), graphicProperties);
-
-//        TiledMap tiledMap = graphicProperties.getTiledMap();
-//        groundLayer = getSingleLayer(tiledMap);
-//
-//        mapRenderer = createSingleLayerMapRenderer(tiledMap, batch);
-//        tiles = new Level(tiledMap, new TileMovement(groundLayer, Interpolation.smooth));
-//
-//        Texture treeTexture = graphicProperties.getTreeTexture();
-//        TextureRegion textureRegion = new TextureRegion(treeTexture);
-//        this.treeGraphics = new ArrayList<>();
-//
         for(LevelNodeImpl levelNode : level.getEnvirenmentNodes()) {
-//            Graphics treeGraphic = new Graphics(treeTexture, textureRegion, 0f);
             moveRectangleAtTileCenter(tileMovement.getTileLayer(), levelNode.getGraphics().getRectangle(), levelNode.getGraphics().getCoordinates());
-//            this.treeGraphics.add(treeGraphic);
         }
-
-//        TiledMap tiledMap = graphicProperties.getTiledMap();
-//
-//        Texture tankTexture = graphicProperties.getTankTexture();
-//        TextureRegion textureRegion = new TextureRegion(tankTexture);
-//        this.tanksGraphics = new ArrayList<>();
-//        for(int i = 0; i < map.getTanksCoordinates().size(); ++i) {
-//            Graphics tankGraphics = new Graphics(tankTexture, textureRegion, 0f);
-//            moveRectangleAtTileCenter(getSingleLayer(tiledMap), tankGraphics.getRectangle(), map.getTanksCoordinates().get(i));
-//            this.tanksGraphics.add(tankGraphics);
-//        }
-//
-//        this.playerGraphics = new Graphics(tankTexture, textureRegion, 0f);
     }
 
-//    public void update(Level level) {
-//        for
-//    }
     public void render(float deltaTime, Level level) {
         mapRenderer.render();
         batchRender(level);
@@ -95,14 +54,13 @@ public class MainGraphicRender {
     public void batchRender(Level level) {
         batch.begin();
         for (LevelNodeImpl levelNode : level.getEnvirenmentNodes()) {
-//            System.out.println("arestrdtyfgkhlj;,'" + graphics.getCoordinates());
             drawTextureRegionUnscaled(batch, levelNode.getGraphics().getTextureRegion(), levelNode.getGraphics().getRectangle(), levelNode.getGraphics().getRotation());
         }
         for (LevelNodeImpl levelNode : level.getMoveNodes()) {
             drawTextureRegionUnscaled(batch, levelNode.getGraphics().getTextureRegion(), levelNode.getGraphics().getRectangle(), levelNode.getMoveModel().getRotation());
         }
         for (Map.Entry<BulletMoveModel, Graphics> entry : level.getBullets().entrySet()) {
-            drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getValue().getRotation());
+            drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
         drawTextureRegionUnscaled(batch, level.getPlayerTank().getGraphics().getTextureRegion(), level.getPlayerTank().getGraphics().getRectangle(), level.getPlayerTank().getMoveModel().getRotation());
         batch.end();
@@ -123,18 +81,14 @@ public class MainGraphicRender {
     }
 
     public void dispose(Level level) {
-//        environmentGraphicRender.dispose();
         for(LevelNodeImpl levelNode : level.getEnvirenmentNodes()) {
             levelNode.getGraphics().getTexture().dispose();
         }
         for(LevelNodeImpl levelNode : level.getMoveNodes()) {
             levelNode.getGraphics().getTexture().dispose();
         }
-
         level.getPlayerTank().getGraphics().getTexture().dispose();
         tiledMap.dispose();
-//        playerGraphics.getTexture().dispose();
-//        tanksGraphics.get(0).getTexture().dispose();
         batch.dispose();
     }
 }

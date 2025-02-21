@@ -45,7 +45,6 @@ public class GeneratorActions {
         } else if (randomNumber%30 > 22) {
             GridPoint2 coord = level.getMoveNodes().get(i).getMoveModel().getCoordinates().cpy();
             Direction direction = new Direction(
-                    level.getMoveNodes().get(i).getMoveModel().getDirection().getVector().cpy(),
                     level.getMoveNodes().get(i).getMoveModel().getRotation());
 
             BulletMoveModel bulletMoveModel = new BulletMoveModel(coord, direction, direction.getRotation());

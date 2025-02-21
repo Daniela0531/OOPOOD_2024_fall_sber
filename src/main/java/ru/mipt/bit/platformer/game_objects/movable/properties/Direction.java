@@ -34,6 +34,22 @@ public class Direction {
             this.rotation = 0f;
         }
     }
+
+    public Direction(float rotation) {
+        this.rotation = rotation;
+        if (rotation == 90f) {
+            this.vector = new GridPoint2(0, 1);
+        }
+        if (rotation == 180f) {
+            this.vector = new GridPoint2(-1, 0);
+        }
+        if (rotation == 270f) {
+            this.vector = new GridPoint2(0, -1);
+        }
+        if (rotation == 0f) {
+            this.vector = new GridPoint2(1, 0);
+        }
+    }
     public Direction(GridPoint2 vector, float rotation) {
         this.vector = vector;
         this.rotation = rotation;

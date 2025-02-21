@@ -3,7 +3,8 @@ package ru.mipt.bit.platformer.game_management;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.GraphicProperties;
 import ru.mipt.bit.platformer.game_management.actions.Action;
-import ru.mipt.bit.platformer.game_management.actions.ActionType;
+import ru.mipt.bit.platformer.game_management.actions.impl_action.MoveAction;
+import ru.mipt.bit.platformer.game_management.actions.impl_action.ShootAction;
 import ru.mipt.bit.platformer.game_management.execution.MainGraphicRender;
 import ru.mipt.bit.platformer.game_management.execution.MovementsExecutor;
 import ru.mipt.bit.platformer.game_objects.MoveModel;
@@ -29,22 +30,26 @@ public class MainCommandExecutor {
             return;
         }
         for (Action action : commandQueueHandler.getActions()) {
-//            System.out.println("tank atatus is moving: " + action.getModel().isMoving());
+//            if (executingActions.containsKey(action.getModel())) {
+//                if (action instanceof ShootAction) {
+//                    executingActions.put(action.getModel(), action);
+//                    System.out.println("CATCH NEW ONE ShootAction for moving tank");
+//                }
+//            } else {
             if (!executingActions.containsKey(action.getModel())) {
-                if (action.getActionType() == ActionType.MOVEMENT) {
-                    action.getModel().setDirection(action.getDirection());
+                if (action instanceof MoveAction) {
+                    action.getModel().setDirection((((MoveAction) action).getDirection()));
                     action.getModel().setMovingStatus(true);
                     executingActions.put(action.getModel(), action);
+                    System.out.println("CATCH NEW ONE MoveAction");
                 }
-                if (action.getActionType() == ActionType.SHOOTING) {
-//                    action.getModel().setDirection(action.getDirection());
-                    if (action.getModel().getProgress() > 1.5f) {
-                        action.getModel().setMovingStatus(true);
-                        executingActions.put(action.getModel(), action);
-                    }
+                if (action instanceof ShootAction) {
+//                    ((ShootAction) action).getBullet().setDirection(((ShootAction) action).getDirection());
+                    ((ShootAction) action).getBullet().setMovingStatus(true);
+                    executingActions.put(action.getModel(), action);
+                    System.out.println("CATCH NEW ONE ShootAction (for not moving tank)");
                 }
-//                System.out.println("tryToCatchNewCommand, tank: ");
-//                printQueue();
+
             }
         }
         commandQueueHandler.clear();
@@ -67,10 +72,11 @@ public class MainCommandExecutor {
     ) {
         graphicRender.clear();
         tryToCatchNewCommand(commandQueueHandler, level);
-        printQueue();
+//        printQueue();
         movementCommandExecuter.executeMoveActions(deltaTime, executingActions, level);
         graphicRender.render(deltaTime, level);
         level.removeKilledTanks();
+        level.removeFinishedBullets();
         removeFinishedActions();
 //        printQueue();
     }
@@ -84,7 +90,8 @@ public class MainCommandExecutor {
         for(Action action : executingActions.values()) {
             System.out.println("    " + action.getActionType() +
                     ": coord " + action.getModel().getCoordinates() +
-                    "  direction" + action.getDirection().getVector());
+                    "  direction" + action.getModel().getDirection().getVector() +
+                    "  progres: " + action.getModel().getProgress());
         }
     }
 }

@@ -9,7 +9,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 
 public class BulletMoveModel implements MoveModel {
 
-    private static final float MOVEMENT_SPEED = 0.4f;
+    private static final float MOVEMENT_SPEED = 0.2f;
     private GridPoint2 coordinates;
     private float progress;
     private boolean isMoving = false;
@@ -56,19 +56,23 @@ public class BulletMoveModel implements MoveModel {
 
     @Override
     public void finishMovement() {
-        coordinates.x += direction.getVector().x;
-        coordinates.y += direction.getVector().y;
+        if (progress >= 1) {
+            coordinates.x += direction.getVector().x;
+            coordinates.y += direction.getVector().y;
+            progress = 0f;
+        }
 //        direction.setVector(new GridPoint2(0, 0));
     }
 
     @Override
     public boolean isMoving() {
-        return false;
+        return isMoving;
     }
 
     @Override
-    public void setRotation(float newPlayerRotation) {
-        this.direction.setRotation(newPlayerRotation);
+    public void setRotation(float newRotation) {
+        this.direction.setRotation(newRotation);
+        this.rotation = newRotation;
     }
     @Override
     public GridPoint2 getCoordinates() {

@@ -13,6 +13,7 @@ import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.level_map.MapNode;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 @Component
@@ -92,11 +93,21 @@ public class Level {
         LevelNodeImpl levelNode = new LevelNodeImpl(bulletMoveModel, graphics);
         bullets.put(bulletMoveModel, graphics);
     }
-    public void removeBullet(BulletMoveModel bullet) {
+    private void removeBullet(BulletMoveModel bullet) {
         bullets.remove(bullet);
     }
 
     public HashMap<BulletMoveModel, Graphics> getBullets() {
         return bullets;
+    }
+
+    public void removeFinishedBullets() {
+        Collection<BulletMoveModel> allBullets = new ArrayList<>();
+        allBullets.addAll(bullets.keySet());
+        for(BulletMoveModel bulletMoveModel : allBullets) {
+            if (!bulletMoveModel.isMoving()) {
+                bullets.remove(bulletMoveModel);
+            }
+        }
     }
 }

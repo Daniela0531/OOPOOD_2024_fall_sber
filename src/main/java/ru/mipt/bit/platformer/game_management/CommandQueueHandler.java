@@ -118,7 +118,7 @@ public class CommandQueueHandler {
         for(Action action : actions) {
             System.out.println("    " + action.getActionType() +
                     ": coord " + action.getModel().getCoordinates() +
-                    "  direction" + action.getDirection().getVector());
+                    "  direction" + action.getModel().getDirection().getVector());
         }
     }
 }

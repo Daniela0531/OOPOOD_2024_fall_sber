@@ -34,10 +34,11 @@ public class ButtonHandler {
 //            receivedCommands.add(Command.SHOOT, level);
             GridPoint2 coord = level.getPlayerTank().getMoveModel().getCoordinates().cpy();
             Direction direction = new Direction(
-                    level.getPlayerTank().getMoveModel().getDirection().getVector().cpy(),
                     level.getPlayerTank().getMoveModel().getRotation());
 
-            BulletMoveModel bulletMoveModel = new BulletMoveModel(coord, direction, direction.getRotation());
+            BulletMoveModel bulletMoveModel = new BulletMoveModel(
+                    new GridPoint2(coord.x + direction.getVector().x, coord.y + direction.getVector().y),
+                    direction, direction.getRotation());
             level.createBullet(bulletMoveModel);
             ShootAction shootAction = new ShootAction(
                     (TankMoveModel) level.getPlayerTank().getMoveModel(), bulletMoveModel);

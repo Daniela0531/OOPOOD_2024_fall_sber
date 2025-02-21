@@ -25,6 +25,7 @@ public class MoveAction implements Action {
         return destinationCoordinates;
     }
 
+    @Override
     public ActionType getActionType() {
         return actionType;
     }
@@ -33,6 +34,7 @@ public class MoveAction implements Action {
         return direction;
     }
 
+    @Override
     public MoveModel getModel() {
         return tankMoveModel;
     }
