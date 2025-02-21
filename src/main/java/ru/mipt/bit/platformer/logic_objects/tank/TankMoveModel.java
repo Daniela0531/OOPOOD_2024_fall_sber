@@ -76,7 +76,7 @@ public class TankMoveModel implements MoveModel, LivableModel {
     @Override
     public boolean equalsTo(Model model) {
         if (model instanceof TankMoveModel) {
-            this.coordinates == ((TankMoveModel) model).getCoordinates();
+            return coordinates == ((TankMoveModel) model).getCoordinates();
         }
         return false;
     }
