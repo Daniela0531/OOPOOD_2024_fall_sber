@@ -12,7 +12,6 @@ import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivableInterface;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
 import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level.Level;
-import ru.mipt.bit.platformer.logic_objects.LivableModel;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
@@ -30,7 +29,6 @@ public class MainGraphicRender {
     private TileMovement tileMovement;
     private TiledMap tiledMap;
     private MapRenderer mapRenderer;
-    private HealthBarDecorator healthBarDecorator;
 
     public MainGraphicRender(GraphicProperties graphicProperties, Level level) {
         this.batch = new SpriteBatch();
@@ -49,7 +47,6 @@ public class MainGraphicRender {
         for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : level.getTanks().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());
             if (entry.getKey().isHealthBarRaise()) {
-                System.out.println("try to drow bar");
                 entry.getValue().getHealthBarDecorator().drawHealthBar(batch, entry.getKey().getHealth());
             }
         }
@@ -104,14 +101,5 @@ public class MainGraphicRender {
                 node.getDestination(),
                 node.getProgress()
         );
-    }
-
-    private void drawHealthBar(Batch batch, LivableModel livableModel) {
-        float health = livableModel.getHealth();
-        float maxHealth = livableModel.getMaxHealth();
-
-//        TextureRegion healthBarTexture = getHealthBarTexture(health, maxHealth);
-//        Rectangle rectangle = createRectangle();
-//        GdxGameUtils.drawTextureRegionUnscaled(batch, healthBarTexture, rectangle, 0f);
     }
 }
