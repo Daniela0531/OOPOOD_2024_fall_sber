@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
+import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivableInterface;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
 import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level.Level;
@@ -45,11 +46,11 @@ public class MainGraphicRender {
         mapRenderer.render();
         batchRender(level);
 
-        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : level.getTanks().entrySet()) {
+        for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : level.getTanks().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());
             if (entry.getKey().isHealthBarRaise()) {
                 System.out.println("try to drow bar");
-                healthBarDecorator.drawHealthBar(batch, entry.getKey().getHealth());
+                entry.getValue().getHealthBarDecorator().drawHealthBar(batch, entry.getKey().getHealth());
             }
         }
         for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : level.getBullets().entrySet()) {
@@ -84,7 +85,7 @@ public class MainGraphicRender {
         for (Map.Entry<TreeMoveModel, GraphicsInterface> entry : level.getTrees().entrySet()) {
             drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
-        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : level.getTanks().entrySet()) {
+        for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : level.getTanks().entrySet()) {
             drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
         }
         for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : level.getBullets().entrySet()) {

@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 
 public interface MoveModel extends Model {
-    public NodeType getType();
     public GridPoint2 getCoordinates();
 
     public float getRotation();
@@ -28,11 +27,4 @@ public interface MoveModel extends Model {
     float getProgress();
 
     void setDirection(Direction direction);
-
-
-//    float getHealth();
-//    void damage(float damage);
-//    float getDamage();
-
-//    void finishMovement();
 }

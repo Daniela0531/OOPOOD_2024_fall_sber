@@ -7,7 +7,7 @@ import ru.mipt.bit.platformer.graphics.HealthBarDecorator;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 
-public class GraphicsForLivable implements GraphicsInterface{
+public class GraphicsForLivable implements GraphicsInterface, GraphicsForLivableInterface{
     private Texture texture;
     private TextureRegion textureRegion;
     private Rectangle rectangle;
@@ -29,5 +29,9 @@ public class GraphicsForLivable implements GraphicsInterface{
     @Override
     public Texture getTexture() {
         return texture;
+    }
+    @Override
+    public HealthBarDecorator getHealthBarDecorator() {
+        return healthBarDecorator;
     }
 }

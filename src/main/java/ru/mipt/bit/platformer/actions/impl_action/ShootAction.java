@@ -2,38 +2,31 @@ package ru.mipt.bit.platformer.actions.impl_action;
 
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.actions.Action;
-import ru.mipt.bit.platformer.actions.ActionType;
+import ru.mipt.bit.platformer.logic_objects.DamageDealerModel;
 import ru.mipt.bit.platformer.logic_objects.Model;
-import ru.mipt.bit.platformer.logic_objects.MoveModel;
-import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
+import ru.mipt.bit.platformer.logic_objects.ShootableModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
-import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
 
 public class ShootAction implements Action {
-    private final ActionType actionType = ActionType.SHOOTING;
     private final Direction direction;
-    private final TankMoveModel tankMoveModel;
-    private final BulletMoveModel bulletMoveModel;
+    private final ShootableModel shootableModel;
+    private final DamageDealerModel damageDealerModel;
     private boolean isFinished = false;
 
-    public ShootAction(TankMoveModel tankMoveModel,
-                       BulletMoveModel bulletMoveModel) {
-        this.direction = tankMoveModel.getDirection();
-        this.tankMoveModel = tankMoveModel;
-        this.bulletMoveModel = bulletMoveModel;
+    public ShootAction(ShootableModel shootableModel,
+                       DamageDealerModel damageDealerModel, Direction direction) {
+        this.direction = direction;
+        this.shootableModel = shootableModel;
+        this.damageDealerModel = damageDealerModel;
     }
     public GridPoint2 getDestinationCoordinates() {
         return new GridPoint2(
-                bulletMoveModel.getCoordinates().x + bulletMoveModel.getDirection().getVector().x,
-                bulletMoveModel.getCoordinates().y + bulletMoveModel.getDirection().getVector().y);
+                damageDealerModel.getCoordinates().x + direction.getVector().x,
+                damageDealerModel.getCoordinates().y + direction.getVector().y);
     }
-
-    public ActionType getActionType() {
-        return actionType;
-    }
-
+    @Override
     public Model getModel() {
-        return tankMoveModel;
+        return (Model) shootableModel;
     }
     public void execute() {
     }
@@ -46,14 +39,8 @@ public class ShootAction implements Action {
         this.isFinished = true;
     }
 
-    public MoveModel getBullet() {
-        return bulletMoveModel;
+    public DamageDealerModel getBullet() {
+        return damageDealerModel;
     }
-    @Override
-    public boolean equals(Action action) {
-        if (action instanceof SwitchHealthBar) {
-            return action.getModel().equalsTo(bulletMoveModel);
-        }
-        return false;
-    }
+
 }

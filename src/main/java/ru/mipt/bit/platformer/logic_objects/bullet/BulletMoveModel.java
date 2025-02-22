@@ -4,13 +4,13 @@ import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.logic_objects.DamageDealerModel;
 import ru.mipt.bit.platformer.logic_objects.Model;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
-import ru.mipt.bit.platformer.logic_objects.NodeType;
+import ru.mipt.bit.platformer.level_map.NodeType;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 
 public class BulletMoveModel implements MoveModel, DamageDealerModel {
-    private static final float MOVEMENT_SPEED = 0.2f;
+    private static final float MOVEMENT_SPEED = 0.1f;
     private GridPoint2 coordinates;
     private float progress;
     private boolean isMoving = false;
@@ -27,10 +27,6 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
         this.rotation = rotation;
     }
 
-    @Override
-    public NodeType getType() {
-        return nodeType;
-    }
     public GridPoint2 getDestination() {
         return new GridPoint2(coordinates.x + direction.getVector().x, coordinates.y + direction.getVector().y);
     }
@@ -95,6 +91,11 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
             return coordinates == ((BulletMoveModel) model).getCoordinates();
         }
         return false;
+    }
+
+    @Override
+    public void mainUpdateProgress(float deltaTime) {
+
     }
 }
 

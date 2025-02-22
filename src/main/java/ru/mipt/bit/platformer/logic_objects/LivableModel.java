@@ -1,7 +1,6 @@
 package ru.mipt.bit.platformer.logic_objects;
 
 public interface LivableModel extends Model {
-    public NodeType getType();
 
     int getHealth();
     void damage(int damage);
@@ -11,4 +10,9 @@ public interface LivableModel extends Model {
     boolean isHealthBarRaise();
 
     float getMaxHealth();
+
+
+    void updateHealthBar();
+
+    boolean mayUpHealthBar();
 }

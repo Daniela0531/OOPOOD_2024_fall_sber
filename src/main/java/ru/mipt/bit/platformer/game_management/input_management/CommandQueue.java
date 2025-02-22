@@ -3,7 +3,7 @@ package ru.mipt.bit.platformer.game_management.input_management;
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.actions.Action;
-import ru.mipt.bit.platformer.commands.Command;
+import ru.mipt.bit.platformer.button_commands.ButtonCommand;
 
 import java.util.ArrayList;
 
@@ -54,17 +54,17 @@ public class CommandQueue {
 //        }
 //    }
 
-    public GridPoint2 process(Command command) {
-        if (command == Command.UP) {
+    public GridPoint2 process(ButtonCommand command) {
+        if (command == ButtonCommand.UP) {
             return new GridPoint2(0, 1);
         }
-        if (command == Command.LEFT) {
+        if (command == ButtonCommand.LEFT) {
             return new GridPoint2(-1, 0);
         }
-        if (command == Command.DOWN) {
+        if (command == ButtonCommand.DOWN) {
             return new GridPoint2(0, -1);
         }
-        if (command == Command.RIGHT) {
+        if (command == ButtonCommand.RIGHT) {
             return new GridPoint2(1, 0);
         }
         return new GridPoint2(0, 0);

@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
-import ru.mipt.bit.platformer.commands.Command;
+import ru.mipt.bit.platformer.button_commands.ButtonCommand;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
@@ -19,7 +19,7 @@ public class GeneratorActions {
             return;
         }
         Random random = new Random();
-        int randomNumber = random.nextInt(5);
+        int randomNumber = random.nextInt(50);
         int i = random.nextInt(level.moveNodesSize())%level.moveNodesSize();
         int k = 0;
         TankMoveModel tank = null;
@@ -33,32 +33,32 @@ public class GeneratorActions {
             }
             ++k;
         }
-        if (randomNumber == 0) {
+        if (randomNumber < 10) {
             MoveAction moveAction = new MoveAction(
                     tank,
-                    new Direction(Command.UP)
+                    new Direction(ButtonCommand.UP)
             );
             receivedCommands.addAction(moveAction);
-        } else if (randomNumber == 1) {
+        } else if (randomNumber < 20) {
             MoveAction moveAction = new MoveAction(
                     tank,
-                    new Direction(Command.LEFT)
+                    new Direction(ButtonCommand.LEFT)
             );
             receivedCommands.addAction(moveAction);
-        } else if (randomNumber == 2) {
+        } else if (randomNumber < 30) {
             MoveAction moveAction = new MoveAction(
                     tank,
-                    new Direction(Command.DOWN)
+                    new Direction(ButtonCommand.DOWN)
             );
             receivedCommands.addAction(moveAction);
-        } else if (randomNumber == 3) {
+        } else if (randomNumber < 40) {
             MoveAction moveAction = new MoveAction(
                     tank,
-                    new Direction(Command.RIGHT)
+                    new Direction(ButtonCommand.RIGHT)
             );
             receivedCommands.addAction(moveAction);
         } else
-            if (randomNumber == 4) {
+            if (randomNumber == 49) {
             Direction direction = new Direction(
                     tank.getRotation());
             GridPoint2 coord = new GridPoint2(
@@ -68,15 +68,8 @@ public class GeneratorActions {
             level.putBulletInLevel(bulletMoveModel);
 
             ShootAction shootAction = new ShootAction(
-                    tank, bulletMoveModel);
+                    tank, bulletMoveModel, direction);
             receivedCommands.addAction(shootAction);
         }
-//        else {
-//            MoveAction moveAction = new MoveAction(
-//                    level.getMoveNodes().get(i).getMoveModel(),
-//                    new Direction(Command.NONE)
-//            );
-//            receivedCommands.addMoveAction(moveAction);
-//        }
     }
 }

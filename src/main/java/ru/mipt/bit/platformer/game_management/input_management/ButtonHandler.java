@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
 import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBar;
-import ru.mipt.bit.platformer.commands.Command;
+import ru.mipt.bit.platformer.button_commands.ButtonCommand;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
@@ -20,22 +20,22 @@ public class ButtonHandler {
             return;
         }
         if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
-            Direction direction = new Direction(Command.UP);
+            Direction direction = new Direction(ButtonCommand.UP);
             MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             commandQueueHandler.addAction(moveAction);
         }
         if (Gdx.input.isKeyPressed(LEFT) || Gdx.input.isKeyPressed(A)) {
-            Direction direction = new Direction(Command.LEFT);
+            Direction direction = new Direction(ButtonCommand.LEFT);
             MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             commandQueueHandler.addAction(moveAction);
         }
         if (Gdx.input.isKeyPressed(DOWN) || Gdx.input.isKeyPressed(S)) {
-            Direction direction = new Direction(Command.DOWN);
+            Direction direction = new Direction(ButtonCommand.DOWN);
             MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             commandQueueHandler.addAction(moveAction);
         }
         if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
-            Direction direction = new Direction(Command.RIGHT);
+            Direction direction = new Direction(ButtonCommand.RIGHT);
             MoveAction moveAction = new MoveAction(level.getPlayerTank(), direction);
             commandQueueHandler.addAction(moveAction);
         }
@@ -48,7 +48,7 @@ public class ButtonHandler {
                     new GridPoint2(coord.x + direction.getVector().x, coord.y + direction.getVector().y),
                     direction, direction.getRotation());
             level.putBulletInLevel(bulletMoveModel);
-            ShootAction shootAction = new ShootAction(level.getPlayerTank(), bulletMoveModel);
+            ShootAction shootAction = new ShootAction(level.getPlayerTank(), bulletMoveModel, direction);
             commandQueueHandler.addAction(shootAction);
         }
         if (Gdx.input.isKeyPressed(L)) {

@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
-import ru.mipt.bit.platformer.logic_objects.NodeType;
+import ru.mipt.bit.platformer.level_map.NodeType;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.util.TileMovement;
 
@@ -35,7 +35,6 @@ public class GameConfiguration {
         obstacles.add(new MapNode(new GridPoint2(0, 0), NodeType.TANK));
         obstacles.add(new MapNode(new GridPoint2(6, 1), NodeType.TANK));
         MapNode player = new MapNode(new GridPoint2(1, 1), NodeType.TANK);
-//        obstacles.add(player);
 
         return new LevelMap(obstacles, player);
     }

@@ -6,6 +6,7 @@ import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
 import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBar;
 import ru.mipt.bit.platformer.game_management.input_management.CommandQueue;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
+import ru.mipt.bit.platformer.logic_objects.ShootableModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,35 +18,31 @@ public class ExecutingActionsQueue {
     public ExecutingActionsQueue() {
         this.executingActions = new HashSet<>();
     }
-    public void catchingNewActions(CommandQueue commandQueueHandler) {
-        if (commandQueueHandler.isEmpty()) {
+    public void catchingNewActions(CommandQueue commandQueue) {
+        if (commandQueue.isEmpty()) {
             return;
         }
-        for (Action potentialNewAction : commandQueueHandler.getActions()) {
-            boolean notExecute = true;
-            for (Action executingAction : executingActions) {
-                if (executingAction.equals(potentialNewAction)) {
-                    notExecute = false;
-                    break;
+        for (Action potentialNewAction : commandQueue.getActions()) {
+            if (potentialNewAction instanceof MoveAction) {
+                if (((MoveModel) potentialNewAction.getModel()).isMoving()) {
+                    continue;
                 }
+                ((MoveModel) potentialNewAction.getModel()).setDirection((((MoveAction) potentialNewAction).getDirection()));
+                ((MoveModel) potentialNewAction.getModel()).setMovingStatus(true);
+                executingActions.add(potentialNewAction);
             }
-            if (notExecute) {
-                if (potentialNewAction instanceof MoveAction) {
-                    ((MoveModel) potentialNewAction.getModel()).setDirection((((MoveAction) potentialNewAction).getDirection()));
-                    ((MoveModel) potentialNewAction.getModel()).setMovingStatus(true);
-                    executingActions.add(potentialNewAction);
+            if (potentialNewAction instanceof ShootAction) {
+                if (!((ShootableModel) potentialNewAction.getModel()).mayShoot()) {
+                    continue;
                 }
-                if (potentialNewAction instanceof ShootAction) {
-                    ((ShootAction) potentialNewAction).getBullet().setMovingStatus(true);
-                    executingActions.add(potentialNewAction);
-                }
-                if (potentialNewAction instanceof SwitchHealthBar) {
-                    System.out.println("CATCH SWITCHING BAR");
-                    executingActions.add(potentialNewAction);
-                }
+                ((ShootAction) potentialNewAction).getBullet().setMovingStatus(true);
+                executingActions.add(potentialNewAction);
+            }
+            if (potentialNewAction instanceof SwitchHealthBar) {
+                executingActions.add(potentialNewAction);
             }
         }
-        commandQueueHandler.clear();
+        commandQueue.clear();
     }
 
     public void removeFinishedActions() {

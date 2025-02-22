@@ -17,14 +17,9 @@ public class GraphicProperties {
     private String tiledMapImg = "level.tmx";
     private String bulletImg = "images/brick.png";
     private TiledMapTileLayer tiledMapTileLayer = getSingleLayer(new TmxMapLoader().load("level.tmx"));
-//    private TiledMap
 
     public GraphicProperties(TiledMap tiledMap) {
-//        this.tankTexture = tankTexture;
-//        this.treeTexture = treeTexture;
-//        this.tiledMap = tiledMap;
         this.tiledMapTileLayer = getSingleLayer(tiledMap);
-//        this.tileMovement = new TileMovement(tiledMapTileLayer, Interpolation.smooth);
     }
     public Texture getBulletTexture() {
         return new Texture(bulletImg);
@@ -41,10 +36,6 @@ public class GraphicProperties {
     public Texture getTreeTexture() {
         return new Texture(treeTextureImg);
     }
-
-//    public TileMovement getTileMovement() {
-//        return tileMovement;
-//    }
 
     public TiledMapTileLayer getTiledMapTileLayer() {
         return tiledMapTileLayer;
@@ -66,15 +57,5 @@ public class GraphicProperties {
         return new TextureRegion(getTreeTexture());
     }
 
-//    public Texture getHealthBarTexture() {
-//        return
-//    }
-
-//    public Graphics getTankGraphics() {
-//        return new Graphics(getTankTexture(), getTankTextureRegion(), 0f);
-//    }
-//    public Graphics getTreeGraphics() {
-//        return new Graphics(getTreeTexture(), getTreeTextureRegion(), 0f);
-//    }
 }
 

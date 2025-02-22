@@ -30,7 +30,7 @@ public class Game {
     public void renderCurrentResultByTick() {
         float deltaTime = Gdx.graphics.getDeltaTime();
         buttonHandler.readCommand(commandQueueHandler, level);
-//        generatorActions.getCommand(commandQueueHandler, level);
+        generatorActions.getCommand(commandQueueHandler, level);
         commandExecutor.executeAllCommands(deltaTime, commandQueueHandler, level);
     }
 

@@ -1,7 +1,6 @@
 package ru.mipt.bit.platformer.level_map;
 
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.logic_objects.NodeType;
 
 public class MapNode {
     private GridPoint2 coordinates;

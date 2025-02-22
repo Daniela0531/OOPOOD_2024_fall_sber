@@ -9,6 +9,4 @@ public interface GraphicsInterface {
      Rectangle getRectangle();
      TextureRegion getTextureRegion();
      Texture getTexture();
-//     GridPoint2 getCoordinates();
-//     float getRotation();
 }

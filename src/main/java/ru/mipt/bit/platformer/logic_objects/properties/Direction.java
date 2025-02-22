@@ -1,7 +1,7 @@
 package ru.mipt.bit.platformer.logic_objects.properties;
 
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.commands.Command;
+import ru.mipt.bit.platformer.button_commands.ButtonCommand;
 
 //@Entity
 //@Table(name = "stories")
@@ -12,24 +12,24 @@ public class Direction {
 
     private float rotation = 0f;
 
-    public Direction(Command command) {
-        if (command == Command.UP) {
+    public Direction(ButtonCommand command) {
+        if (command == ButtonCommand.UP) {
             this.vector = new GridPoint2(0, 1);
             this.rotation = 90f;
         }
-        if (command == Command.LEFT) {
+        if (command == ButtonCommand.LEFT) {
             this.vector = new GridPoint2(-1, 0);
             this.rotation = 180f;
         }
-        if (command == Command.DOWN) {
+        if (command == ButtonCommand.DOWN) {
             this.vector = new GridPoint2(0, -1);
             this.rotation = 270f;
         }
-        if (command == Command.RIGHT) {
+        if (command == ButtonCommand.RIGHT) {
             this.vector = new GridPoint2(1, 0);
             this.rotation = 0f;
         }
-        if (command == Command.NONE) {
+        if (command == ButtonCommand.NONE) {
             this.vector = new GridPoint2(0, 0);
             this.rotation = 0f;
         }

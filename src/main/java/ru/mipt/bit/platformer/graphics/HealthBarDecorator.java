@@ -11,16 +11,6 @@ import ru.mipt.bit.platformer.util.GdxGameUtils;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 
 public class HealthBarDecorator {
-//    private Batch batch;
-//
-//    public HealthBarDecorator(Batch batch) {
-//        this.batch = batch;
-//    }
-
-//    public void draw(Batch batch, float deltaTime) {
-//        wrappedEntity.draw(batch, deltaTime);
-//        drawHealthBar(batch);
-//    }
     public void drawHealthBar(Batch batch, int health) {
         TextureRegion healthBarTextureRegion = getHealthBarTexture(health);
         Rectangle rectangle = createRectangle(healthBarTextureRegion);
