@@ -1,4 +1,4 @@
-package ru.mipt.bit.platformer.game_management.input_management;
+package ru.mipt.bit.platformer.game_input_management;
 
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;

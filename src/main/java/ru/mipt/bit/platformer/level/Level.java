@@ -16,6 +16,7 @@ import ru.mipt.bit.platformer.logic_objects.tree.TreeMoveModel;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class Level {
@@ -118,5 +119,17 @@ public class Level {
 
     public boolean isPlayerKilled() {
         return playerKilled;
+    }
+
+    public void update(float deltaTime) {
+        for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : tanks.entrySet()) {
+            entry.getKey().mainUpdateProgress(deltaTime);
+//            System.out.println(
+//                    "    updateHealthBar\n" +
+//                            "        cur healthBar points: " + entry.getKey().getHealthBarCur() +
+//                            "        healthBar is rase: " + entry.getKey().isHealthBarRaise());
+        }
+        playerTank.mainUpdateProgress(deltaTime);
+//        System.out.println("update level\n");
     }
 }

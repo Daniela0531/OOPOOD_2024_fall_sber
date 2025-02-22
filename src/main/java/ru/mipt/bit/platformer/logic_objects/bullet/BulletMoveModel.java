@@ -1,10 +1,9 @@
 package ru.mipt.bit.platformer.logic_objects.bullet;
 
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.logic_objects.DamageDealerModel;
-import ru.mipt.bit.platformer.logic_objects.Model;
-import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.level_map.NodeType;
+import ru.mipt.bit.platformer.logic_objects.DamageDealerModel;
+import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
@@ -85,13 +84,13 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
     public int getDamage() {
         return damage;
     }
-    @Override
-    public boolean equalsTo(Model model) {
-        if (model instanceof BulletMoveModel) {
-            return coordinates == ((BulletMoveModel) model).getCoordinates();
-        }
-        return false;
-    }
+//    @Override
+//    public boolean equalsTo(Model model) {
+//        if (model instanceof BulletMoveModel) {
+//            return coordinates == ((BulletMoveModel) model).getCoordinates();
+//        }
+//        return false;
+//    }
 
     @Override
     public void mainUpdateProgress(float deltaTime) {

@@ -2,9 +2,9 @@ package ru.mipt.bit.platformer;
 
 import com.badlogic.gdx.Gdx;
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.game_management.input_management.ButtonHandler;
-import ru.mipt.bit.platformer.game_management.input_management.CommandQueue;
-import ru.mipt.bit.platformer.game_management.input_management.GeneratorActions;
+import ru.mipt.bit.platformer.game_input_management.ButtonHandler;
+import ru.mipt.bit.platformer.game_input_management.CommandQueue;
+import ru.mipt.bit.platformer.game_input_management.GeneratorActions;
 import ru.mipt.bit.platformer.game_management.MainCommandExecutor;
 import ru.mipt.bit.platformer.level.Level;
 

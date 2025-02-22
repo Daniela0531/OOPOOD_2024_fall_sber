@@ -1,7 +1,7 @@
 package ru.mipt.bit.platformer.game_management;
 
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.game_management.input_management.CommandQueue;
+import ru.mipt.bit.platformer.game_input_management.CommandQueue;
 import ru.mipt.bit.platformer.graphics.MainGraphicRender;
 import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level.Level;
@@ -33,6 +33,7 @@ public class MainCommandExecutor {
 //        removeFinishedActions();
         graphicRender.clear();
         executingActions.catchingNewActions(commandQueue);
+        level.update(deltaTime);
         movementCommandExecuter.executeActions(deltaTime, executingActions, level);
         graphicRender.render(deltaTime, level);
         level.removeInvalidEntities();

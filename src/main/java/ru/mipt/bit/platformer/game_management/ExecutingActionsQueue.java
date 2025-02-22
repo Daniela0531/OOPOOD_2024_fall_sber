@@ -4,7 +4,7 @@ import ru.mipt.bit.platformer.actions.Action;
 import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
 import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBar;
-import ru.mipt.bit.platformer.game_management.input_management.CommandQueue;
+import ru.mipt.bit.platformer.game_input_management.CommandQueue;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.ShootableModel;
 
@@ -39,6 +39,13 @@ public class ExecutingActionsQueue {
                 executingActions.add(potentialNewAction);
             }
             if (potentialNewAction instanceof SwitchHealthBar) {
+//                System.out.println("SwitchHealthBar possible to switch: " + ((LivableModel) potentialNewAction.getModel()).maySwitchHealthBar());
+//                if (!((LivableModel) potentialNewAction.getModel()).maySwitchHealthBar()) {
+//                    continue;
+//                }
+//                ((LivableModel) potentialNewAction.getModel()).switchHealthBar();
+//                System.out.println("SwitchHealthBar action is cached");
+//                System.out.println("    healthBarCur: " + ((TankMoveModel) potentialNewAction.getModel()).getHealthBarCur());
                 executingActions.add(potentialNewAction);
             }
         }

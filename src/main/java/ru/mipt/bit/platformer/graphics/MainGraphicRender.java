@@ -46,9 +46,9 @@ public class MainGraphicRender {
 
         for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : level.getTanks().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());
-            if (entry.getKey().isHealthBarRaise()) {
-                entry.getValue().getHealthBarDecorator().drawHealthBar(batch, entry.getKey().getHealth());
-            }
+//            if (entry.getKey().isHealthBarRaise()) {
+//                entry.getValue().getHealthBarDecorator().drawHealthBar(batch, entry.getKey().getHealth());
+//            }
         }
         for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : level.getBullets().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());

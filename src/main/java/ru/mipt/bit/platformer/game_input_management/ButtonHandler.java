@@ -1,4 +1,4 @@
-package ru.mipt.bit.platformer.game_management.input_management;
+package ru.mipt.bit.platformer.game_input_management;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.GridPoint2;
@@ -52,7 +52,7 @@ public class ButtonHandler {
             commandQueueHandler.addAction(shootAction);
         }
         if (Gdx.input.isKeyPressed(L)) {
-            System.out.println("L pressed");
+//            System.out.println("L pressed");
             SwitchHealthBar switchHealthBarAction = new SwitchHealthBar(level.getPlayerTank());
             commandQueueHandler.addAction(switchHealthBarAction);
         }

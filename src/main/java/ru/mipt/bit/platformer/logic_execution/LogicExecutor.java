@@ -130,7 +130,7 @@ public class LogicExecutor {
 
     public void executeActions(float deltaTime, ExecutingActionsQueue executingActionsQueue, Level level) {
         for (Action action : executingActionsQueue.getActions()) {
-            action.getModel().mainUpdateProgress(deltaTime);
+//            action.getModel().mainUpdateProgress(deltaTime);
             execute(deltaTime, action, level);
         }
     }
