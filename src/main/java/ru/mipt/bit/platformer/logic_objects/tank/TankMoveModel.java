@@ -14,7 +14,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 
 
 public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
-    private static final float MOVEMENT_SPEED = 0.7f;
+    private static final float MOVEMENT_SPEED = 0.4f;
     private final int fireTimeaot = 50;
     private final int healthBarTimeout = 40;
     private int healthBarCur = 0;
