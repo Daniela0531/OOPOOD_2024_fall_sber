@@ -4,4 +4,6 @@ public interface LivableModel extends Model {
     int getHealth();
     void damage(int damage);
     void switchHealthBar();
+
+    boolean isHealthBarRaise();
 }

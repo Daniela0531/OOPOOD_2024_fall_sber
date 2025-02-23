@@ -6,6 +6,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
+import ru.mipt.bit.platformer.graphics_objects.HealthBarDecorator;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.getSingleLayer;
@@ -17,11 +18,13 @@ public class GraphicProperties {
     private String tiledMapImg;
     private String bulletImg;
     private TiledMapTileLayer tiledMapTileLayer;
+    private HealthBarDecorator healthBarDecorator;
 
     public GraphicProperties(String tiledMapImgPath,
                              String tankTextureImgPath,
                              String treeTextureImgPath,
-                             String bulletImgPath) {
+                             String bulletImgPath,
+                             HealthBarDecorator healthBarDecorator) {
         this.tankTextureImg = tankTextureImgPath;
         this.treeTextureImg = treeTextureImgPath;
         this.bulletImg = bulletImgPath;
@@ -29,6 +32,7 @@ public class GraphicProperties {
         TiledMap tiledMap = new TmxMapLoader().load(tiledMapImgPath);
         this.tiledMapTileLayer = getSingleLayer(new TmxMapLoader().load(tiledMapImgPath));
         this.tiledMapTileLayer = getSingleLayer(tiledMap);
+        this.healthBarDecorator = healthBarDecorator;
     }
     public Texture getBulletTexture() {
         return new Texture(bulletImg);
@@ -66,5 +70,8 @@ public class GraphicProperties {
         return new TextureRegion(getTreeTexture());
     }
 
+    public HealthBarDecorator getHealthBarDecorator() {
+        return healthBarDecorator;
+    }
 }
 

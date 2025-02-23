@@ -1,15 +1,15 @@
 package ru.mipt.bit.platformer.level;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.LevelMap;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivable;
-import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivableInterface;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
-import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.level_map.NodeType;
+import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_properties.LogicProperties;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
@@ -24,7 +24,7 @@ import java.util.Map;
 @Component
 public class Level {
     private HashMap<TreeMoveModel, GraphicsInterface> obstacles;
-    private HashMap<TankMoveModel, GraphicsForLivableInterface> tanks;
+    private HashMap<TankMoveModel, GraphicsInterface> tanks;
     private HashMap<BulletMoveModel, GraphicsInterface> bullets;
     private TankMoveModel playerTank;
     private GraphicsForLivable playerGraphics;
@@ -42,7 +42,9 @@ public class Level {
                 0f,
                 logicProperties.getTankMaxHealth(),
                 logicProperties.getTankSpeed());
-        this.playerGraphics = new GraphicsForLivable(graphicProperties.getTankTexture());
+        this.playerGraphics = new GraphicsForLivable(
+                graphicProperties.getTankTexture(),
+                graphicProperties.getHealthBarDecorator());
 
         this.obstacles = new HashMap<>();
         this.tanks = new HashMap<>();
@@ -55,7 +57,9 @@ public class Level {
                         0f,
                         logicProperties.getTankMaxHealth(),
                         logicProperties.getTankSpeed());
-                GraphicsForLivable graphics = new GraphicsForLivable(graphicProperties.getTankTexture());
+                GraphicsForLivable graphics = new GraphicsForLivable(
+                        graphicProperties.getTankTexture(),
+                        graphicProperties.getHealthBarDecorator());
                 tanks.put(tankMoveModel, graphics);
                 continue;
             }
@@ -65,7 +69,9 @@ public class Level {
                         0f,
                         logicProperties.getTankMaxHealth(),
                         logicProperties.getTankSpeed());
-                GraphicsForLivable graphics = new GraphicsForLivable(graphicProperties.getTankTexture());
+                GraphicsForLivable graphics = new GraphicsForLivable(
+                        graphicProperties.getTankTexture(),
+                        graphicProperties.getHealthBarDecorator());
                 tanks.put(tankMoveModel, graphics);
                 continue;
             }
@@ -96,7 +102,7 @@ public class Level {
         return obstacles;
     }
 
-    public HashMap<TankMoveModel, GraphicsForLivableInterface> getTanks() {
+    public HashMap<TankMoveModel, GraphicsInterface> getTanks() {
         return tanks;
     }
 
@@ -145,14 +151,44 @@ public class Level {
     }
 
     public void update(float deltaTime) {
-        for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : tanks.entrySet()) {
+        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
             entry.getKey().mainUpdateProgress(deltaTime);
-//            System.out.println(
-//                    "    updateHealthBar\n" +
-//                            "        cur healthBar points: " + entry.getKey().getHealthBarCur() +
-//                            "        healthBar is rase: " + entry.getKey().isHealthBarRaise());
         }
         playerTank.mainUpdateProgress(deltaTime);
-//        System.out.println("update level\n");
+    }
+    public void drow(Batch batch) {
+        for (Map.Entry<TreeMoveModel, GraphicsInterface> entry : obstacles.entrySet()) {
+            entry.getValue().draw(batch, entry.getKey().getRotation());
+        }
+        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
+            entry.getValue().draw(batch, entry.getKey().getRotation());
+            if (entry.getKey().isHealthBarRaise()) {
+                ((GraphicsForLivable)entry.getValue()).drowHealthBar(batch, entry.getKey().getHealth());
+            }
+        }
+        for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : bullets.entrySet()) {
+            entry.getValue().draw(batch, entry.getKey().getRotation());
+        }
+        if (!playerKilled) {
+            playerGraphics.draw(batch, playerTank.getRotation());
+            if (playerTank.isHealthBarRaise()) {
+                playerGraphics.drowHealthBar(batch, playerTank.getHealth());
+            }
+        }
+    }
+
+    public void dispose() {
+        for(GraphicsInterface graphics : obstacles.values()) {
+            graphics.getTexture().dispose();
+        }
+        for(GraphicsInterface graphics : tanks.values()) {
+            graphics.getTexture().dispose();
+        }
+        for(GraphicsInterface graphics : bullets.values()) {
+            graphics.getTexture().dispose();
+        }
+        if (!playerKilled) {
+            playerGraphics.getTexture().dispose();
+        }
     }
 }

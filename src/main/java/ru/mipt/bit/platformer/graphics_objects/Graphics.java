@@ -1,10 +1,12 @@
 package ru.mipt.bit.platformer.graphics_objects;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
+import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
 
 public class Graphics implements GraphicsInterface {
     private Texture texture;
@@ -28,4 +30,10 @@ public class Graphics implements GraphicsInterface {
     public Texture getTexture() {
         return texture;
     }
+
+    @Override
+    public void draw(Batch batch, float rotation) {
+        drawTextureRegionUnscaled(batch, textureRegion, rectangle, rotation);
+    }
+
 }

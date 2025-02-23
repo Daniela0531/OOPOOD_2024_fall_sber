@@ -163,8 +163,8 @@ public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
             updateFireProgress();
         }
     }
-//    private void startShoot() {
-//        isShooting = true;
-//    }
-
+    @Override
+    public boolean isHealthBarRaise() {
+        return isHealthBarRaise;
+    }
 }

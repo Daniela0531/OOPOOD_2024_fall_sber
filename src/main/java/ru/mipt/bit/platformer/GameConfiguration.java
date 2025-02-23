@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import ru.mipt.bit.platformer.graphics_objects.HealthBarDecorator;
 import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_properties.LogicProperties;
 import ru.mipt.bit.platformer.util.TileMovement;
@@ -62,9 +63,10 @@ public class GameConfiguration {
     public GraphicProperties graphicProperties(@Value("${tiled_map}") String tiledMap,
                                                @Value("${tank.texture}") String tankTexture,
                                                @Value("${tree.texture}") String treeTexture,
-                                               @Value("${bullet.texture}") String bulletTexture) {
+                                               @Value("${bullet.texture}") String bulletTexture,
+                                               @Value("${tank.max_health}") int tankMaxHealth) {
 //        TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
-        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture);
+        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture, new HealthBarDecorator(tankMaxHealth));
     }
 
     @Bean
@@ -74,6 +76,12 @@ public class GameConfiguration {
                                              @Value("${bullet.damage}") int bulletDamage) {
 //        TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
         return new LogicProperties(tankMaxHealth, tankSpeed, bulletDamage, bulletSpeed);
+    }
+
+    @Bean
+    public HealthBarDecorator healthBarDecorator(@Value("${tank.max_health}") int tankMaxHealth) {
+//        TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
+        return new HealthBarDecorator(tankMaxHealth);
     }
 
     @Bean

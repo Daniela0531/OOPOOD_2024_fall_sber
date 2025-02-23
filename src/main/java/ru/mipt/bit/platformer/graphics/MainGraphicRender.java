@@ -8,10 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
-import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivableInterface;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
-import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level.Level;
+import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
@@ -21,7 +20,8 @@ import ru.mipt.bit.platformer.util.TileMovement;
 import java.util.Map;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
-import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
+import static ru.mipt.bit.platformer.util.GdxGameUtils.createSingleLayerMapRenderer;
+import static ru.mipt.bit.platformer.util.GdxGameUtils.moveRectangleAtTileCenter;
 
 @Component
 public class MainGraphicRender {
@@ -44,7 +44,7 @@ public class MainGraphicRender {
         mapRenderer.render();
         batchRender(level);
 
-        for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : level.getTanks().entrySet()) {
+        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : level.getTanks().entrySet()) {
             movementRender(entry.getKey(), entry.getValue().getRectangle());
 //            if (entry.getKey().isHealthBarRaise()) {
 //                entry.getValue().getHealthBarDecorator().drawHealthBar(batch, entry.getKey().getHealth());
@@ -61,36 +61,14 @@ public class MainGraphicRender {
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
     }
     public void dispose(Level level) {
-        for(GraphicsInterface graphics : level.getTrees().values()) {
-            graphics.getTexture().dispose();
-        }
-        for(GraphicsInterface graphics : level.getTanks().values()) {
-            graphics.getTexture().dispose();
-        }
-        for(GraphicsInterface graphics : level.getBullets().values()) {
-            graphics.getTexture().dispose();
-        }
-        if (!level.isPlayerKilled()) {
-            level.getPlayerGraphics().getTexture().dispose();
-        }
+        level.dispose();
         tiledMap.dispose();
         batch.dispose();
     }
 
     public void batchRender(Level level) {
         batch.begin();
-        for (Map.Entry<TreeMoveModel, GraphicsInterface> entry : level.getTrees().entrySet()) {
-            drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
-        }
-        for (Map.Entry<TankMoveModel, GraphicsForLivableInterface> entry : level.getTanks().entrySet()) {
-            drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
-        }
-        for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : level.getBullets().entrySet()) {
-            drawTextureRegionUnscaled(batch, entry.getValue().getTextureRegion(), entry.getValue().getRectangle(), entry.getKey().getRotation());
-        }
-        if (!level.isPlayerKilled()) {
-            drawTextureRegionUnscaled(batch, level.getPlayerGraphics().getTextureRegion(), level.getPlayerGraphics().getRectangle(), level.getPlayerTank().getRotation());
-        }
+        level.drow(batch);
         batch.end();
     }
 

@@ -50,7 +50,7 @@ public class ButtonHandler {
             commandQueueHandler.addAction(shootAction);
         }
         if (Gdx.input.isKeyPressed(L)) {
-//            System.out.println("L pressed");
+            System.out.println("L pressed");
             SwitchHealthBar switchHealthBarAction = new SwitchHealthBar(level.getPlayerTank());
             commandQueueHandler.addAction(switchHealthBarAction);
         }
