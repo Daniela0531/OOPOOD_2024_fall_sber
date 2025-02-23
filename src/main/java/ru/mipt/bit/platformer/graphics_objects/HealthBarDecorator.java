@@ -6,22 +6,24 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import ru.mipt.bit.platformer.util.GdxGameUtils;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
+import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
 
 public class HealthBarDecorator {
     private final int maxHealth;
+    private TextureRegion healthBarTextureRegion;
+    private Texture texture;
 
     public HealthBarDecorator(int maxHealth) {
         this.maxHealth = maxHealth;
     }
 
     public void drawHealthBar(Batch batch, TextureRegion livableModelRectangle, int health) {
-        TextureRegion healthBarTextureRegion = getHealthBarTexture(health);
-        Rectangle rectangle = createRectangle(healthBarTextureRegion);
+        this.healthBarTextureRegion = getHealthBarTexture(health);
+        Rectangle rectangle = createRectangle(livableModelRectangle);
 
-        GdxGameUtils.drawTextureRegionUnscaled(batch, healthBarTextureRegion, rectangle, 0f);
+        drawTextureRegionUnscaled(batch, healthBarTextureRegion, rectangle, 0f);
     }
 
     private Rectangle createRectangle(TextureRegion livableModelRectangle) {
@@ -37,9 +39,13 @@ public class HealthBarDecorator {
         pixmap.setColor(Color.GREEN);
         pixmap.fillRectangle(0, 0, (int) (health), 20);
 
-        Texture texture = new Texture(pixmap);
+        this.texture = new Texture(pixmap);
         pixmap.dispose();
 
         return new TextureRegion(texture);
+    }
+
+    public void dispose() {
+        texture.dispose();
     }
 }

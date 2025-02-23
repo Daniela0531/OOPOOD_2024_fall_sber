@@ -189,6 +189,9 @@ public class Level {
         }
         if (!playerKilled) {
             playerGraphics.getTexture().dispose();
+            if (playerTank.isHealthBarRaise()) {
+                playerGraphics.disposeHealthBar();
+            }
         }
     }
 }
