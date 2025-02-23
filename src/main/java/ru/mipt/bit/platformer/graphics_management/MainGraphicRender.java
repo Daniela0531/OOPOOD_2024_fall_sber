@@ -22,12 +22,10 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.moveRectangleAtTileCenter
 public class MainGraphicRender {
     private Batch batch;
     private TileMovement tileMovement;
-//    private TiledMap tiledMap;
     private MapRenderer mapRenderer;
 
     public MainGraphicRender(GraphicProperties graphicProperties, Level level) {
         this.batch = new SpriteBatch();
-//        this.tiledMap = graphicProperties.getTiledMap();
         this.tileMovement = new TileMovement(graphicProperties.getTiledMapTileLayer(), Interpolation.smooth);
         this.mapRenderer = createSingleLayerMapRenderer(level.getTiledMap(), batch);
         for(Map.Entry<TreeMoveModel, GraphicsInterface> entry : level.getTrees().entrySet()) {
@@ -35,18 +33,10 @@ public class MainGraphicRender {
         }
     }
 
-    public void render(float deltaTime, Level level) {
+    public void render(Level level) {
         mapRenderer.render();
         batchRender(level);
         level.movementDrow(tileMovement);
-
-//        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : level.getTanks().entrySet()) {
-//            movementRender(entry.getKey(), entry.getValue().getRectangle());
-//        }
-//        for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : level.getBullets().entrySet()) {
-//            movementRender(entry.getKey(), entry.getValue().getRectangle());
-//        }
-//        movementRender(level.getPlayerTank(), level.getPlayerGraphics().getRectangle());
     }
 
     public void clear() {
@@ -55,7 +45,6 @@ public class MainGraphicRender {
     }
     public void dispose(Level level) {
         level.dispose();
-//        tiledMap.dispose();
         batch.dispose();
     }
 
@@ -64,13 +53,4 @@ public class MainGraphicRender {
         level.drow(batch);
         batch.end();
     }
-
-//    public void movementRender(MoveModel node, Rectangle rectangle) {
-//        tileMovement.moveRectangleBetweenTileCenters(
-//                rectangle,
-//                node.getCoordinates(),
-//                node.getDestination(),
-//                node.getProgress()
-//        );
-//    }
 }
