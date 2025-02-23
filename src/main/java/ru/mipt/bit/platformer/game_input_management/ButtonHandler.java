@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
-import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBar;
+import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBarAction;
 import ru.mipt.bit.platformer.button_commands.ButtonCommand;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
@@ -51,7 +51,7 @@ public class ButtonHandler {
         }
         if (Gdx.input.isKeyPressed(L)) {
             System.out.println("L pressed");
-            SwitchHealthBar switchHealthBarAction = new SwitchHealthBar(level.getPlayerTank());
+            SwitchHealthBarAction switchHealthBarAction = new SwitchHealthBarAction(level.getPlayerTank());
             commandQueueHandler.addAction(switchHealthBarAction);
         }
     }

@@ -38,10 +38,14 @@ public class GraphicsForLivable implements GraphicsInterface {
         drawTextureRegionUnscaled(batch, textureRegion, rectangle, rotation);
     }
 
-    public void drowHealthBar(Batch batch, int health) {
-        healthBarDecorator.drawHealthBar(batch, textureRegion, health);
+    public void drowHealthBar(Batch batch, int maxHealth, int health) {
+        healthBarDecorator.drawHealthBar(batch, textureRegion, maxHealth, health);
     }
     public void disposeHealthBar() {
         healthBarDecorator.dispose();
+    }
+
+    public Rectangle getHealthBarRectangle() {
+        return healthBarDecorator.getRectangle();
     }
 }

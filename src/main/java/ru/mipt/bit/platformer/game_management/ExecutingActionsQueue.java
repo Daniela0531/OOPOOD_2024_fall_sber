@@ -3,7 +3,7 @@ package ru.mipt.bit.platformer.game_management;
 import ru.mipt.bit.platformer.actions.Action;
 import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
 import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
-import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBar;
+import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBarAction;
 import ru.mipt.bit.platformer.game_input_management.CommandQueue;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.ShootableModel;
@@ -38,7 +38,7 @@ public class ExecutingActionsQueue {
                 ((ShootAction) potentialNewAction).getBullet().setMovingStatus(true);
                 executingActions.add(potentialNewAction);
             }
-            if (potentialNewAction instanceof SwitchHealthBar) {
+            if (potentialNewAction instanceof SwitchHealthBarAction) {
                 executingActions.add(potentialNewAction);
             }
         }

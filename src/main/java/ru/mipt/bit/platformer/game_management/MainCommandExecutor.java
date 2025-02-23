@@ -2,7 +2,7 @@ package ru.mipt.bit.platformer.game_management;
 
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.game_input_management.CommandQueue;
-import ru.mipt.bit.platformer.graphics.MainGraphicRender;
+import ru.mipt.bit.platformer.graphics_management.MainGraphicRender;
 import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_execution.LogicExecutor;

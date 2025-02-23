@@ -28,16 +28,15 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.getSingleLayer;
 public class GameConfiguration {
 //    private MapLoaderFromFile fileLoader = new MapLoaderFromFile();
     @Bean
-    public LevelMap levelMap(@Value("${map_louder_type}") String mapLouderType,
-                               @Value("${file_map_louder_path}") String absoluteFilePath) {
-        System.out.println("1234567890");
+    public LevelMap levelMap(
+            @Value("${map_louder_type}") String mapLouderType,
+            @Value("${file_map_louder_path}") String absoluteFilePath) {
         if (mapLouderType.equalsIgnoreCase("generate")) {
             MapGenerator mapGenerator = new MapGenerator();
             mapGenerator.loadLevelMap();
             return mapGenerator.getLevelMap();
         }
         if (mapLouderType.equalsIgnoreCase("file")) {
-            System.out.println("qwertyui");
             MapLoaderFromFile mapLoaderFromFile = new MapLoaderFromFile(absoluteFilePath);
             mapLoaderFromFile.loadLevelMap();
             return mapLoaderFromFile.getLevelMap();
@@ -66,12 +65,13 @@ public class GameConfiguration {
                                                @Value("${tree.texture}") String treeTexture,
                                                @Value("${bullet.texture}") String bulletTexture,
                                                @Value("${tank.max_health}") int tankMaxHealth,
+                                               @Value("${health_bar_width}") int healthBarWidth,
                                                @Value("${health_bar_height}") int healthBarHeight,
                                                @Value("${wasted_health_color}") int wastedHealth,
                                                @Value("${existing_health_color}") int existingHealth) {
         Color wastedHealthColor = new Color(wastedHealth);
         Color existingHealthColor = new Color(existingHealth);
-        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture, new HealthBarDecorator(tankMaxHealth, healthBarHeight, wastedHealthColor, existingHealthColor));
+        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture, new HealthBarDecorator(healthBarWidth, healthBarHeight, wastedHealthColor, existingHealthColor));
     }
 
     @Bean
@@ -83,14 +83,14 @@ public class GameConfiguration {
     }
 
     @Bean
-    public HealthBarDecorator healthBarDecorator(@Value("${tank.max_health}") int tankMaxHealth,
+    public HealthBarDecorator healthBarDecorator(@Value("${health_bar_width}") int healthBarWidth,
                                                  @Value("${health_bar_height}") int healthBarHeight,
                                                  @Value("${wasted_health_color}") int wastedHealth,
                                                  @Value("${existing_health_color}") int existingHealth) {
         Color wastedHealthColor = new Color(wastedHealth);
         Color existingHealthColor = new Color(existingHealth);
 //        Color.
-        return new HealthBarDecorator(tankMaxHealth, healthBarHeight, wastedHealthColor, existingHealthColor);
+        return new HealthBarDecorator(healthBarWidth, healthBarHeight, wastedHealthColor, existingHealthColor);
     }
 
     @Bean

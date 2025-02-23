@@ -28,12 +28,14 @@ public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
     private int shootProgress = 0;
     private boolean isShooting = false;
     private boolean waitSwitching = true;
+    private final int maxHealth;
     public TankMoveModel(GridPoint2 coordinates, float rotation, int maxHealth, float movementSpeed) {
         this.movementSpeed = movementSpeed;
         this.coordinates = coordinates;
         this.progress = 0f;
         this.direction = new Direction(new GridPoint2(0,0), rotation);
         this.health = maxHealth;
+        this.maxHealth = maxHealth;
     }
     @Override
     public boolean isMoving() {
@@ -166,5 +168,10 @@ public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
     @Override
     public boolean isHealthBarRaise() {
         return isHealthBarRaise;
+    }
+
+    @Override
+    public int getMaxHealth() {
+        return maxHealth;
     }
 }

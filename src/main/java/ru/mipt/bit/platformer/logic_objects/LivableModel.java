@@ -6,4 +6,6 @@ public interface LivableModel extends Model {
     void switchHealthBar();
 
     boolean isHealthBarRaise();
+
+    int getMaxHealth();
 }

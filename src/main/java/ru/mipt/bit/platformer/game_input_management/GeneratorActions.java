@@ -57,8 +57,7 @@ public class GeneratorActions {
                     new Direction(ButtonCommand.RIGHT)
             );
             receivedCommands.addAction(moveAction);
-        } else
-            if (randomNumber == 49) {
+        } else if (randomNumber == 41) {
             Direction direction = new Direction(
                     tank.getRotation());
             GridPoint2 coord = new GridPoint2(
@@ -70,5 +69,9 @@ public class GeneratorActions {
                     tank, bulletMoveModel, direction);
             receivedCommands.addAction(shootAction);
         }
+//        else {
+//            SwitchHealthBarAction switchHealthBarAction = new SwitchHealthBarAction(tank);
+//            receivedCommands.addAction(switchHealthBarAction);
+//        }
     }
 }

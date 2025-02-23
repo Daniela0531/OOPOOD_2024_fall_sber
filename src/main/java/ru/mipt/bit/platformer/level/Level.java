@@ -1,7 +1,9 @@
 package ru.mipt.bit.platformer.level;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.LevelMap;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
@@ -11,10 +13,12 @@ import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.level_map.NodeType;
 import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_properties.LogicProperties;
+import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tree.TreeMoveModel;
+import ru.mipt.bit.platformer.util.TileMovement;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,11 +35,24 @@ public class Level {
     private boolean playerKilled;
     private GraphicProperties graphicProperties;
     private LogicProperties logicProperties;
+    private TiledMap tiledMap;
+    private final int leftBound;
+    private final int rightBound;
+    private final int lowBound;
+    private final int upBound;
 
 
-    public Level(LevelMap map, GraphicProperties graphicProperties, LogicProperties logicProperties) {
+    public Level(
+            LevelMap map,
+            GraphicProperties graphicProperties,
+            LogicProperties logicProperties) {
+        this.leftBound = map.getLeftBound();
+        this.rightBound = map.getRightBound();
+        this.lowBound = map.getLowBound();
+        this.upBound = map.getUpBound();
         this.playerKilled = false;
         this.graphicProperties = graphicProperties;
+        this.tiledMap = graphicProperties.getTiledMap();
         this.logicProperties = logicProperties;
         this.playerTank = new TankMoveModel(
                 map.getPlayer().getCoordinates(),
@@ -163,7 +180,7 @@ public class Level {
         for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
             entry.getValue().draw(batch, entry.getKey().getRotation());
             if (entry.getKey().isHealthBarRaise()) {
-                ((GraphicsForLivable)entry.getValue()).drowHealthBar(batch, entry.getKey().getHealth());
+                ((GraphicsForLivable)entry.getValue()).drowHealthBar(batch, entry.getKey().getMaxHealth(), entry.getKey().getHealth());
             }
         }
         for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : bullets.entrySet()) {
@@ -172,12 +189,35 @@ public class Level {
         if (!playerKilled) {
             playerGraphics.draw(batch, playerTank.getRotation());
             if (playerTank.isHealthBarRaise()) {
-                playerGraphics.drowHealthBar(batch, playerTank.getHealth());
+                playerGraphics.drowHealthBar(batch, playerTank.getMaxHealth(), playerTank.getHealth());
             }
         }
     }
 
+    public void movementDrow(TileMovement tileMovement) {
+        for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
+            movementRender(tileMovement, entry.getKey(), entry.getValue().getRectangle());
+            if (entry.getKey().isHealthBarRaise()) {
+//                ((GraphicsForLivable)entry.getValue()).drowHealthBar(batch, entry.getKey().getMaxHealth(), entry.getKey().getHealth());
+//                entry.getValue().drawMovement(tileMovement, entry.getKey(), entry.);
+                movementRender(tileMovement, entry.getKey(), ((GraphicsForLivable)entry.getValue()).getHealthBarRectangle());
+            }
+        }
+        for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : bullets.entrySet()) {
+            movementRender(tileMovement, entry.getKey(), entry.getValue().getRectangle());
+        }
+        movementRender(tileMovement, playerTank, playerGraphics.getRectangle());
+    }
+    private void movementRender(TileMovement tileMovement, MoveModel node, Rectangle rectangle) {
+        tileMovement.moveRectangleBetweenTileCenters(
+                rectangle,
+                node.getCoordinates(),
+                node.getDestination(),
+                node.getProgress()
+        );
+    }
     public void dispose() {
+        tiledMap.dispose();
         for(GraphicsInterface graphics : obstacles.values()) {
             graphics.getTexture().dispose();
         }
@@ -193,5 +233,23 @@ public class Level {
                 playerGraphics.disposeHealthBar();
             }
         }
+    }
+
+    public int getLeftBound() {
+        return leftBound;
+    }
+
+    public int getRightBound() {
+        return rightBound;
+    }
+    public int getUpBound() {
+        return upBound;
+    }
+    public int getLowBound() {
+        return lowBound;
+    }
+
+    public TiledMap getTiledMap() {
+        return tiledMap;
     }
 }

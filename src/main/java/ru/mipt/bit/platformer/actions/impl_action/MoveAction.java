@@ -2,9 +2,14 @@ package ru.mipt.bit.platformer.actions.impl_action;
 
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.actions.Action;
+import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.Model;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
+import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
+import ru.mipt.bit.platformer.logic_objects.tree.TreeMoveModel;
+
+import static com.badlogic.gdx.math.MathUtils.isEqual;
 
 public class MoveAction implements Action {
     private final Direction direction;
@@ -42,6 +47,63 @@ public class MoveAction implements Action {
     @Override
     public void finished() {
         isFinished = true;
+    }
+
+    @Override
+    public void execute(float deltaTime, Level level) {
+        moveModel.setMovingStatus(true);
+        executeTankMovement(deltaTime, level);
+        moveModel.setRotation(moveModel.getDirection().getRotation());
+        if (isEqual(moveModel.getProgress(), 1f)) {
+            finishMoveActionIfPossible();
+        }
+    }
+
+    private void executeTankMovement(float deltaTime, Level level) {
+        if (!movementIsPossible(level)) {
+            moveModel.updateProgress(deltaTime);
+            moveModel.setProgress(0f);
+            moveModel.setMovingStatus(false);
+            finished();
+        }
+    }
+
+    private boolean movementIsPossible(Level level) {
+        GridPoint2 newCoordinates = getDestinationCoordinates().cpy();
+        if (newCoordinates.x < level.getLeftBound() ||
+                newCoordinates.x > level.getRightBound() ||
+                newCoordinates.y < level.getLowBound() ||
+                newCoordinates.y > level.getUpBound()) {
+            return false;
+        }
+        for(TreeMoveModel obstacle : level.getTrees().keySet()) {
+            if (obstacle.getCoordinates().equals(newCoordinates)) {
+                return false;
+            }
+        }
+        for(TankMoveModel otherTank : level.getTanks().keySet()) {
+            if (otherTank.getCoordinates() == moveModel.getCoordinates()) {
+                continue;
+            }
+            if (otherTank.getCoordinates().equals(newCoordinates) || otherTank.getDestination().equals(newCoordinates)) {
+                return false;
+            }
+        }
+        if (level.getPlayerTank() != moveModel) {
+            if (level.getPlayerTank().getCoordinates().equals(newCoordinates) || level.getPlayerTank().getDestination().equals(newCoordinates)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void finishMoveActionIfPossible() {
+        if (isEqual(moveModel.getProgress(), 1f)) {
+            moveModel.finishMovement();
+            moveModel.setProgress(0f);
+            moveModel.setMovingStatus(false);
+            finished();
+        }
     }
 
 }

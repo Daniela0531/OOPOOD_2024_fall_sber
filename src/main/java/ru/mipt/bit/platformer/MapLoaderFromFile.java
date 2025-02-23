@@ -21,6 +21,10 @@ public class MapLoaderFromFile implements MapLouder {
         ArrayList<MapNode> obstaclesCoordinates = new ArrayList<>();
         int i = 0;
         int j = 0;
+        int leftBound = 0;
+        int rightBound = 0;
+        int upBound = 0;
+        int lowBound = 0;
         MapNode player = new MapNode(new GridPoint2(0, 0), NodeType.TANK);
         Scanner scanner = null;
         try {
@@ -38,16 +42,18 @@ public class MapLoaderFromFile implements MapLouder {
                 }
                 ++i;
             }
+            rightBound = i - 1;
             ++j;
             i = 0;
         }
+        upBound = j - 1;
 
         for (MapNode tree : obstaclesCoordinates) {
-            tree.setCoordinates(new GridPoint2(tree.getCoordinates().x, j - 1 - tree.getCoordinates().y));
+            tree.setCoordinates(new GridPoint2(tree.getCoordinates().x, upBound - tree.getCoordinates().y));
         }
-        player.setCoordinates(new GridPoint2(player.getCoordinates().x, j - 1 - player.getCoordinates().y));
+        player.setCoordinates(new GridPoint2(player.getCoordinates().x, upBound - player.getCoordinates().y));
         scanner.close();
-        this.levelMap = new LevelMap(obstaclesCoordinates, player);
+        this.levelMap = new LevelMap(obstaclesCoordinates, player, leftBound, rightBound, lowBound, upBound);
     }
     @Override
     public LevelMap getLevelMap() {
