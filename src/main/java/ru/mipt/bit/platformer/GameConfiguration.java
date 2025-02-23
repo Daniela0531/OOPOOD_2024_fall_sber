@@ -1,5 +1,6 @@
 package ru.mipt.bit.platformer;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -64,9 +65,13 @@ public class GameConfiguration {
                                                @Value("${tank.texture}") String tankTexture,
                                                @Value("${tree.texture}") String treeTexture,
                                                @Value("${bullet.texture}") String bulletTexture,
-                                               @Value("${tank.max_health}") int tankMaxHealth) {
-//        TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
-        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture, new HealthBarDecorator(tankMaxHealth));
+                                               @Value("${tank.max_health}") int tankMaxHealth,
+                                               @Value("${health_bar_height}") int healthBarHeight,
+                                               @Value("${wasted_health_color}") int wastedHealth,
+                                               @Value("${existing_health_color}") int existingHealth) {
+        Color wastedHealthColor = new Color(wastedHealth);
+        Color existingHealthColor = new Color(existingHealth);
+        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture, new HealthBarDecorator(tankMaxHealth, healthBarHeight, wastedHealthColor, existingHealthColor));
     }
 
     @Bean
@@ -74,14 +79,18 @@ public class GameConfiguration {
                                              @Value("${tank.max_health}") int tankMaxHealth,
                                              @Value("${bullet.speed}") float bulletSpeed,
                                              @Value("${bullet.damage}") int bulletDamage) {
-//        TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
         return new LogicProperties(tankMaxHealth, tankSpeed, bulletDamage, bulletSpeed);
     }
 
     @Bean
-    public HealthBarDecorator healthBarDecorator(@Value("${tank.max_health}") int tankMaxHealth) {
-//        TiledMap tiledMap = new TmxMapLoader().load("level.tmx");
-        return new HealthBarDecorator(tankMaxHealth);
+    public HealthBarDecorator healthBarDecorator(@Value("${tank.max_health}") int tankMaxHealth,
+                                                 @Value("${health_bar_height}") int healthBarHeight,
+                                                 @Value("${wasted_health_color}") int wastedHealth,
+                                                 @Value("${existing_health_color}") int existingHealth) {
+        Color wastedHealthColor = new Color(wastedHealth);
+        Color existingHealthColor = new Color(existingHealth);
+//        Color.
+        return new HealthBarDecorator(tankMaxHealth, healthBarHeight, wastedHealthColor, existingHealthColor);
     }
 
     @Bean

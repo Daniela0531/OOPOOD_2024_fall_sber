@@ -39,13 +39,6 @@ public class ExecutingActionsQueue {
                 executingActions.add(potentialNewAction);
             }
             if (potentialNewAction instanceof SwitchHealthBar) {
-//                System.out.println("SwitchHealthBar possible to switch: " + ((LivableModel) potentialNewAction.getModel()).maySwitchHealthBar());
-//                if (!((LivableModel) potentialNewAction.getModel()).maySwitchHealthBar()) {
-//                    continue;
-//                }
-//                ((LivableModel) potentialNewAction.getModel()).switchHealthBar();
-//                System.out.println("SwitchHealthBar action is cached");
-//                System.out.println("    healthBarCur: " + ((TankMoveModel) potentialNewAction.getModel()).getHealthBarCur());
                 executingActions.add(potentialNewAction);
             }
         }
