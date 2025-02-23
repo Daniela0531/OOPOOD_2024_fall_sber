@@ -27,7 +27,7 @@ import java.util.Map;
 
 @Component
 public class Level {
-    private HashMap<TreeMoveModel, GraphicsInterface> obstacles;
+    private HashMap<TreeMoveModel, GraphicsInterface> trees;
     private HashMap<TankMoveModel, GraphicsInterface> tanks;
     private HashMap<BulletMoveModel, GraphicsInterface> bullets;
     private TankMoveModel playerTank;
@@ -63,7 +63,7 @@ public class Level {
                 graphicProperties.getTankTexture(),
                 graphicProperties.getHealthBarDecorator());
 
-        this.obstacles = new HashMap<>();
+        this.trees = new HashMap<>();
         this.tanks = new HashMap<>();
         this.bullets = new HashMap<>();
 
@@ -95,7 +95,7 @@ public class Level {
             if (mapNode.getNodeType().equals(NodeType.TREE)) {
                 TreeMoveModel treeMoveModel = new TreeMoveModel(mapNode.getCoordinates(), 0f);
                 Graphics graphics = new Graphics(graphicProperties.getTreeTexture());
-                obstacles.put(treeMoveModel, graphics);
+                trees.put(treeMoveModel, graphics);
                 continue;
             }
         }
@@ -116,7 +116,7 @@ public class Level {
     }
 
     public HashMap<TreeMoveModel, GraphicsInterface> getTrees() {
-        return obstacles;
+        return trees;
     }
 
     public HashMap<TankMoveModel, GraphicsInterface> getTanks() {
@@ -174,7 +174,7 @@ public class Level {
         playerTank.mainUpdateProgress(deltaTime);
     }
     public void drow(Batch batch) {
-        for (Map.Entry<TreeMoveModel, GraphicsInterface> entry : obstacles.entrySet()) {
+        for (Map.Entry<TreeMoveModel, GraphicsInterface> entry : trees.entrySet()) {
             entry.getValue().draw(batch, entry.getKey().getRotation());
         }
         for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
@@ -218,7 +218,7 @@ public class Level {
     }
     public void dispose() {
         tiledMap.dispose();
-        for(GraphicsInterface graphics : obstacles.values()) {
+        for(GraphicsInterface graphics : trees.values()) {
             graphics.getTexture().dispose();
         }
         for(GraphicsInterface graphics : tanks.values()) {

@@ -1,6 +1,8 @@
-package ru.mipt.bit.platformer;
+package ru.mipt.bit.platformer.map_louders;
 
 import com.badlogic.gdx.math.GridPoint2;
+import ru.mipt.bit.platformer.LevelMap;
+import ru.mipt.bit.platformer.MapLouder;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.level_map.NodeType;
 

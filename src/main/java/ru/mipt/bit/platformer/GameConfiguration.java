@@ -15,6 +15,8 @@ import org.springframework.context.annotation.PropertySource;
 import ru.mipt.bit.platformer.graphics_objects.HealthBarDecorator;
 import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_properties.LogicProperties;
+import ru.mipt.bit.platformer.map_louders.MapGenerator;
+import ru.mipt.bit.platformer.map_louders.MapLoaderFromFile;
 import ru.mipt.bit.platformer.util.TileMovement;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.getSingleLayer;
