@@ -14,7 +14,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 
 
 public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
-    private static final float MOVEMENT_SPEED = 0.4f;
+    private final float movementSpeed;
     private final int fireTimeaot = 50;
     private final int healthBarTimeout = 40;
     private int healthBarCur = 0;
@@ -23,12 +23,13 @@ public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
     private boolean isMoving = false;
     private Direction direction;
     private int health;
-    private int maxHealth = 5;
+//    private int maxHealth = 5;
     private boolean isHealthBarRaise = false;
     private int shootProgress = 0;
     private boolean isShooting = false;
     private boolean waitSwitching = true;
-    public TankMoveModel(GridPoint2 coordinates, float rotation) {
+    public TankMoveModel(GridPoint2 coordinates, float rotation, int maxHealth, float movementSpeed) {
+        this.movementSpeed = movementSpeed;
         this.coordinates = coordinates;
         this.progress = 0f;
         this.direction = new Direction(new GridPoint2(0,0), rotation);
@@ -48,7 +49,7 @@ public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
     }
     @Override
     public void updateProgress(float deltaTime) {
-        progress = continueProgress(progress, deltaTime, MOVEMENT_SPEED);
+        progress = continueProgress(progress, deltaTime, movementSpeed);
     }
     @Override
     public void updateFireProgress() {

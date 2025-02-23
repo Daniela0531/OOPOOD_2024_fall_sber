@@ -1,7 +1,6 @@
 package ru.mipt.bit.platformer;
 
 import com.badlogic.gdx.math.GridPoint2;
-import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.level_map.NodeType;
 
@@ -10,14 +9,25 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-@Component
-public class FileLoader {
-    public LevelMap createMapFromFile(String filePath) throws FileNotFoundException {
+//@Component
+public class MapLoaderFromFile implements MapLouder {
+    private String filePath;
+    private LevelMap levelMap;
+    public MapLoaderFromFile(String absoluteFilePath) {
+        this.filePath = absoluteFilePath;
+    }
+    @Override
+    public void loadLevelMap() {
         ArrayList<MapNode> obstaclesCoordinates = new ArrayList<>();
         int i = 0;
         int j = 0;
         MapNode player = new MapNode(new GridPoint2(0, 0), NodeType.TANK);
-        Scanner scanner = new Scanner(new File(filePath));
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(new File(filePath));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
         while (scanner.hasNextLine()) {
             for (Character symbol : scanner.nextLine().toCharArray()) {
                 if (symbol == 'X') {
@@ -37,6 +47,10 @@ public class FileLoader {
         }
         player.setCoordinates(new GridPoint2(player.getCoordinates().x, j - 1 - player.getCoordinates().y));
         scanner.close();
-        return new LevelMap(obstaclesCoordinates, player);
+        this.levelMap = new LevelMap(obstaclesCoordinates, player);
+    }
+    @Override
+    public LevelMap getLevelMap() {
+        return levelMap;
     }
 }

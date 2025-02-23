@@ -19,7 +19,9 @@ public class Game {
 
     public Game(ButtonHandler buttonHandler,
                 MainCommandExecutor commandExecutor,
-                CommandQueue commandQueueHandler, GeneratorActions generatorActions, Level level) {
+                CommandQueue commandQueueHandler,
+                GeneratorActions generatorActions,
+                Level level) {
         this.buttonHandler = buttonHandler;
         this.commandQueueHandler = commandQueueHandler;
         this.commandExecutor = commandExecutor;

@@ -13,6 +13,11 @@ public class LevelMap {
         this.player = player;
     }
 
+    public LevelMap(MapLouder mapLoaderFromFile) {
+        this.nodesCoordinates = mapLoaderFromFile.getLevelMap().nodesCoordinates;
+        this.player = mapLoaderFromFile.getLevelMap().getPlayer();
+    }
+
     public ArrayList<MapNode> getNodes() {
         return nodesCoordinates;
     }

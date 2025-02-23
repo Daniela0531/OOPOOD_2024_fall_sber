@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivableInterface;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
-import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
+import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;

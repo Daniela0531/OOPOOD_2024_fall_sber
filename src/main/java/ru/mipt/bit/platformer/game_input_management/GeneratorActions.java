@@ -64,8 +64,7 @@ public class GeneratorActions {
             GridPoint2 coord = new GridPoint2(
                     tank.getCoordinates().cpy().x + direction.getVector().x,
                     tank.getCoordinates().cpy().y + direction.getVector().y);
-            BulletMoveModel bulletMoveModel = new BulletMoveModel(coord, direction, direction.getRotation());
-            level.putBulletInLevel(bulletMoveModel);
+            BulletMoveModel bulletMoveModel = level.putBulletInLevel(coord, direction);
 
             ShootAction shootAction = new ShootAction(
                     tank, bulletMoveModel, direction);

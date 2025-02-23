@@ -1,7 +1,6 @@
 package ru.mipt.bit.platformer.logic_objects.bullet;
 
 import com.badlogic.gdx.math.GridPoint2;
-import ru.mipt.bit.platformer.level_map.NodeType;
 import ru.mipt.bit.platformer.logic_objects.DamageDealerModel;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
@@ -9,21 +8,21 @@ import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.continueProgress;
 
 public class BulletMoveModel implements MoveModel, DamageDealerModel {
-    private static final float MOVEMENT_SPEED = 0.1f;
+    private final float movementSpeed;
     private GridPoint2 coordinates;
     private float progress;
     private boolean isMoving = false;
     private Direction direction;
-    private NodeType nodeType;
     private int damage;
-    private float rotation;
-    public BulletMoveModel(GridPoint2 coordinates, Direction direction, float rotation) {
+//    private float rotation;
+    public BulletMoveModel(GridPoint2 coordinates, Direction direction, int damage, float movementSpeed) {
         this.coordinates = coordinates;
         this.progress = 0f;
-        this.nodeType = NodeType.BULLET;
+//        this.nodeType = NodeType.BULLET;
         this.direction = direction;
-        this.damage = 1;
-        this.rotation = rotation;
+        this.damage = damage;
+        this.movementSpeed = movementSpeed;
+//        this.rotation = rotation;
     }
 
     public GridPoint2 getDestination() {
@@ -35,7 +34,7 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
     }
     @Override
     public void updateProgress(float deltaTime) {
-        progress = continueProgress(progress, deltaTime, MOVEMENT_SPEED);
+        progress = continueProgress(progress, deltaTime, movementSpeed);
     }
     @Override
     public void setProgress(float progress) {
@@ -56,7 +55,7 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
     @Override
     public void setRotation(float newRotation) {
         this.direction.setRotation(newRotation);
-        this.rotation = newRotation;
+//        this.rotation = newRotation;
     }
     @Override
     public GridPoint2 getCoordinates() {
@@ -67,7 +66,7 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
         return progress;
     }
     public float getMovementSpeed() {
-        return MOVEMENT_SPEED;
+        return movementSpeed;
     }
     public float getRotation() {
         return direction.getRotation();

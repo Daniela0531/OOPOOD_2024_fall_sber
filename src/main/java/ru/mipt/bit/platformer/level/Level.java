@@ -1,15 +1,18 @@
 package ru.mipt.bit.platformer.level;
 
+import com.badlogic.gdx.math.GridPoint2;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.LevelMap;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivable;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivableInterface;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
-import ru.mipt.bit.platformer.graphics_properties.GraphicProperties;
+import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.level_map.NodeType;
+import ru.mipt.bit.platformer.level_properties.LogicProperties;
 import ru.mipt.bit.platformer.logic_objects.bullet.BulletMoveModel;
+import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
 import ru.mipt.bit.platformer.logic_objects.tree.TreeMoveModel;
 
@@ -27,12 +30,18 @@ public class Level {
     private GraphicsForLivable playerGraphics;
     private boolean playerKilled;
     private GraphicProperties graphicProperties;
+    private LogicProperties logicProperties;
 
 
-    public Level(LevelMap map, GraphicProperties graphicProperties) {
+    public Level(LevelMap map, GraphicProperties graphicProperties, LogicProperties logicProperties) {
         this.playerKilled = false;
         this.graphicProperties = graphicProperties;
-        this.playerTank = new TankMoveModel(map.getPlayer().getCoordinates(), 0f);
+        this.logicProperties = logicProperties;
+        this.playerTank = new TankMoveModel(
+                map.getPlayer().getCoordinates(),
+                0f,
+                logicProperties.getTankMaxHealth(),
+                logicProperties.getTankSpeed());
         this.playerGraphics = new GraphicsForLivable(graphicProperties.getTankTexture());
 
         this.obstacles = new HashMap<>();
@@ -41,13 +50,21 @@ public class Level {
 
         for (MapNode mapNode : map.getNodes()) {
             if (mapNode.getCoordinates() == map.getPlayer().getCoordinates()) {
-                TankMoveModel tankMoveModel = new TankMoveModel(mapNode.getCoordinates(), 0f);
+                TankMoveModel tankMoveModel = new TankMoveModel(
+                        mapNode.getCoordinates(),
+                        0f,
+                        logicProperties.getTankMaxHealth(),
+                        logicProperties.getTankSpeed());
                 GraphicsForLivable graphics = new GraphicsForLivable(graphicProperties.getTankTexture());
                 tanks.put(tankMoveModel, graphics);
                 continue;
             }
             if (mapNode.getNodeType().equals(NodeType.TANK)) {
-                TankMoveModel tankMoveModel = new TankMoveModel(mapNode.getCoordinates(), 0f);
+                TankMoveModel tankMoveModel = new TankMoveModel(
+                        mapNode.getCoordinates(),
+                        0f,
+                        logicProperties.getTankMaxHealth(),
+                        logicProperties.getTankSpeed());
                 GraphicsForLivable graphics = new GraphicsForLivable(graphicProperties.getTankTexture());
                 tanks.put(tankMoveModel, graphics);
                 continue;
@@ -93,9 +110,15 @@ public class Level {
     public int moveNodesSize() {
         return tanks.size();
     }
-    public void putBulletInLevel(BulletMoveModel bulletMoveModel) {
+    public BulletMoveModel putBulletInLevel(GridPoint2 coord, Direction direction) {
+        BulletMoveModel bulletMoveModel = new BulletMoveModel(
+                coord,
+                direction,
+                logicProperties.getBulletDamage(),
+                logicProperties.getBulletSpeed());
         Graphics graphics = new Graphics(graphicProperties.getBulletTexture());
         bullets.put(bulletMoveModel, graphics);
+        return bulletMoveModel;
     }
 
     public HashMap<BulletMoveModel, GraphicsInterface> getBullets() {
