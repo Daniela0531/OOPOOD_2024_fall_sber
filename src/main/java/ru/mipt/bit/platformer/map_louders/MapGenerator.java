@@ -27,10 +27,6 @@ public class MapGenerator implements MapLouder {
         int lowBound = 0;
 
         Random random = new Random();
-//        int randomNumber = random.nextInt(rightBound * upBound);
-//        if (randomNumber == 0) {
-//            randomNumber = 5;
-//        }
         MapNode player = null;
         boolean playerIsSet = false;
         for (int i = 0; i < rightBound; ++i) {
@@ -80,6 +76,4 @@ public class MapGenerator implements MapLouder {
         return levelMap;
     }
 
-//    public LevelMap getLevelMap(int leftBound, int rightBound, int upBound, int lowBound) {
-//    }
 }
