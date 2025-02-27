@@ -43,12 +43,12 @@ public class ShootAction implements Action {
     }
 
     @Override
-    public void execute(float deltaTime, Level level) {
+    public void execute(Level level) {
         damageDealerModel.setMovingStatus(true);
         shootableModel.updateFireProgress();
-        executeBulletMovement(deltaTime, level);
+        executeBulletMovement(level);
     }
-    private void executeBulletMovement(float deltaTime, Level level) {
+    private void executeBulletMovement(Level level) {
         GridPoint2 newCoordinates = damageDealerModel.getCoordinates().cpy();
         if (!(newCoordinates.x < level.getLeftBound() ||
                 newCoordinates.x > level.getRightBound() ||
@@ -73,7 +73,6 @@ public class ShootAction implements Action {
                 return;
             }
             damageDealerModel.finishMovement();
-            damageDealerModel.updateProgress(deltaTime);
         } else {
             finishShootAction();
         }

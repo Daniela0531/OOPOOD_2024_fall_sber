@@ -18,11 +18,9 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
     public BulletMoveModel(GridPoint2 coordinates, Direction direction, int damage, float movementSpeed) {
         this.coordinates = coordinates;
         this.progress = 0f;
-//        this.nodeType = NodeType.BULLET;
         this.direction = direction;
         this.damage = damage;
         this.movementSpeed = movementSpeed;
-//        this.rotation = rotation;
     }
 
     public GridPoint2 getDestination() {
@@ -55,7 +53,6 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
     @Override
     public void setRotation(float newRotation) {
         this.direction.setRotation(newRotation);
-//        this.rotation = newRotation;
     }
     @Override
     public GridPoint2 getCoordinates() {
@@ -65,9 +62,9 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
     public float getProgress() {
         return progress;
     }
-    public float getMovementSpeed() {
-        return movementSpeed;
-    }
+//    public float getMovementSpeed() {
+//        return movementSpeed;
+//    }
     public float getRotation() {
         return direction.getRotation();
     }
@@ -83,17 +80,83 @@ public class BulletMoveModel implements MoveModel, DamageDealerModel {
     public int getDamage() {
         return damage;
     }
-//    @Override
-//    public boolean equalsTo(Model model) {
-//        if (model instanceof BulletMoveModel) {
-//            return coordinates == ((BulletMoveModel) model).getCoordinates();
-//        }
-//        return false;
-//    }
-
     @Override
     public void mainUpdateProgress(float deltaTime) {
-
+//        GridPoint2 newCoordinates = damageDealerModel.getCoordinates().cpy();
+//        if (!(newCoordinates.x < level.getLeftBound() ||
+//                newCoordinates.x > level.getRightBound() ||
+//                newCoordinates.y < level.getLowBound() ||
+//                newCoordinates.y > level.getUpBound())) {
+//            for(TreeMoveModel obstacle : level.getTrees().keySet()) {
+//                if (obstacle.getCoordinates().equals(newCoordinates)) {
+//                    finishShootAction();
+//                    return;
+//                }
+//            }
+//            for(TankMoveModel tank : level.getTanks().keySet()) {
+//                if (tank.getCoordinates().equals(newCoordinates)) {
+//                    tank.damage(damageDealerModel.getDamage());
+//                    finishShootAction();
+//                    return;
+//                }
+//            }
+//            if (!level.isPlayerKilled() && level.getPlayerTank().getCoordinates().equals(newCoordinates)) {
+//                level.getPlayerTank().damage(damageDealerModel.getDamage());
+//                finishShootAction();
+//                return;
+//            }
+//            damageDealerModel.finishMovement();
+            updateProgress(deltaTime);
+//        } else {
+//            finishShootAction();
+//        }
     }
+
+//    @Override
+//    public void execute(float deltaTime, Level level) {
+//        damageDealerModel.setMovingStatus(true);
+//        shootableModel.updateFireProgress();
+//        executeBulletMovement(deltaTime, level);
+//    }
+//    private void executeBulletMovement(float deltaTime, Level level) {
+//        GridPoint2 newCoordinates = damageDealerModel.getCoordinates().cpy();
+//        if (!(newCoordinates.x < level.getLeftBound() ||
+//                newCoordinates.x > level.getRightBound() ||
+//                newCoordinates.y < level.getLowBound() ||
+//                newCoordinates.y > level.getUpBound())) {
+//            for(TreeMoveModel obstacle : level.getTrees().keySet()) {
+//                if (obstacle.getCoordinates().equals(newCoordinates)) {
+//                    finishShootAction();
+//                    return;
+//                }
+//            }
+//            for(TankMoveModel tank : level.getTanks().keySet()) {
+//                if (tank.getCoordinates().equals(newCoordinates)) {
+//                    tank.damage(damageDealerModel.getDamage());
+//                    finishShootAction();
+//                    return;
+//                }
+//            }
+//            if (!level.isPlayerKilled() && level.getPlayerTank().getCoordinates().equals(newCoordinates)) {
+//                level.getPlayerTank().damage(damageDealerModel.getDamage());
+//                finishShootAction();
+//                return;
+//            }
+//            damageDealerModel.finishMovement();
+//            damageDealerModel.updateProgress(deltaTime);
+//        } else {
+//            finishShootAction();
+//        }
+//    }
+//    private void finishShootAction() {
+//        damageDealerModel.setProgress(0f);
+//        damageDealerModel.setMovingStatus(false);
+//        shootableModel.finishShooting();
+//        finished();
+//    }
+//
+//    public DamageDealerModel getBullet() {
+//        return damageDealerModel;
+//    }
 }
 

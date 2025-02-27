@@ -171,6 +171,9 @@ public class Level {
         for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
             entry.getKey().mainUpdateProgress(deltaTime);
         }
+        for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : bullets.entrySet()) {
+            entry.getKey().mainUpdateProgress(deltaTime);
+        }
         playerTank.mainUpdateProgress(deltaTime);
     }
     public void drow(Batch batch) {

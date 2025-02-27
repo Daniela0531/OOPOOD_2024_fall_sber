@@ -26,7 +26,7 @@ public class MainCommandExecutor {
         graphicRender.clear();
         executingActions.catchingNewActions(commandQueue);
         level.update(deltaTime);
-        movementCommandExecuter.executeActions(deltaTime, executingActions, level);
+        movementCommandExecuter.executeActions(executingActions, level);
         graphicRender.render(level);
         level.removeInvalidEntities();
         executingActions.removeFinishedActions();

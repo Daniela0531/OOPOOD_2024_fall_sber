@@ -7,5 +7,5 @@ public interface Action {
     Model getModel();
     boolean isFinished();
     void finished();
-    void execute(float deltaTime, Level level);
+    void execute(Level level);
 }

@@ -27,7 +27,7 @@ public class SwitchHealthBarAction implements Action {
     }
 
     @Override
-    public void execute(float deltaTime, Level level) {
+    public void execute(Level level) {
         livableModel.switchHealthBar();
         finished();
     }

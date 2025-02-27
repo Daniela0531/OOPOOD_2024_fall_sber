@@ -50,18 +50,17 @@ public class MoveAction implements Action {
     }
 
     @Override
-    public void execute(float deltaTime, Level level) {
+    public void execute(Level level) {
         moveModel.setMovingStatus(true);
-        executeTankMovement(deltaTime, level);
+        executeTankMovement(level);
         moveModel.setRotation(moveModel.getDirection().getRotation());
         if (isEqual(moveModel.getProgress(), 1f)) {
             finishMoveActionIfPossible();
         }
     }
 
-    private void executeTankMovement(float deltaTime, Level level) {
+    private void executeTankMovement(Level level) {
         if (!movementIsPossible(level)) {
-            moveModel.updateProgress(deltaTime);
             moveModel.setProgress(0f);
             moveModel.setMovingStatus(false);
             finished();
