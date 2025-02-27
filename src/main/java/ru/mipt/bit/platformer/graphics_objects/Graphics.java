@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import ru.mipt.bit.platformer.logic_objects.Model;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
@@ -22,18 +23,23 @@ public class Graphics implements GraphicsInterface {
     public Rectangle getRectangle() {
         return rectangle;
     }
-    @Override
-    public TextureRegion getTextureRegion() {
-        return textureRegion;
-    }
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
 
     @Override
-    public void draw(Batch batch, float rotation) {
-        drawTextureRegionUnscaled(batch, textureRegion, rectangle, rotation);
+    public void dispose() {
+        texture.dispose();
+    }
+//    @Override
+//    public TextureRegion getTextureRegion() {
+//        return textureRegion;
+//    }
+//    @Override
+//    public Texture getTexture() {
+//        return texture;
+//    }
+
+    @Override
+    public void draw(Batch batch, Model model) {
+        drawTextureRegionUnscaled(batch, textureRegion, rectangle, model.getRotation());
     }
 
 }

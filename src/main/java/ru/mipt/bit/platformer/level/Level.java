@@ -178,33 +178,31 @@ public class Level {
     }
     public void drow(Batch batch) {
         for (Map.Entry<TreeMoveModel, GraphicsInterface> entry : trees.entrySet()) {
-            entry.getValue().draw(batch, entry.getKey().getRotation());
+            entry.getValue().draw(batch, entry.getKey());
         }
         for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
-            entry.getValue().draw(batch, entry.getKey().getRotation());
-            if (entry.getKey().isHealthBarRaise()) {
-                ((GraphicsForLivable)entry.getValue()).drowHealthBar(batch, entry.getKey().getMaxHealth(), entry.getKey().getHealth());
-            }
+            entry.getValue().draw(batch, entry.getKey());
+//            if (entry.getKey().isHealthBarRaise()) {
+//                ((GraphicsForLivable)entry.getValue()).drowHealthBar(batch, entry.getKey().getMaxHealth(), entry.getKey().getHealth());
+//            }
         }
         for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : bullets.entrySet()) {
-            entry.getValue().draw(batch, entry.getKey().getRotation());
+            entry.getValue().draw(batch, entry.getKey());
         }
         if (!playerKilled) {
-            playerGraphics.draw(batch, playerTank.getRotation());
-            if (playerTank.isHealthBarRaise()) {
-                playerGraphics.drowHealthBar(batch, playerTank.getMaxHealth(), playerTank.getHealth());
-            }
+            playerGraphics.draw(batch, playerTank);
+//            if (playerTank.isHealthBarRaise()) {
+//                playerGraphics.drowHealthBar(batch, playerTank.getMaxHealth(), playerTank.getHealth());
+//            }
         }
     }
 
     public void movementDrow(TileMovement tileMovement) {
         for (Map.Entry<TankMoveModel, GraphicsInterface> entry : tanks.entrySet()) {
             movementRender(tileMovement, entry.getKey(), entry.getValue().getRectangle());
-            if (entry.getKey().isHealthBarRaise()) {
-//                ((GraphicsForLivable)entry.getValue()).drowHealthBar(batch, entry.getKey().getMaxHealth(), entry.getKey().getHealth());
-//                entry.getValue().drawMovement(tileMovement, entry.getKey(), entry.);
-                movementRender(tileMovement, entry.getKey(), ((GraphicsForLivable)entry.getValue()).getHealthBarRectangle());
-            }
+//            if (entry.getKey().isHealthBarRaise()) {
+//                movementRender(tileMovement, entry.getKey(), ((GraphicsForLivable)entry.getValue()).getHealthBarRectangle());
+//            }
         }
         for (Map.Entry<BulletMoveModel, GraphicsInterface> entry : bullets.entrySet()) {
             movementRender(tileMovement, entry.getKey(), entry.getValue().getRectangle());
@@ -222,19 +220,16 @@ public class Level {
     public void dispose() {
         tiledMap.dispose();
         for(GraphicsInterface graphics : trees.values()) {
-            graphics.getTexture().dispose();
+            graphics.dispose();
         }
         for(GraphicsInterface graphics : tanks.values()) {
-            graphics.getTexture().dispose();
+            graphics.dispose();
         }
         for(GraphicsInterface graphics : bullets.values()) {
-            graphics.getTexture().dispose();
+            graphics.dispose();
         }
         if (!playerKilled) {
-            playerGraphics.getTexture().dispose();
-            if (playerTank.isHealthBarRaise()) {
-                playerGraphics.disposeHealthBar();
-            }
+            playerGraphics.dispose();
         }
     }
 

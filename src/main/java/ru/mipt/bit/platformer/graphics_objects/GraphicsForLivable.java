@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import ru.mipt.bit.platformer.logic_objects.LivableModel;
+import ru.mipt.bit.platformer.logic_objects.Model;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
@@ -13,6 +15,7 @@ public class GraphicsForLivable implements GraphicsInterface {
     private TextureRegion textureRegion;
     private Rectangle rectangle;
     private HealthBarDecorator healthBarDecorator;
+//    private boolean isHealthBarRase = false;
 
     public GraphicsForLivable(Texture texture, HealthBarDecorator healthBarDecorator) {
         this.texture = texture;
@@ -24,28 +27,36 @@ public class GraphicsForLivable implements GraphicsInterface {
     public Rectangle getRectangle() {
         return rectangle;
     }
-    @Override
-    public TextureRegion getTextureRegion() {
-        return textureRegion;
-    }
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
+//    @Override
+//    public TextureRegion getTextureRegion() {
+//        return textureRegion;
+//    }
+//    @Override
+//    public Texture getTexture() {
+//        return texture;
+//    }
 
     @Override
-    public void draw(Batch batch, float rotation) {
-        drawTextureRegionUnscaled(batch, textureRegion, rectangle, rotation);
+    public void draw(Batch batch, Model model) {
+        drawTextureRegionUnscaled(batch, textureRegion, rectangle, model.getRotation());
+        if (((LivableModel)model).isHealthBarRaise()) {
+            drowHealthBar(batch, (LivableModel)model);
+        }
     }
 
-    public void drowHealthBar(Batch batch, int maxHealth, int health) {
-        healthBarDecorator.drawHealthBar(batch, textureRegion, maxHealth, health);
+    private void drowHealthBar(Batch batch, LivableModel model) {
+        healthBarDecorator.drawHealthBar(batch, textureRegion, model.getMaxHealth(), model.getHealth());
     }
-    public void disposeHealthBar() {
+    private void disposeHealthBar() {
         healthBarDecorator.dispose();
     }
 
-    public Rectangle getHealthBarRectangle() {
+    private Rectangle getHealthBarRectangle() {
         return healthBarDecorator.getRectangle();
+    }
+
+    @Override
+    public void dispose() {
+        texture.dispose();
     }
 }
