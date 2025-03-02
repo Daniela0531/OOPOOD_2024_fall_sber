@@ -3,7 +3,6 @@ package ru.mipt.bit.platformer.actions.impl_action;
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.actions.Action;
 import ru.mipt.bit.platformer.level.Level;
-import ru.mipt.bit.platformer.logic_objects.Model;
 import ru.mipt.bit.platformer.logic_objects.MoveModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
@@ -16,6 +15,7 @@ public class MoveAction implements Action {
     private final GridPoint2 destinationCoordinates;
     private final MoveModel moveModel;
     private boolean isFinished = false;
+    private boolean isStarted = false;
 
     public MoveAction(MoveModel tankMoveModel, Direction direction) {
         this.direction = direction;
@@ -25,38 +25,37 @@ public class MoveAction implements Action {
                 tankMoveModel.getCoordinates().y + direction.getVector().y
         );
     }
-    public GridPoint2 getDestinationCoordinates() {
-        return destinationCoordinates;
-    }
 
-    public Direction getDirection() {
-        return direction;
-    }
-
-    @Override
-    public Model getModel() {
-        return moveModel;
-    }
-    public void execute() {
-    }
     @Override
     public boolean isFinished() {
         return isFinished;
     }
 
     @Override
-    public void finished() {
-        isFinished = true;
-    }
-
-    @Override
     public void execute(Level level) {
-        moveModel.setMovingStatus(true);
+        if (moveModel.isMoving() && !isStarted) {
+            finished();
+            return;
+        }
+        if (!moveModel.isMoving()) {
+            moveModel.setDirection(direction);
+            moveModel.setMovingStatus(true);
+            isStarted = true;
+        }
+
         executeTankMovement(level);
         moveModel.setRotation(moveModel.getDirection().getRotation());
         if (isEqual(moveModel.getProgress(), 1f)) {
             finishMoveActionIfPossible();
         }
+    }
+
+    private void finished() {
+        isFinished = true;
+    }
+
+    private GridPoint2 getDestinationCoordinates() {
+        return destinationCoordinates;
     }
 
     private void executeTankMovement(Level level) {
@@ -104,5 +103,4 @@ public class MoveAction implements Action {
             finished();
         }
     }
-
 }

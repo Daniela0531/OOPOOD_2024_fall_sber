@@ -1,12 +1,7 @@
 package ru.mipt.bit.platformer.game_management;
 
 import ru.mipt.bit.platformer.actions.Action;
-import ru.mipt.bit.platformer.actions.impl_action.MoveAction;
-import ru.mipt.bit.platformer.actions.impl_action.ShootAction;
-import ru.mipt.bit.platformer.actions.impl_action.SwitchHealthBarAction;
 import ru.mipt.bit.platformer.game_input_management.CommandQueue;
-import ru.mipt.bit.platformer.logic_objects.MoveModel;
-import ru.mipt.bit.platformer.logic_objects.ShootableModel;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,25 +17,8 @@ public class ExecutingActionsQueue {
         if (commandQueue.isEmpty()) {
             return;
         }
-        for (Action potentialNewAction : commandQueue.getActions()) {
-            if (potentialNewAction instanceof MoveAction) {
-                if (((MoveModel) potentialNewAction.getModel()).isMoving()) {
-                    continue;
-                }
-                ((MoveModel) potentialNewAction.getModel()).setDirection((((MoveAction) potentialNewAction).getDirection()));
-                ((MoveModel) potentialNewAction.getModel()).setMovingStatus(true);
-                executingActions.add(potentialNewAction);
-            }
-            if (potentialNewAction instanceof ShootAction) {
-                if (!((ShootableModel) potentialNewAction.getModel()).mayShoot()) {
-                    continue;
-                }
-                ((ShootAction) potentialNewAction).getBullet().setMovingStatus(true);
-                executingActions.add(potentialNewAction);
-            }
-            if (potentialNewAction instanceof SwitchHealthBarAction) {
-                executingActions.add(potentialNewAction);
-            }
+        for (Action newAction : commandQueue.getActions()) {
+            executingActions.add(newAction);
         }
         commandQueue.clear();
     }

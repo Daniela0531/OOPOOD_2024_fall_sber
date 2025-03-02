@@ -14,13 +14,5 @@ public class LogicExecutor {
             action.execute(level);
         }
     }
-//    private void printBullet(ShootAction action) {
-//        System.out.println("bullet\n" +
-//                "    status is move: " + action.getBullet().isMoving() + "\n" +
-//                "    shoot from: " + action.getBullet().getCoordinates() + "\n" +
-//                "    in direction: " + action.getBullet().getDirection().getVector() + "\n" +
-//                "    progres: " + action.getBullet().getProgress() + "\n" +
-//                "    destination: " + action.getBullet().getDestination());
-//    }
 
 }

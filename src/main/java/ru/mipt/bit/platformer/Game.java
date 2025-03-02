@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.game_input_management.ButtonHandler;
 import ru.mipt.bit.platformer.game_input_management.CommandQueue;
 import ru.mipt.bit.platformer.game_input_management.GeneratorActions;
+import ru.mipt.bit.platformer.game_management.ExecutingActionsQueue;
 import ru.mipt.bit.platformer.game_management.MainCommandExecutor;
 import ru.mipt.bit.platformer.level.Level;
 
@@ -13,6 +14,7 @@ public class Game {
     private final ButtonHandler buttonHandler;
     private final MainCommandExecutor commandExecutor;
     private final CommandQueue commandQueueHandler;
+    private ExecutingActionsQueue executingActions;
     private final GeneratorActions generatorActions;
     private final Level level;
 
@@ -27,13 +29,23 @@ public class Game {
         this.commandExecutor = commandExecutor;
         this.generatorActions = generatorActions;
         this.level = level;
+        this.executingActions = new ExecutingActionsQueue();
     }
 
     public void renderCurrentResultByTick() {
         float deltaTime = Gdx.graphics.getDeltaTime();
+        getNewCommands();
+        commandProcessing();
+        commandExecutor.executeAllCommands(deltaTime, executingActions, level);
+    }
+
+    private void commandProcessing() {
+        executingActions.removeFinishedActions();
+        executingActions.catchingNewActions(commandQueueHandler);
+    }
+    private void getNewCommands() {
         buttonHandler.readCommand(commandQueueHandler, level);
         generatorActions.getCommand(commandQueueHandler, level);
-        commandExecutor.executeAllCommands(deltaTime, commandQueueHandler, level);
     }
 
     public void stop() {

@@ -45,7 +45,7 @@ public class GraphicsForLivable implements GraphicsInterface {
     }
 
     private void drowHealthBar(Batch batch, LivableModel model) {
-        healthBarDecorator.drawHealthBar(batch, textureRegion, model.getMaxHealth(), model.getHealth());
+        healthBarDecorator.drawHealthBar(batch, textureRegion, model.getMaxHealth(), model.getCurrentHealth());
     }
     private void disposeHealthBar() {
         healthBarDecorator.dispose();

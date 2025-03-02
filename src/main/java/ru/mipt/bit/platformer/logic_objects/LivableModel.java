@@ -1,7 +1,7 @@
 package ru.mipt.bit.platformer.logic_objects;
 
 public interface LivableModel extends Model {
-    int getHealth();
+    int getCurrentHealth();
     void damage(int damage);
     void switchHealthBar();
 

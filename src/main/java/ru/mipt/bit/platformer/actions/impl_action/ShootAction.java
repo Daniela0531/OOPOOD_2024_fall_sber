@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.actions.Action;
 import ru.mipt.bit.platformer.level.Level;
 import ru.mipt.bit.platformer.logic_objects.DamageDealerModel;
-import ru.mipt.bit.platformer.logic_objects.Model;
 import ru.mipt.bit.platformer.logic_objects.ShootableModel;
 import ru.mipt.bit.platformer.logic_objects.properties.Direction;
 import ru.mipt.bit.platformer.logic_objects.tank.TankMoveModel;
@@ -15,6 +14,7 @@ public class ShootAction implements Action {
     private final ShootableModel shootableModel;
     private final DamageDealerModel damageDealerModel;
     private boolean isFinished = false;
+    private boolean isStarted = false;
 
     public ShootAction(ShootableModel shootableModel,
                        DamageDealerModel damageDealerModel, Direction direction) {
@@ -22,31 +22,27 @@ public class ShootAction implements Action {
         this.shootableModel = shootableModel;
         this.damageDealerModel = damageDealerModel;
     }
-    public GridPoint2 getDestinationCoordinates() {
-        return new GridPoint2(
-                damageDealerModel.getCoordinates().x + direction.getVector().x,
-                damageDealerModel.getCoordinates().y + direction.getVector().y);
-    }
-    @Override
-    public Model getModel() {
-        return (Model) shootableModel;
-    }
-    public void execute() {
-    }
     @Override
     public boolean isFinished() {
         return isFinished;
     }
     @Override
-    public void finished() {
-        this.isFinished = true;
-    }
-
-    @Override
     public void execute(Level level) {
+        if (!shootableModel.mayShoot() && !isStarted) {
+            finished();
+            return;
+        }
+        if (!isStarted) {
+            isStarted = true;
+            damageDealerModel.setMovingStatus(true);
+        }
+
         damageDealerModel.setMovingStatus(true);
         shootableModel.updateFireProgress();
         executeBulletMovement(level);
+    }
+    private void finished() {
+        this.isFinished = true;
     }
     private void executeBulletMovement(Level level) {
         GridPoint2 newCoordinates = damageDealerModel.getCoordinates().cpy();
@@ -83,9 +79,4 @@ public class ShootAction implements Action {
         shootableModel.finishShooting();
         finished();
     }
-
-    public DamageDealerModel getBullet() {
-        return damageDealerModel;
-    }
-
 }

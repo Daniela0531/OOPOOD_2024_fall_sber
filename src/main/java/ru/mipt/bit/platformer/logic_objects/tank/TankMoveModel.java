@@ -49,7 +49,7 @@ public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
     public Direction getDirection() {
         return direction;
     }
-    @Override
+//    @Override
     public void updateProgress(float deltaTime) {
         progress = continueProgress(progress, deltaTime, movementSpeed);
     }
@@ -113,7 +113,7 @@ public class TankMoveModel implements MoveModel, LivableModel, ShootableModel {
         this.isMoving = status;
     }
     @Override
-    public int getHealth() {
+    public int getCurrentHealth() {
         return health;
     }
     @Override

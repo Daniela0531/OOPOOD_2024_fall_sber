@@ -34,12 +34,13 @@ public class MainGraphicRender {
     }
 
     public void render(Level level) {
+        clear();
         mapRenderer.render();
         batchRender(level);
         level.movementDrow(tileMovement);
     }
 
-    public void clear() {
+    private void clear() {
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
     }
