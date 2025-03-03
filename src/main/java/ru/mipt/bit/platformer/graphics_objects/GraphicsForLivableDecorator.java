@@ -32,14 +32,6 @@ public class GraphicsForLivableDecorator implements GraphicsInterface {
     private void drowHealthBar(Batch batch, LivableModel model) {
         healthBarDecorator.drawHealthBar(batch, graphics.getTextureRegion(), model.getMaxHealth(), model.getCurrentHealth());
     }
-    private void disposeHealthBar() {
-        healthBarDecorator.dispose();
-    }
-
-    private Rectangle getHealthBarRectangle() {
-        return healthBarDecorator.getRectangle();
-    }
-
     @Override
     public void dispose() {
         graphics.getTexture().dispose();
