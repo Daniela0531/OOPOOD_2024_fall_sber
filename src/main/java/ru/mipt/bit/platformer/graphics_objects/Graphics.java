@@ -42,4 +42,11 @@ public class Graphics implements GraphicsInterface {
         drawTextureRegionUnscaled(batch, textureRegion, rectangle, model.getRotation());
     }
 
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
+    }
+
+    public Texture getTexture() {
+        return texture;
+    }
 }

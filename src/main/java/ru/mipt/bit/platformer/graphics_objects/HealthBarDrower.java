@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
 
-public class HealthBarDecorator {
+public class HealthBarDrower {
 //    private final int maxHealth;
     private final int height;
     private final int width;
@@ -21,7 +21,7 @@ public class HealthBarDecorator {
     private Rectangle rectangle;
 //    private int shiftFromModel = 0;
 
-    public HealthBarDecorator(int width, int height, Color existingHealth, Color wastedHealth) {
+    public HealthBarDrower(int width, int height, Color existingHealth, Color wastedHealth) {
         this.width = width;
         this.height = height;
         this.existingHealth = existingHealth;

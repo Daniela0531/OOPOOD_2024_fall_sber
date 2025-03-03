@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import ru.mipt.bit.platformer.graphics_objects.HealthBarDecorator;
+import ru.mipt.bit.platformer.graphics_objects.HealthBarDrower;
 import ru.mipt.bit.platformer.level_properties.GraphicProperties;
 import ru.mipt.bit.platformer.level_properties.LogicProperties;
 import ru.mipt.bit.platformer.map_louders.MapGenerator;
@@ -73,7 +73,7 @@ public class GameConfiguration {
                                                @Value("${existing_health_color}") int existingHealth) {
         Color wastedHealthColor = new Color(wastedHealth);
         Color existingHealthColor = new Color(existingHealth);
-        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture, new HealthBarDecorator(healthBarWidth, healthBarHeight, wastedHealthColor, existingHealthColor));
+        return new GraphicProperties(tiledMap, tankTexture, treeTexture, bulletTexture, new HealthBarDrower(healthBarWidth, healthBarHeight, wastedHealthColor, existingHealthColor));
     }
 
     @Bean
@@ -85,14 +85,14 @@ public class GameConfiguration {
     }
 
     @Bean
-    public HealthBarDecorator healthBarDecorator(@Value("${health_bar_width}") int healthBarWidth,
-                                                 @Value("${health_bar_height}") int healthBarHeight,
-                                                 @Value("${wasted_health_color}") int wastedHealth,
-                                                 @Value("${existing_health_color}") int existingHealth) {
+    public HealthBarDrower healthBarDecorator(@Value("${health_bar_width}") int healthBarWidth,
+                                              @Value("${health_bar_height}") int healthBarHeight,
+                                              @Value("${wasted_health_color}") int wastedHealth,
+                                              @Value("${existing_health_color}") int existingHealth) {
         Color wastedHealthColor = new Color(wastedHealth);
         Color existingHealthColor = new Color(existingHealth);
 //        Color.
-        return new HealthBarDecorator(healthBarWidth, healthBarHeight, wastedHealthColor, existingHealthColor);
+        return new HealthBarDrower(healthBarWidth, healthBarHeight, wastedHealthColor, existingHealthColor);
     }
 
     @Bean

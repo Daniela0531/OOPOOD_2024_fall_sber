@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import org.springframework.stereotype.Component;
 import ru.mipt.bit.platformer.LevelMap;
 import ru.mipt.bit.platformer.graphics_objects.Graphics;
-import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivable;
+import ru.mipt.bit.platformer.graphics_objects.GraphicsForLivableDecorator;
 import ru.mipt.bit.platformer.graphics_objects.GraphicsInterface;
 import ru.mipt.bit.platformer.level_map.MapNode;
 import ru.mipt.bit.platformer.level_map.NodeType;
@@ -31,7 +31,7 @@ public class Level {
     private HashMap<TankMoveModel, GraphicsInterface> tanks;
     private HashMap<BulletMoveModel, GraphicsInterface> bullets;
     private TankMoveModel playerTank;
-    private GraphicsForLivable playerGraphics;
+    private GraphicsForLivableDecorator playerGraphics;
     private boolean playerKilled;
     private GraphicProperties graphicProperties;
     private LogicProperties logicProperties;
@@ -59,7 +59,7 @@ public class Level {
                 0f,
                 logicProperties.getTankMaxHealth(),
                 logicProperties.getTankSpeed());
-        this.playerGraphics = new GraphicsForLivable(
+        this.playerGraphics = new GraphicsForLivableDecorator(
                 graphicProperties.getTankTexture(),
                 graphicProperties.getHealthBarDecorator());
 
@@ -74,7 +74,7 @@ public class Level {
                         0f,
                         logicProperties.getTankMaxHealth(),
                         logicProperties.getTankSpeed());
-                GraphicsForLivable graphics = new GraphicsForLivable(
+                GraphicsForLivableDecorator graphics = new GraphicsForLivableDecorator(
                         graphicProperties.getTankTexture(),
                         graphicProperties.getHealthBarDecorator());
                 tanks.put(tankMoveModel, graphics);
@@ -86,7 +86,7 @@ public class Level {
                         0f,
                         logicProperties.getTankMaxHealth(),
                         logicProperties.getTankSpeed());
-                GraphicsForLivable graphics = new GraphicsForLivable(
+                GraphicsForLivableDecorator graphics = new GraphicsForLivableDecorator(
                         graphicProperties.getTankTexture(),
                         graphicProperties.getHealthBarDecorator());
                 tanks.put(tankMoveModel, graphics);
@@ -126,7 +126,7 @@ public class Level {
     public TankMoveModel getPlayerTank() {
         return playerTank;
     }
-    public GraphicsForLivable getPlayerGraphics() {
+    public GraphicsForLivableDecorator getPlayerGraphics() {
         return playerGraphics;
     }
 

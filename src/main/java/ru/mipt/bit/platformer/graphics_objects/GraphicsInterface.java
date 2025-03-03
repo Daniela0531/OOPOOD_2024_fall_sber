@@ -7,11 +7,6 @@ import ru.mipt.bit.platformer.logic_objects.Model;
 //@Component
 public interface GraphicsInterface {
      Rectangle getRectangle();
-//     TextureRegion getTextureRegion();
-//     Texture getTexture();
-//     void drow();
-
-//     void draw(Batch batch, float rotation);
 
     void dispose();
 
